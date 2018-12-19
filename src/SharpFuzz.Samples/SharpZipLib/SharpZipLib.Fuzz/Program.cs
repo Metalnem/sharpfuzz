@@ -2,12 +2,12 @@
 using System.IO;
 using ICSharpCode.SharpZipLib;
 using ICSharpCode.SharpZipLib.Zip;
+using SharpFuzz;
 
-namespace SharpFuzz.SharpZipLib
+namespace SharpZipLib.Fuzz
 {
 	public class Program
 	{
-		/// <see href="https://www.nuget.org/packages/SharpZipLib/">SharpZipLib</see>
 		public static void Main(string[] args)
 		{
 			Fuzzer.Run(() =>
@@ -25,6 +25,7 @@ namespace SharpFuzz.SharpZipLib
 				catch (IndexOutOfRangeException) { }
 				catch (NotSupportedException) { }
 				catch (ZipException) { }
+				catch (StreamDecodingException) { }
 				catch (SharpZipBaseException) { }
 			});
 		}
