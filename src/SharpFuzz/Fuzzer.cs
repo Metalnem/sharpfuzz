@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
@@ -56,10 +57,12 @@ namespace SharpFuzz
 				shared[0] = 1;
 				w.Write(0);
 
+				var pid = Process.GetCurrentProcess().Id;
+
 				while (true)
 				{
 					r.ReadInt32();
-					w.Write(1);
+					w.Write(pid);
 
 					local.Clear();
 					Fault fault = Fault.None;
