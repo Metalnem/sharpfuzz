@@ -7,7 +7,7 @@ namespace LumenWorksCsvReader.Run
 	{
 		public static void Main(string[] args)
 		{
-			using (var file = File.OpenText("/Users/Metalnem/Temp/findings/crashes/id:000000,sig:02,src:000000,op:havoc,rep:64"))
+			using (var file = File.OpenText(args[0]))
 			using (var csv = new CsvReader(file, false))
 			{
 				while (csv.ReadNextRecord()) { }
