@@ -21,6 +21,7 @@ namespace MessagePack.Fuzz
 				catch (ArgumentException) { }
 				catch (IndexOutOfRangeException) { }
 				catch (InvalidOperationException) { }
+				catch (OutOfMemoryException) { }
 				catch (OverflowException) { }
 			});
 		}
