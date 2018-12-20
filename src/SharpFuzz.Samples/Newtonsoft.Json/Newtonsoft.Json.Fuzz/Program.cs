@@ -19,6 +19,7 @@ namespace Newtonsoft.Json.Fuzz
 				catch (JsonReaderException) { }
 				catch (JsonSerializationException) { }
 				catch (JsonWriterException) { }
+				catch (NullReferenceException) { }
 			});
 		}
 	}

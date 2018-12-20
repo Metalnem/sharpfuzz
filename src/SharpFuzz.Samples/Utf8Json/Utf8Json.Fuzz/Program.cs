@@ -19,6 +19,7 @@ namespace Utf8Json.Fuzz
 				}
 				catch (ArgumentNullException) { }
 				catch (ArgumentException) { }
+				catch (FormatException) { }
 				catch (IndexOutOfRangeException) { }
 				catch (InvalidOperationException) { }
 				catch (JsonParsingException) { }
