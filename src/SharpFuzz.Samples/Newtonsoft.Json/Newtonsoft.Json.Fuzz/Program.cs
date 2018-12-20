@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using SharpFuzz;
 
 namespace Newtonsoft.Json.Fuzz
@@ -14,6 +15,7 @@ namespace Newtonsoft.Json.Fuzz
 					var text = File.ReadAllText(args[0]);
 					JsonConvert.DeserializeObject(text);
 				}
+				catch (ArgumentException) { }
 				catch (JsonReaderException) { }
 				catch (JsonSerializationException) { }
 				catch (JsonWriterException) { }
