@@ -1,6 +1,6 @@
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography;
 
 namespace SharpFuzz
 {
@@ -8,7 +8,7 @@ namespace SharpFuzz
 	{
 		private const int Retries = 10;
 
-		private static readonly RandomNumberGenerator random = RandomNumberGenerator.Create();
+		private static readonly Random random = new Random(0x130f4c29);
 		private static readonly byte[] data = new byte[2];
 		private static readonly HashSet<int> ids = new HashSet<int>();
 
@@ -18,7 +18,7 @@ namespace SharpFuzz
 
 			for (int i = 0; i < Retries; ++i)
 			{
-				random.GetBytes(data);
+				random.NextBytes(data);
 
 				if (ids.Add(id[0]))
 				{
