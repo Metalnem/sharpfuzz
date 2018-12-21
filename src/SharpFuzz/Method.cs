@@ -159,7 +159,7 @@ namespace SharpFuzz
 					handler.HandlerStart = handlerStart;
 				}
 
-				if (instrumented.TryGetValue(handler.HandlerEnd, out var handlerEnd))
+				if (handler.HandlerEnd != null && instrumented.TryGetValue(handler.HandlerEnd, out var handlerEnd))
 				{
 					handler.HandlerEnd = handlerEnd;
 				}
