@@ -21,6 +21,7 @@ namespace itext7.Fuzz
 				catch (InvalidCastException) { }
 				catch (IOException) { }
 				catch (NullReferenceException) { }
+				catch (OverflowException) { }
 				catch (PdfException) { }
 			});
 		}
