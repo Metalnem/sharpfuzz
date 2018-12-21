@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using SharpFuzz;
 
 namespace NUglify.Fuzz
@@ -9,8 +10,13 @@ namespace NUglify.Fuzz
 		{
 			Fuzzer.Run(() =>
 			{
-				var text = File.ReadAllText(args[0]);
-				Uglify.Css(text);
+				try
+				{
+					var text = File.ReadAllText(args[0]);
+					Uglify.Js(text);
+				}
+				catch (IndexOutOfRangeException) { }
+				catch (NullReferenceException) { }
 			});
 		}
 	}

@@ -7,7 +7,7 @@ namespace NUglify.Run
 		public static void Main(string[] args)
 		{
 			var text = File.ReadAllText(args[0]);
-			Uglify.Css(text);
+			Uglify.Js(text);
 		}
 	}
 }
