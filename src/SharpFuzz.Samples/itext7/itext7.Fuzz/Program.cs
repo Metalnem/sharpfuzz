@@ -17,6 +17,7 @@ namespace itext7.Fuzz
 					new PdfDocument(new PdfReader(args[0]));
 				}
 				catch (FormatException) { }
+				catch (IndexOutOfRangeException) { }
 				catch (InvalidCastException) { }
 				catch (IOException) { }
 				catch (NullReferenceException) { }
