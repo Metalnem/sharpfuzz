@@ -1,0 +1,5 @@
+invoice: 34843
+date   : 2001-01-23
+bill-to: &is
+   *family : DumChris
+   &family : Dqmar
