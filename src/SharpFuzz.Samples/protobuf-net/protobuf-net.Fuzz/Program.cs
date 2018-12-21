@@ -37,6 +37,7 @@ namespace protobuf_net.Fuzz
 				catch (IndexOutOfRangeException) { }
 				catch (InvalidOperationException) { }
 				catch (IOException) { }
+				catch (OutOfMemoryException) { }
 				catch (OverflowException) { }
 				catch (ProtoException) { }
 			});
