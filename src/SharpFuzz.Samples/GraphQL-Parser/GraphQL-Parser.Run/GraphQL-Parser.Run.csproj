@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RootNamespace>GraphQL_Parser.Run</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="GraphQL-Parser">
+      <HintPath>GraphQL-Parser.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
