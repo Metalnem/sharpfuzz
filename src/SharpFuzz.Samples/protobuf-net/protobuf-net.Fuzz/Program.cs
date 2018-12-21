@@ -35,6 +35,7 @@ namespace protobuf_net.Fuzz
 				}
 				catch (ArgumentException) { }
 				catch (EndOfStreamException) { }
+				catch (InvalidOperationException) { }
 				catch (OverflowException) { }
 				catch (ProtoException) { }
 			});
