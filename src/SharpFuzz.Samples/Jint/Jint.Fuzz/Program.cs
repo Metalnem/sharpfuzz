@@ -22,6 +22,7 @@ namespace Jint.Fuzz
 				catch (InvalidOperationException) { }
 				catch (JavaScriptException) { }
 				catch (NullReferenceException) { }
+				catch (OverflowException) { }
 				catch (ParserException) { }
 			});
 		}

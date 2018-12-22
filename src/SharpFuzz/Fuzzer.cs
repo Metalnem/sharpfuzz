@@ -45,7 +45,12 @@ namespace SharpFuzz
 
 		public static void Run(Action action)
 		{
-			var shmid = Int32.Parse(Environment.GetEnvironmentVariable("__AFL_SHM_ID"));
+			var s = Environment.GetEnvironmentVariable("__AFL_SHM_ID");
+
+			if (s is null || !Int32.TryParse(s, out var shmid))
+			{
+				throw new Exception("This program can only be run under afl-fuzz.");
+			}
 
 			using (var shmaddr = shmat(shmid, IntPtr.Zero, 0))
 			using (var r = new BinaryReader(new AnonymousPipeClientStream(PipeDirection.In, "198")))
