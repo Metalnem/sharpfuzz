@@ -18,6 +18,9 @@ namespace SharpFuzz
 
 		public static void Instrument(string source, string destination)
 		{
+			ThrowIfNull(source, nameof(source));
+			ThrowIfNull(destination, nameof(destination));
+
 			var common = typeof(SharpFuzz.Common.Trace).Assembly.Location;
 			var sourceModule = ModuleDefinition.ReadModule(source);
 			var commonModule = ModuleDefinition.ReadModule(common);
@@ -45,6 +48,7 @@ namespace SharpFuzz
 
 		public static void Run(Action action)
 		{
+			ThrowIfNull(action, nameof(action));
 			var s = Environment.GetEnvironmentVariable("__AFL_SHM_ID");
 
 			if (s is null || !Int32.TryParse(s, out var shmid))
@@ -84,6 +88,14 @@ namespace SharpFuzz
 					local.CopyTo(shared);
 					w.Write((int)fault);
 				}
+			}
+		}
+
+		private static void ThrowIfNull(object value, string name)
+		{
+			if (value == null)
+			{
+				throw new ArgumentNullException(name);
 			}
 		}
 	}
