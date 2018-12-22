@@ -19,6 +19,7 @@ namespace Jint.Fuzz
 				}
 				catch (ArgumentOutOfRangeException) { }
 				catch (IndexOutOfRangeException) { }
+				catch (InvalidCastException) { }
 				catch (InvalidOperationException) { }
 				catch (JavaScriptException) { }
 				catch (NullReferenceException) { }

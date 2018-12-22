@@ -12,6 +12,13 @@ namespace SharpFuzz
 		private static readonly byte[] data = new byte[2];
 		private static readonly HashSet<int> ids = new HashSet<int>();
 
+		// Generates a 2-byte pseudorandom ID for instrumenting
+		// locations in IL code. It is deterministic, which means
+		// that instrumenting an assembly will produce the same
+		// result each time (unless the instrumentation algorithm
+		// has changed). It also attempts to be free of collisions,
+		// but it doesn't guarantee that (collisions are rare, and
+		// also not catastrophic).
 		public static int Next()
 		{
 			var id = MemoryMarshal.Cast<byte, ushort>(data);
