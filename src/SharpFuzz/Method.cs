@@ -6,6 +6,9 @@ using Mono.Cecil.Rocks;
 
 namespace SharpFuzz
 {
+	// Method class performs the afl-fuzz instrumentation on a single method.
+	// All the work is actually done in the constructor, but the static
+	// instrumentation method is exposed for ease of use.
 	internal sealed class Method
 	{
 		private readonly FieldReference sharedMem;
@@ -44,6 +47,11 @@ namespace SharpFuzz
 			new Method(sharedMem, prevLocation, method);
 		}
 
+		// Find all the locations that we want to instrument. These are:
+		// 1) Function entry points
+		// 2) Branch destinations
+		// 3) First instructions after conditional branches (else blocks)
+		// 4) Catch blocks (implicit jump destinations)
 		private void FindInstrumentationTargets()
 		{
 			instrumented.Add(instructions[0], null);
@@ -76,6 +84,9 @@ namespace SharpFuzz
 			}
 		}
 
+		// Regenerate the IL for the method. If some instruction was
+		// previously marked as an instrumentation target, generate
+		// the instrumentation code and put it before the instruction.
 		private void Instrument()
 		{
 			foreach (var ins in instructions)
@@ -99,6 +110,11 @@ namespace SharpFuzz
 			}
 		}
 
+		// Generates the instrumentation instructions for a branch
+		// destination. It's equivalent to the following C# code:
+		// var id = IdGenerator.Next();
+		// SharpFuzz.Common.Trace.SharedMem[id ^ SharpFuzz.Common.Trace.PrevLocation]++;
+		// SharpFuzz.Common.Trace.PrevLocation = id >> 1;
 		private IEnumerable<Instruction> GenerateInstrumentationInstructions()
 		{
 			int id = IdGenerator.Next();
@@ -118,6 +134,8 @@ namespace SharpFuzz
 			yield return il.Create(OpCodes.Stsfld, prevLocation);
 		}
 
+		// Change all branch destinations to point to the first instruction
+		// in the instrumentation code instead of the original branch target.
 		private void UpdateBranchTargets()
 		{
 			foreach (var ins in instructions)
@@ -140,6 +158,13 @@ namespace SharpFuzz
 			}
 		}
 
+		// Once the instrumentation is completed, locations of try/catch/finally
+		// blocks could become out of date. For example, if the beginning of the
+		// catch block is instrumented, the end of the corresponding try block
+		// should point to the first instruction in the instrumentation code,
+		// not the instruction that was previously the first in the catch block.
+		// This function updates all exception handlers with the correct locations
+		// for start/end instructions.
 		private void UpdateExceptionHandlers()
 		{
 			foreach (var handler in body.ExceptionHandlers)
