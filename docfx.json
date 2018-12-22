@@ -1,0 +1,34 @@
+{
+	"metadata": [
+		{
+			"src": [
+				{
+					"files": [
+						"src/SharpFuzz/**.csproj"
+					]
+				}
+			],
+			"dest": "api"
+		}
+	],
+	"build": {
+		"content": [
+			{
+				"files": [
+					"api/**.yml"
+				]
+			},
+			{
+				"files": [
+					"index.md",
+					"toc.yml"
+				]
+			}
+		],
+		"dest": "docs",
+		"template": [
+			"statictoc"
+		],
+		"markdownEngineName": "markdig"
+	}
+}
