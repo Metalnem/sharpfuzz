@@ -1,0 +1,10 @@
+<Project>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\build\SharpFuzz.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+</Project>
