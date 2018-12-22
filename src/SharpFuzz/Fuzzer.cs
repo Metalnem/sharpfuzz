@@ -8,6 +8,9 @@ using Mono.Cecil;
 
 namespace SharpFuzz
 {
+	/// <summary>
+	/// American fuzzy lop instrumentation and fork server for .NET libraries.
+	/// </summary>
 	public static class Fuzzer
 	{
 		[DllImport("libc", SetLastError = true)]
@@ -16,6 +19,13 @@ namespace SharpFuzz
 		[DllImport("libc", SetLastError = true)]
 		private static extern int shmdt(IntPtr shmaddr);
 
+		/// <summary>
+		/// Instrument method performs the afl-fuzz instrumentation
+		/// of the <paramref name="source"/> assembly and places the
+		/// instrumented assembly in <paramref name="destination"/>.
+		/// </summary>
+		/// <param name="source">The assembly to instrument.</param>
+		/// <param name="destination">The destination path of the instrumented assembly.</param>
 		public static void Instrument(string source, string destination)
 		{
 			ThrowIfNull(source, nameof(source));
@@ -25,9 +35,9 @@ namespace SharpFuzz
 			var sourceModule = ModuleDefinition.ReadModule(source);
 			var commonModule = ModuleDefinition.ReadModule(common);
 
-			var traceType = commonModule.Types.Single(t => t.FullName == "SharpFuzz.Common.Trace");
-			var sharedMemDef = traceType.Fields.Single(f => f.Name == "SharedMem");
-			var prevLocationDef = traceType.Fields.Single(f => f.Name == "PrevLocation");
+			var traceType = commonModule.Types.Single(t => t.FullName == typeof(Common.Trace).FullName);
+			var sharedMemDef = traceType.Fields.Single(f => f.Name == nameof(Common.Trace.SharedMem));
+			var prevLocationDef = traceType.Fields.Single(f => f.Name == nameof(Common.Trace.PrevLocation));
 
 			var sharedMemRef = sourceModule.ImportReference(sharedMemDef);
 			var prevLocationRef = sourceModule.ImportReference(prevLocationDef);
@@ -46,6 +56,17 @@ namespace SharpFuzz
 			sourceModule.Write(destination);
 		}
 
+		/// <summary>
+		/// Run method starts the .NET equivalent of AFL fork server.
+		/// It repeatedly executes the passed action and reports the
+		/// execution result to afl-fuzz. This function will only work
+		/// if the executable that is calling it is running under afl-fuzz.
+		/// </summary>
+		/// <param name="action">
+		/// Some action that calls the instrumented library. If an
+		/// uncaught exception escapes the call, FAULT_CRASH execution
+		/// status code is reported to afl-fuzz.
+		/// </param>
 		public static void Run(Action action)
 		{
 			ThrowIfNull(action, nameof(action));
