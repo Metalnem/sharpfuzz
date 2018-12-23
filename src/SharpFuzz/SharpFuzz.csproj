@@ -8,19 +8,11 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageId>SharpFuzz</PackageId>
     <Title>SharpFuzz</Title>
-    <PackageVersion>0.1.0</PackageVersion>
+    <PackageVersion>0.1.0-alpha</PackageVersion>
     <AssemblyVersion>0.1.0.0</AssemblyVersion>
-    <Authors>Nemanja Mijailovic</Authors>
-    <RepositoryUrl>https://github.com/Metalnem/sharpfuzz.git</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <Description>AFL-based fuzz testing for .NET</Description>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/Metalnem/sharpfuzz/master/LICENSE</PackageLicenseUrl>
-    <Description>AFL-based fuzz testing for .NET</Description>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <Copyright>Copyright © 2018, Nemanja Mijailovic</Copyright>
-    <PackageTags>fuzzing testing fuzz-testing fuzzer</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
