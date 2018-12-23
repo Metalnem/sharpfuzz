@@ -17,6 +17,7 @@ namespace Markdig.Fuzz
 					Markdown.ToHtml(text, pipeline);
 				}
 				catch (IndexOutOfRangeException) { }
+				catch (NullReferenceException) { }
 			});
 		}
 	}
