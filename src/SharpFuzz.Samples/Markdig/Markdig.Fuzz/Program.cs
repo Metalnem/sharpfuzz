@@ -16,6 +16,7 @@ namespace Markdig.Fuzz
 					var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
 					Markdown.ToHtml(text, pipeline);
 				}
+				catch (ArgumentOutOfRangeException) { }
 				catch (IndexOutOfRangeException) { }
 				catch (NullReferenceException) { }
 			});
