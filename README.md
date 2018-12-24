@@ -14,6 +14,7 @@
 SharpFuzz is a tool that brings the power of [afl-fuzz]
 to .NET platform. Technical blog post and detailed usage
 instructions are coming up in the following days, so follow
-my blog and this repository for more details!
+my [blog] and this repository for more details!
 
 [afl-fuzz]: http://lcamtuf.coredump.cx/afl/
+[blog]: https://mijailovic.net/
