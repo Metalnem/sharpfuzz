@@ -10,3 +10,11 @@
 [build-link]: https://dev.azure.com/metalnem/sharpfuzz/_build/latest?definitionId=2
 [license-shield]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat
 [license-link]: https://github.com/metalnem/sharpfuzz/blob/master/LICENSE
+
+SharpFuzz is a tool that brings the power of [afl-fuzz]
+to .NET platform. Technical blog post and detailed usage
+instructions are coming up in the following days, so follow
+my [blog] and this repository for more details!
+
+[afl-fuzz]: http://lcamtuf.coredump.cx/afl/
+[blog]: https://mijailovic.net/
