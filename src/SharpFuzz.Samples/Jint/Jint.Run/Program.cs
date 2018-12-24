@@ -7,7 +7,7 @@ namespace Jint.Run
 		public static void Main(string[] args)
 		{
 			var text = File.ReadAllText(args[0]);
-			new Engine().Execute(text);
+			new Engine(options => options.LimitRecursion(32)).Execute(text);
 		}
 	}
 }

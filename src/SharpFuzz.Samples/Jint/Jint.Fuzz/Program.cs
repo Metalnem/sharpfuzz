@@ -15,7 +15,7 @@ namespace Jint.Fuzz
 				try
 				{
 					var text = File.ReadAllText(args[0]);
-					new Engine().Execute(text);
+					new Engine(options => options.LimitRecursion(32)).Execute(text);
 				}
 				catch (ArgumentOutOfRangeException) { }
 				catch (IndexOutOfRangeException) { }
