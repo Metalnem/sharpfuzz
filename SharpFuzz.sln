@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpFuzz", "src\SharpFuzz\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpFuzz.Common", "src\SharpFuzz.Common\SharpFuzz.Common.csproj", "{15898165-B069-4B1B-A215-D65B2E49C17D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpFuzz.CommandLine", "src\SharpFuzz.CommandLine\SharpFuzz.CommandLine.csproj", "{1885DD20-B3DF-4CC7-ABC7-46643511514F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,9 +48,22 @@ Global
 		{15898165-B069-4B1B-A215-D65B2E49C17D}.Release|x64.Build.0 = Release|Any CPU
 		{15898165-B069-4B1B-A215-D65B2E49C17D}.Release|x86.ActiveCfg = Release|Any CPU
 		{15898165-B069-4B1B-A215-D65B2E49C17D}.Release|x86.Build.0 = Release|Any CPU
+		{1885DD20-B3DF-4CC7-ABC7-46643511514F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1885DD20-B3DF-4CC7-ABC7-46643511514F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1885DD20-B3DF-4CC7-ABC7-46643511514F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1885DD20-B3DF-4CC7-ABC7-46643511514F}.Debug|x64.Build.0 = Debug|Any CPU
+		{1885DD20-B3DF-4CC7-ABC7-46643511514F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1885DD20-B3DF-4CC7-ABC7-46643511514F}.Debug|x86.Build.0 = Debug|Any CPU
+		{1885DD20-B3DF-4CC7-ABC7-46643511514F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1885DD20-B3DF-4CC7-ABC7-46643511514F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1885DD20-B3DF-4CC7-ABC7-46643511514F}.Release|x64.ActiveCfg = Release|Any CPU
+		{1885DD20-B3DF-4CC7-ABC7-46643511514F}.Release|x64.Build.0 = Release|Any CPU
+		{1885DD20-B3DF-4CC7-ABC7-46643511514F}.Release|x86.ActiveCfg = Release|Any CPU
+		{1885DD20-B3DF-4CC7-ABC7-46643511514F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{65536044-92BB-4160-9312-8170BF16A242} = {98697BA7-F222-49CC-A5D3-8547821A54C8}
 		{15898165-B069-4B1B-A215-D65B2E49C17D} = {98697BA7-F222-49CC-A5D3-8547821A54C8}
+		{1885DD20-B3DF-4CC7-ABC7-46643511514F} = {98697BA7-F222-49CC-A5D3-8547821A54C8}
 	EndGlobalSection
 EndGlobal
