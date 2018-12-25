@@ -81,13 +81,11 @@ namespace SharpFuzz
 			using (var r = new BinaryReader(new AnonymousPipeClientStream(PipeDirection.In, "198")))
 			using (var w = new BinaryWriter(new AnonymousPipeClientStream(PipeDirection.Out, "199")))
 			{
+				var pid = Process.GetCurrentProcess().Id;
 				var local = SharpFuzz.Common.Trace.SharedMem.AsSpan();
 				var shared = shmaddr.Span(local.Length);
 
-				shared[0] = 1;
 				w.Write(0);
-
-				var pid = Process.GetCurrentProcess().Id;
 
 				while (true)
 				{
