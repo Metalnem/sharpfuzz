@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Nemanja Mijailovic</Authors>
     <RepositoryUrl>https://github.com/Metalnem/sharpfuzz.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
