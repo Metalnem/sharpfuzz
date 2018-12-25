@@ -17,12 +17,8 @@ namespace ExcelDataReader.Fuzz
 				try
 				{
 					using (var file = File.OpenRead(args[0]))
-					using (var reader = ExcelReaderFactory.CreateBinaryReader(file))
 					{
-						do
-						{
-							while (reader.Read()) { }
-						} while (reader.NextResult());
+						ExcelReaderFactory.CreateBinaryReader(file);
 					}
 				}
 				catch (ArgumentOutOfRangeException) { }
