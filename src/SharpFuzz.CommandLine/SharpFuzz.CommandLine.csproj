@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\build\Common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>sharpfuzz</ToolCommandName>
+    <PackageId>SharpFuzz.CommandLine</PackageId>
+    <Title>SharpFuzz.CommandLine</Title>
+    <PackageVersion>0.5.0-rc</PackageVersion>
+    <AssemblyVersion>0.5.0.0</AssemblyVersion>
+    <Description>Command line tool for SharpFuzz instrumentation</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SharpFuzz\SharpFuzz.csproj" />
+  </ItemGroup>
+
+</Project>
