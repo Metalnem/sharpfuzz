@@ -20,40 +20,60 @@ namespace SharpFuzz
 		private static extern int shmdt(IntPtr shmaddr);
 
 		/// <summary>
-		/// Instrument method performs the afl-fuzz instrumentation
-		/// of the <paramref name="source"/> assembly and places the
-		/// instrumented assembly in <paramref name="destination"/>.
+		/// Instrument method performs the in-place afl-fuzz
+		/// instrumentation of the <paramref name="source"/> assembly.
 		/// </summary>
 		/// <param name="source">The assembly to instrument.</param>
-		/// <param name="destination">The destination path of the instrumented assembly.</param>
-		public static void Instrument(string source, string destination)
+		public static void Instrument(string source)
 		{
 			ThrowIfNull(source, nameof(source));
-			ThrowIfNull(destination, nameof(destination));
 
-			var common = typeof(SharpFuzz.Common.Trace).Assembly.Location;
-			var sourceModule = ModuleDefinition.ReadModule(source);
-			var commonModule = ModuleDefinition.ReadModule(common);
-
-			var traceType = commonModule.Types.Single(t => t.FullName == typeof(Common.Trace).FullName);
-			var sharedMemDef = traceType.Fields.Single(f => f.Name == nameof(Common.Trace.SharedMem));
-			var prevLocationDef = traceType.Fields.Single(f => f.Name == nameof(Common.Trace.PrevLocation));
-
-			var sharedMemRef = sourceModule.ImportReference(sharedMemDef);
-			var prevLocationRef = sourceModule.ImportReference(prevLocationDef);
-
-			foreach (var type in sourceModule.Types)
+			using (var memory = new MemoryStream())
 			{
-				foreach (var method in type.Methods)
+				using (var module = ModuleDefinition.ReadModule(source))
 				{
-					if (method.HasBody)
+					var traceType = GetTraceType();
+					var sharedMemDef = traceType.Fields.Single(f => f.Name == nameof(Common.Trace.SharedMem));
+					var prevLocationDef = traceType.Fields.Single(f => f.Name == nameof(Common.Trace.PrevLocation));
+
+					var sharedMemRef = module.ImportReference(sharedMemDef);
+					var prevLocationRef = module.ImportReference(prevLocationDef);
+
+					foreach (var type in module.Types)
 					{
-						Method.Instrument(sharedMemRef, prevLocationRef, method);
+						foreach (var method in type.Methods)
+						{
+							if (method.HasBody)
+							{
+								Method.Instrument(sharedMemRef, prevLocationRef, method);
+							}
+						}
 					}
+
+					var resolver = (DefaultAssemblyResolver)module.AssemblyResolver;
+					var sourceDir = Path.GetDirectoryName(source);
+
+					resolver.AddSearchDirectory(sourceDir);
+					module.Write(memory);
+				}
+
+				memory.Position = 0;
+
+				using (var file = File.Create(source))
+				{
+					memory.CopyTo(file);
 				}
 			}
+		}
 
-			sourceModule.Write(destination);
+		private static TypeDefinition GetTraceType()
+		{
+			var common = typeof(SharpFuzz.Common.Trace).Assembly.Location;
+
+			using (var module = ModuleDefinition.ReadModule(common))
+			{
+				return module.Types.Single(t => t.FullName == typeof(Common.Trace).FullName);
+			}
 		}
 
 		/// <summary>
