@@ -67,14 +67,14 @@ dotnet tool install --global SharpFuzz.CommandLine --version 0.7.0
 
 ## Usage
 
-1) If you are not already familiar with afl-fuzz, your first step
+If you are not already familiar with afl-fuzz, your first step
 should be to read its documentation. Here are the most important links:
 
 - [AFL quick start guide]
 - [afl-fuzz README]
 - [Understanding the status screen]
 
-2) Choose the assembly you want to instrument. If you want to
+Choose the assembly you want to instrument. If you want to
 instrument a NuGet package, you have to download it,
 change its extension to **.zip**, and then extract it. The **.dll**
 files for each supported platform will be located in the
@@ -82,7 +82,7 @@ files for each supported platform will be located in the
 in the directory corresponding to the latest version of the
 .NET Standard, for example **lib/netstandard2.0**).
 
-3) Instrument the assembly by running the following command:
+Instrument the assembly by running the following command:
 
 ```shell
 sharpfuzz path_to_assembly
@@ -102,7 +102,7 @@ be to download the missing NuGet dependency, find the **.dll** inside
 it, and place it in the same directory as the assembly you
 want to instrument.
 
-4) Create a new .NET console project and add the instrumented
+Create a new .NET console project and add the instrumented
 library to it, along with all of its dependencies. You can do
 that by adding the following element to your .csproj file (you
 will have to change the hint path if the instrumented assembly
@@ -119,14 +119,14 @@ is not in the root directory of your project):
 You can add the library dependencies the same way, but you
 can also add them as NuGet package references.
 
-5) Add the [SharpFuzz] package to the project by running
+Add the [SharpFuzz] package to the project by running
 the following command:
 
 ```shell
 dotnet add package SharpFuzz --version 0.7.0
 ```
 
-6) Write the **Main** function so that it calls the
+Write the **Main** function so that it calls the
 **SharpFuzz.Fuzzer.Run** with the function that you
 want to test as a parameter. Taking Jil again as an
 example, here is how such function might look:
@@ -167,7 +167,7 @@ catch it inside your function.
 See [SharpFuzz.Samples] for dozens of examples
 of complete fuzzing projects.
 
-7) Create a directory for the test cases (one test is
+Create a directory for the test cases (one test is
 usually more than enough). The test should contain some
 input that is accepted by your code as valid, and it should
 also be as small as possible. For example, this is the
@@ -177,14 +177,14 @@ JSON file I'm using for testing JSON deserializers:
 {"menu":{"id":1,"val":"X","pop":{"a":[{"click":"Open()"},{"click":"Close()"}]}}}
 ```
 
-8) You are now ready to go! Start the fuzzing with
+You are now ready to go! Start the fuzzing with
 the following command:
 
 ```shell
 afl-fuzz -i testcases_dir -o findings_dir dotnet run @@
 ```
 
-9) Wait! You will often have some useful results within minutes,
+Now wait! You will often have some useful results within minutes,
 but sometimes it takes more than a day, so be patient. When an
 unhandled exception happens, the input causing it will be added
 to the **findings_dir/crashes** directory.
