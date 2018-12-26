@@ -102,9 +102,9 @@ be to download the missing NuGet dependency, find the **.dll** inside
 it, and place it in the same directory as the assembly you
 want to instrument.
 
-**4.** Create a new .NET console project and add the instrumented
+**4.** Create a new .NET console project, and add the instrumented
 library to it, along with all of its dependencies. You can do
-that by adding the following element to your .csproj file (you
+that by adding the following element to your **.csproj** file (you
 will have to change the hint path if the instrumented assembly
 is not in the root directory of your project):
 
@@ -168,8 +168,8 @@ See [SharpFuzz.Samples] for dozens of examples
 of complete fuzzing projects.
 
 **7.** Create a directory for the test cases (one test is
-usually more than enough). The test should contain some
-input that is accepted by your code as valid, and it should
+almost always enough). Tests should contain some input
+that is accepted by your code as valid, and should
 also be as small as possible. For example, this is the
 JSON file I'm using for testing JSON deserializers:
 
