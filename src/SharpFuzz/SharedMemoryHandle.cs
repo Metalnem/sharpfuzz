@@ -13,6 +13,6 @@ namespace SharpFuzz
 		}
 
 		public unsafe Span<byte> Span(int length) => new Span<byte>(handle.ToPointer(), length);
-		protected override bool ReleaseHandle() => true;
+		protected override bool ReleaseHandle() => Native.shmdt(handle) == 0;
 	}
 }
