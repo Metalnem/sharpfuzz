@@ -67,4 +67,144 @@ dotnet tool install --global SharpFuzz.CommandLine --version 0.7.0
 
 ## Usage
 
-Coming soon!
+1) If you are not already familiar with afl-fuzz, your first step
+should be to read its documentation. Here are the most important links:
+
+- [AFL quick start guide]
+- [afl-fuzz README]
+- [Understanding the status screen]
+
+2) Choose the assembly you want to instrument. If you want to
+instrument a NuGet package, you have to download it,
+change its extension to **.zip**, and then extract it. The **.dll**
+files for each supported platform will be located in the
+**lib** directory (it's best to choose the **.dll** file found
+in the directory corresponding to the latest version of the
+.NET Standard, for example **lib/netstandard2.0**).
+
+3) Instrument the assembly by running the following command:
+
+```shell
+sharpfuzz path_to_assembly
+```
+
+If the argument contains a path to some valid .NET assembly,
+this command will most likely succeed. Otherwise, this
+command could fail if the assembly has a reference to some
+other library. For example, [Jil] package depends on [Sigil], and
+if you attempt to instrument it, the command will fail with the following output:
+
+> Assembly 'Sigil, Version=4.7.0.0, Culture=neutral, PublicKeyToken=2d06c3494341c8ab' is missing.
+> Place it in the same directory as the assembly you want to instrument and then try again.
+
+The message is pretty self-explanatory. Your next step would
+be to download the missing NuGet dependency, find the **.dll** inside
+it, and place it in the same directory as the assembly you
+want to instrument.
+
+4) Create a new .NET console project and add the instrumented
+library to it, along with all of its dependencies. You can do
+that by adding the following element to your .csproj file (you
+will have to change the hint path if the instrumented assembly
+is not in the root directory of your project):
+
+```xml
+<ItemGroup>
+  <Reference Include="Jil">
+    <HintPath>Jil.dll</HintPath>
+  </Reference>
+</ItemGroup>
+```
+
+You can add the library dependencies the same way, but you
+can also add them as NuGet package references.
+
+5) Add the [SharpFuzz] package to the project by running
+the following command:
+
+```shell
+dotnet add package SharpFuzz --version 0.7.0
+```
+
+6) Write the **Main** function so that it calls the
+**SharpFuzz.Fuzzer.Run** with the function that you
+want to test as a parameter. Taking Jil again as an
+example, here is how such function might look:
+
+```csharp
+using System;
+using System.IO;
+using SharpFuzz;
+
+namespace Jil.Fuzz
+{
+  public class Program
+  {
+    public static void Main(string[] args)
+    {
+      Fuzzer.Run(() =>
+      {
+        using (var file = File.OpenText(args[0]))
+        {
+          JSON.DeserializeDynamic(file);
+        }
+      });
+    }
+  }
+}
+```
+
+First important point here is that the path to the input
+file being tested will be passed to your program by the
+afl-fuzz as the first command line parameter, as you
+can see in the example above.
+
+Second important point is that if your code throws an
+exception, it will be reported to afl-fuzz as a crash. If
+you don't want to treat some particular exception as a crash,
+catch it inside your function.
+
+See [SharpFuzz.Samples] for dozens of examples
+of complete fuzzing projects.
+
+7) Create a directory for the test cases (one test is
+usually more than enough). The test should contain some
+input that is accepted by your code as valid, and it should
+also be as small as possible. For example, this is the
+JSON file I'm using for testing JSON deserializers:
+
+```json
+{"menu":{"id":1,"val":"X","pop":{"a":[{"click":"Open()"},{"click":"Close()"}]}}}
+```
+
+8) You are now ready to go! Start the fuzzing with
+the following command:
+
+```shell
+afl-fuzz -i testcases_dir -o findings_dir dotnet run @@
+```
+
+9) Wait! You will often have some useful results within minutes,
+but sometimes it takes more than a day, so be patient. When an
+unhandled exception happens, the input causing it will be added
+to the **findings_dir/crashes** directory.
+
+[AFL quick start guide]: http://lcamtuf.coredump.cx/afl/QuickStartGuide.txt
+[afl-fuzz README]: http://lcamtuf.coredump.cx/afl/README.txt
+[Understanding the status screen]: http://lcamtuf.coredump.cx/afl/status_screen.txt
+[Jil]: https://www.nuget.org/packages/Jil/
+[Sigil]: https://www.nuget.org/packages/Sigil/
+[SharpFuzz]: https://www.nuget.org/packages/SharpFuzz
+[SharpFuzz.Samples]: https://github.com/Metalnem/sharpfuzz/tree/master/src/SharpFuzz.Samples
+
+## Limitations
+
+SharpFuzz has several limitations compared to using
+afl-fuzz directly with native programs. The first one
+is that if you specify the timeout parameter, and the
+timeout expires, the whole fuzzing process will be
+terminated. The second one is that uncatchable exceptions
+(**AccessViolationException** and **StackOverflowException**)
+will also stop the fuzzing. The input that caused either
+of these problems can be found in the file
+**findings_dir/.cur_input**.
