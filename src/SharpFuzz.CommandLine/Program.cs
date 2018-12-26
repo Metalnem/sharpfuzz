@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Mono.Cecil;
 
 namespace SharpFuzz.CommandLine
 {
@@ -30,9 +31,15 @@ path-to-assembly:
 			{
 				Fuzzer.Instrument(path);
 			}
+			catch (AssemblyResolutionException ex) when (ex.AssemblyReference != null)
+			{
+				Console.Error.WriteLine($"Assembly '{ex.AssemblyReference}' is missing.");
+				Console.Error.WriteLine("Place it in the same directory as the assembly you want to instrument and then try again.");
+				return;
+			}
 			catch
 			{
-				Console.Error.WriteLine("Specified file is not a valid .NET assembly.");
+				Console.Error.WriteLine("Failed to instrument the specified file, most likely because it's not a valid .NET assembly.");
 				return;
 			}
 		}
