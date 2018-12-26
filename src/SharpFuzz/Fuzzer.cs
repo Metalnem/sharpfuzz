@@ -13,12 +13,6 @@ namespace SharpFuzz
 	/// </summary>
 	public static class Fuzzer
 	{
-		[DllImport("libc", SetLastError = true)]
-		private static extern SharedMemoryHandle shmat(int shmid, IntPtr shmaddr, int shmflg);
-
-		[DllImport("libc", SetLastError = true)]
-		private static extern int shmdt(IntPtr shmaddr);
-
 		/// <summary>
 		/// Instrument method performs the in-place afl-fuzz
 		/// instrumentation of the <paramref name="source"/> assembly.
@@ -97,7 +91,7 @@ namespace SharpFuzz
 				throw new Exception("This program can only be run under afl-fuzz.");
 			}
 
-			using (var shmaddr = shmat(shmid, IntPtr.Zero, 0))
+			using (var shmaddr = Native.shmat(shmid, IntPtr.Zero, 0))
 			using (var r = new BinaryReader(new AnonymousPipeClientStream(PipeDirection.In, "198")))
 			using (var w = new BinaryWriter(new AnonymousPipeClientStream(PipeDirection.Out, "199")))
 			{
