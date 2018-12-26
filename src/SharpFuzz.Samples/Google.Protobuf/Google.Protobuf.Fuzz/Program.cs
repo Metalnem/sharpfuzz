@@ -19,8 +19,10 @@ namespace Google.Protobuf.Fuzz
 					}
 				}
 				catch (ArgumentOutOfRangeException) { }
+				catch (ArgumentException) { }
 				catch (InvalidOperationException) { }
 				catch (InvalidProtocolBufferException) { }
+				catch (OutOfMemoryException) { }
 			});
 		}
 	}
