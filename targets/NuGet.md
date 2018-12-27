@@ -17,6 +17,7 @@
 [NodaTime](https://www.nuget.org/packages/NodaTime/)  
 [NPOI](https://www.nuget.org/packages/NPOI)  
 [PDFsharp](https://www.nuget.org/packages/PDFsharp/)  
+[Portable.BouncyCastle](https://www.nuget.org/packages/Portable.BouncyCastle/)  
 [Scriban](https://www.nuget.org/packages/Scriban/)  
 [UAParser](https://www.nuget.org/packages/UAParser/)  
 [Zlib.Portable](https://www.nuget.org/packages/Zlib.Portable/)  
