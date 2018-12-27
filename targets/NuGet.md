@@ -1,3 +1,4 @@
+[CommonMark.NET](https://www.nuget.org/packages/CommonMark.NET/)  
 [dnlib](https://www.nuget.org/packages/dnlib/)  
 [DnsClient.NET](https://www.nuget.org/packages/DnsClient/)  
 [DotLiquid](https://www.nuget.org/packages/DotLiquid/)  
@@ -5,6 +6,7 @@
 [FsPickler](https://www.nuget.org/packages/FsPickler/)  
 [Iced](https://www.nuget.org/packages/Iced/)  
 [ICSharpCode.Decompiler](https://www.nuget.org/packages/ICSharpCode.Decompiler/)  
+[libphonenumber-csharp](https://www.nuget.org/packages/libphonenumber-csharp/)  
 [Handlebars.Net](https://www.nuget.org/packages/Handlebars.Net/)  
 [INI Parser](https://www.nuget.org/packages/ini-parser/)  
 [Lucene.Net](https://www.nuget.org/packages/Lucene.Net/)  
