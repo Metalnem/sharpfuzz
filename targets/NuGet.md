@@ -10,6 +10,7 @@
 [Handlebars.Net](https://www.nuget.org/packages/Handlebars.Net/)  
 [INI Parser](https://www.nuget.org/packages/ini-parser/)  
 [Lucene.Net](https://www.nuget.org/packages/Lucene.Net/)  
+[MimeKit](https://www.nuget.org/packages/MimeKit/)  
 [NAudio](https://www.nuget.org/packages/NAudio/)  
 [NodaTime](https://www.nuget.org/packages/NodaTime/)  
 [PDFsharp](https://www.nuget.org/packages/PDFsharp/)  
