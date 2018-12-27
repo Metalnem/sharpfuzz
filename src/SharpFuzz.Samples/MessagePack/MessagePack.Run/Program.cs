@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using MessagePack.Resolvers;
 
 namespace MessagePack.Run
 {
@@ -9,7 +8,7 @@ namespace MessagePack.Run
 		{
 			using (var file = File.OpenRead(args[0]))
 			{
-				MessagePackSerializer.Deserialize<dynamic>(file, ContractlessStandardResolver.Instance);
+				MessagePackSerializer.Deserialize<dynamic>(file);
 			}
 		}
 	}

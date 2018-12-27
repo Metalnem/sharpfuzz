@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using MessagePack.Resolvers;
 using SharpFuzz;
 
 namespace MessagePack.Fuzz
@@ -15,7 +14,7 @@ namespace MessagePack.Fuzz
 				{
 					using (var file = File.OpenRead(args[0]))
 					{
-						MessagePackSerializer.Deserialize<dynamic>(file, ContractlessStandardResolver.Instance);
+						MessagePackSerializer.Deserialize<dynamic>(file);
 					}
 				}
 				catch (ArgumentException) { }
