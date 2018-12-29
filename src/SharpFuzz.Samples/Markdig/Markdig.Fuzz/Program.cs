@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using SharpFuzz;
 
 namespace Markdig.Fuzz
@@ -10,15 +9,9 @@ namespace Markdig.Fuzz
 		{
 			Fuzzer.Run(() =>
 			{
-				try
-				{
-					var text = File.ReadAllText(args[0]);
-					var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
-					Markdown.ToHtml(text, pipeline);
-				}
-				catch (ArgumentOutOfRangeException) { }
-				catch (IndexOutOfRangeException) { }
-				catch (NullReferenceException) { }
+				var text = File.ReadAllText(args[0]);
+				var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
+				Markdown.ToHtml(text, pipeline);
 			});
 		}
 	}
