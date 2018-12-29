@@ -14,6 +14,7 @@
 [TimeSpan.TryParse Method](https://docs.microsoft.com/en-us/dotnet/api/system.timespan.tryparse?view=netcore-2.1)  
 [Uri Class](https://docs.microsoft.com/en-us/dotnet/api/system.uri?view=netcore-2.1)  
 [UriParser Class](https://docs.microsoft.com/en-us/dotnet/api/system.uriparser?view=netcore-2.1)  
+[Utf8JsonReader Struct](https://apisof.net/catalog/System.Text.Json.Utf8JsonReader)  
 [Utf8Parser.TryParse Method](https://docs.microsoft.com/en-us/dotnet/api/system.buffers.text.utf8parser.tryparse?view=netcore-2.1)  
 [XDocument.Load Method](https://docs.microsoft.com/en-us/dotnet/api/system.xml.linq.xdocument.load?view=netcore-2.1)  
 [XmlDocument.Load Method](https://docs.microsoft.com/en-us/dotnet/api/system.xml.xmldocument.load?view=netcore-2.1)  
