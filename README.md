@@ -208,3 +208,12 @@ terminated. The second one is that uncatchable exceptions
 will also stop the fuzzing. The input that caused either
 of these problems can be found in the file
 **findings_dir/.cur_input**.
+
+## Trophies
+
+Coming soon!
+
+## Resources
+
+[american fuzzy lop (2.52b)](http://lcamtuf.coredump.cx/afl/)  
+[go-fuzz: randomized testing for Go](https://github.com/dvyukov/go-fuzz)  
