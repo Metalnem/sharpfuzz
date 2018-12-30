@@ -1,11 +1,14 @@
 ## Features
 
+- [ ] Write trace bits directly to shared memory
+- [ ] Match only exact SharpFuzz.Common package version
 - [ ] Implement fork server as a separate process
+- [ ] Log unique stack traces for each exception
 - [ ] Determine why instrumentation varies across runs
 - [ ] Verify that instructions after try/catch/finally blocks are instrumented
 - [ ] Instrument exception filters
 - [ ] Mark the assembly as instrumented
-- [ ] Explore resuming and parallelization
+- [ ] Explore persistent mode, resuming, and parallelization
 - [ ] Use Jint with timeouts to test Jurassic (also compare other implementations with each other)
 - [ ] Make dictionaries for Office file formats using [Microsoft Office File Formats Documentation]
 - [ ] Fuzz more complex behaviors by using ideas from [go-fuzz-corpus]
