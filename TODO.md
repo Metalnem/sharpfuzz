@@ -1,5 +1,6 @@
 ## Features
 
+- [ ] Make sure Ctrl+C is working with the new out-of-process model
 - [ ] Add trophies and call to action (like in go-fuzz)
 - [ ] What to report to afl-fuzz after the child process dies (currently it's always crash)
 - [ ] Calculate the time between attempting to read from the pipe and catching the broken pipe exception
