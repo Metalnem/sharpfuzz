@@ -135,7 +135,7 @@ will contain the instrumented version of Jil.
 the instrumented library to it, along with all of
 its dependencies. To do that, copy both ```Jil.dll```
 and ```Sigil.dll``` to the root directory of the
-project, and then add the following elements to
+project, and then add the following element to
 your project file:
 
 ```xml
@@ -143,9 +143,7 @@ your project file:
   <Reference Include="Jil">
     <HintPath>Jil.dll</HintPath>
   </Reference>
-</ItemGroup>
 
-<ItemGroup>
   <Reference Include="Sigil">
     <HintPath>Sigil.dll</HintPath>
   </Reference>
