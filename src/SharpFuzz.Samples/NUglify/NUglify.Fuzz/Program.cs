@@ -15,6 +15,7 @@ namespace NUglify.Fuzz
 					var text = File.ReadAllText(args[0]);
 					Uglify.Js(text);
 				}
+				catch (ArgumentOutOfRangeException) { }
 				catch (IndexOutOfRangeException) { }
 				catch (NullReferenceException) { }
 			});
