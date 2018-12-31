@@ -98,7 +98,7 @@ file will be called ```jil.2.16.0.nupkg```.
 from **nupkg** to **zip**, and then extract it.
 The location of the assembly we are going to instrument
 will be ```jil.2.16.0/lib/netstandard2.0/Jil.dll```.
-We could have chosen some other .NET plaform, such
+We could have chosen some other .NET platform, such
 as **net45** or **netstandard1.6**, but the latest
 version of .NET Standard is usually the best choice.
 
