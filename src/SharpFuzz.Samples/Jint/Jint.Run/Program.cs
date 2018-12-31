@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace Jint.Run
 {
@@ -7,7 +8,12 @@ namespace Jint.Run
 		public static void Main(string[] args)
 		{
 			var text = File.ReadAllText(args[0]);
-			new Engine(options => options.LimitRecursion(32)).Execute(text);
+			new Engine(SetOptions).Execute(text);
+		}
+
+		private static void SetOptions(Options options)
+		{
+			options.LimitRecursion(32).TimeoutInterval(TimeSpan.FromSeconds(2));
 		}
 	}
 }

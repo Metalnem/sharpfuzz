@@ -15,9 +15,10 @@ namespace Jint.Fuzz
 				try
 				{
 					var text = File.ReadAllText(args[0]);
-					new Engine(options => options.LimitRecursion(32)).Execute(text);
+					new Engine(SetOptions).Execute(text);
 				}
 				catch (ArgumentOutOfRangeException) { }
+				catch (ArgumentException) { }
 				catch (IndexOutOfRangeException) { }
 				catch (InvalidCastException) { }
 				catch (InvalidOperationException) { }
@@ -25,7 +26,13 @@ namespace Jint.Fuzz
 				catch (NullReferenceException) { }
 				catch (OverflowException) { }
 				catch (ParserException) { }
+				catch (TimeoutException) { }
 			});
+		}
+
+		private static void SetOptions(Options options)
+		{
+			options.LimitRecursion(32).TimeoutInterval(TimeSpan.FromSeconds(2));
 		}
 	}
 }
