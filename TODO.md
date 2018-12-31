@@ -1,9 +1,13 @@
 ## Features
 
+- [ ] Add trophies and call to action (like in go-fuzz)
+- [ ] What to report to afl-fuzz after the child process dies (currently it's always crash)
+- [ ] Calculate the time between attempting to read from the pipe and catching the broken pipe exception
 - [ ] Write trace bits directly to shared memory
 - [ ] Match only exact SharpFuzz.Common package version
-- [ ] Implement fork server as a separate process
+- [ ] Make out-of-process fork server default, and document it in README
 - [ ] Log unique stack traces for each exception
+- [ ] Try to improve the performance of starting the child process
 - [ ] Determine why instrumentation varies across runs
 - [ ] Verify that instructions after try/catch/finally blocks are instrumented
 - [ ] Instrument exception filters
