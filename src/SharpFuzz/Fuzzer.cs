@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
-using System.Runtime.InteropServices;
 using Mono.Cecil;
 
 namespace SharpFuzz
@@ -11,7 +10,7 @@ namespace SharpFuzz
 	/// <summary>
 	/// American fuzzy lop instrumentation and fork server for .NET libraries.
 	/// </summary>
-	public static class Fuzzer
+	public static partial class Fuzzer
 	{
 		/// <summary>
 		/// Instrument method performs the in-place afl-fuzz
@@ -105,9 +104,8 @@ namespace SharpFuzz
 				{
 					r.ReadInt32();
 					w.Write(pid);
-
 					local.Clear();
-					Fault fault = Fault.None;
+					var fault = Fault.None;
 
 					try
 					{
