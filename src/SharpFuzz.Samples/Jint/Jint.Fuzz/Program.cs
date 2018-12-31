@@ -26,6 +26,7 @@ namespace Jint.Fuzz
 				catch (NullReferenceException) { }
 				catch (OverflowException) { }
 				catch (ParserException) { }
+				catch (RecursionDepthOverflowException) { }
 				catch (TimeoutException) { }
 			});
 		}
