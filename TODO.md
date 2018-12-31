@@ -1,5 +1,7 @@
 ## Features
 
+- [ ] Warn against slow forking performance and recommend periodically checking the findings directory and fixing issues
+- [ ] Receive the request before spawning the child process
 - [ ] Make sure Ctrl+C is working with the new out-of-process model (don't start a new child)
 - [ ] Add trophies and call to action (like in go-fuzz)
 - [ ] What to report to afl-fuzz after the child process dies (currently it's always crash)
