@@ -1,5 +1,8 @@
 ## Features
 
+- [ ] Smaller JSON test file
+- [ ] Document what to expect on timeout (OOP or server misbehaving)
+- [ ] Add my workflow and some tips and tricks
 - [ ] Add trophies and call to action (like in go-fuzz)
 - [ ] Log unique stack traces for each exception
 - [ ] Determine why instrumentation varies across runs
@@ -11,9 +14,12 @@
 - [ ] Fuzz more complex behaviors by using ideas from [go-fuzz-corpus]
 - [ ] Use [ILVerify] in CI
 - [ ] Create an out-of-process fork server
+- [ ] Add error checking to installation script
+- [ ] Fuzz Office formats by using [Microsoft Office File Formats Documentation] and extracting the archive
 
 [go-fuzz-corpus]: https://github.com/dvyukov/go-fuzz-corpus
 [ILVerify]: https://github.com/dotnet/corert/tree/master/src/ILVerify
+[Microsoft Office File Formats Documentation]: https://www.microsoft.com/en-us/download/details.aspx?id=14565
 
 ## System
 
