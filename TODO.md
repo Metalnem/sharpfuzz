@@ -8,12 +8,10 @@
 - [ ] Mark the assembly as instrumented
 - [ ] Explore persistent mode, resuming, and parallelization
 - [ ] Use Jint with timeouts to test Jurassic (also compare other implementations with each other)
-- [ ] Make dictionaries for Office file formats using [Microsoft Office File Formats Documentation]
 - [ ] Fuzz more complex behaviors by using ideas from [go-fuzz-corpus]
 - [ ] Use [ILVerify] in CI
 - [ ] Create an out-of-process fork server
 
-[Microsoft Office File Formats Documentation]: https://www.microsoft.com/en-us/download/details.aspx?id=14565
 [go-fuzz-corpus]: https://github.com/dvyukov/go-fuzz-corpus
 [ILVerify]: https://github.com/dotnet/corert/tree/master/src/ILVerify
 
