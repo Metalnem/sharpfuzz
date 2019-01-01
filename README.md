@@ -270,8 +270,6 @@ terminated. The second one is that uncatchable exceptions
 will also stop the fuzzing. However, the input that has
 caused either of these problems is not lost, and it can
 be found in the file ```findings_dir/.cur_input```.
-Both of the limitations will be addressed in the next
-SharpFuzz release. 
 
 ## Trophies
 
