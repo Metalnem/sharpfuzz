@@ -1,16 +1,7 @@
 ## Features
 
-- [ ] Warn against slow forking performance and recommend periodically checking the findings directory and fixing issues
-- [ ] Receive the request before spawning the child process
-- [ ] Make sure Ctrl+C is working with the new out-of-process model (don't start a new child)
 - [ ] Add trophies and call to action (like in go-fuzz)
-- [ ] What to report to afl-fuzz after the child process dies (currently it's always crash)
-- [ ] Calculate the time between attempting to read from the pipe and catching the broken pipe exception
-- [ ] Write trace bits directly to shared memory
-- [ ] Match only exact SharpFuzz.Common package version
-- [ ] Make out-of-process fork server default, and document it in README
 - [ ] Log unique stack traces for each exception
-- [ ] Try to improve the performance of starting the child process
 - [ ] Determine why instrumentation varies across runs
 - [ ] Verify that instructions after try/catch/finally blocks are instrumented
 - [ ] Instrument exception filters
@@ -20,10 +11,11 @@
 - [ ] Make dictionaries for Office file formats using [Microsoft Office File Formats Documentation]
 - [ ] Fuzz more complex behaviors by using ideas from [go-fuzz-corpus]
 - [ ] Use [ILVerify] in CI
+- [ ] Create an out-of-process fork server
 
 [Microsoft Office File Formats Documentation]: https://www.microsoft.com/en-us/download/details.aspx?id=14565
-[ILVerify]: https://github.com/dotnet/corert/tree/master/src/ILVerify
 [go-fuzz-corpus]: https://github.com/dvyukov/go-fuzz-corpus
+[ILVerify]: https://github.com/dotnet/corert/tree/master/src/ILVerify
 
 ## System
 
