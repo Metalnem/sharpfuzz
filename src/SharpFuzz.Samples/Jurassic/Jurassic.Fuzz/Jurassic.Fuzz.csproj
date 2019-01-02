@@ -16,4 +16,8 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Jint" Version="3.0.0-beta-1353" />
+  </ItemGroup>
+
 </Project>
