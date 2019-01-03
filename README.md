@@ -18,6 +18,12 @@ to .NET platform. For more details visit my blog post
 [afl-fuzz]: http://lcamtuf.coredump.cx/afl/
 [blog]: https://mijailovic.net/
 
+## Acknowledgements
+
+Big thanks to Michal Zalewski for making afl-fuzz,
+Dmitry Vyukov for making go-fuzz, and Rody Kersten
+for his work on fuzzing Java programs.
+
 ## Requirements
 
 AFL works on Linux and macOS. If you are using
@@ -272,6 +278,11 @@ caused either of these problems is not lost, and it can
 be found in the file ```findings_dir/.cur_input```.
 
 ## Trophies
+
+If you find some interesting bugs with SharpFuzz, and
+are comfortable with sharing them, I would love to add
+them to this list. Please send me an email, make a pull
+request for the README file, or file an issue.
 
 - [AngleSharp: HtmlParser.Parse throws InvalidOperationException](https://github.com/AngleSharp/AngleSharp/issues/735)
 - [ExcelDataReader: ExcelReaderFactory.CreateBinaryReader can throw unexpected exceptions](https://github.com/ExcelDataReader/ExcelDataReader/issues/383)
