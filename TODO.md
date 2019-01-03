@@ -1,10 +1,7 @@
 ## Features
 
-- [ ] Add acknowledgements section
-- [ ] Smaller .NET assembly test files
 - [ ] Document what to expect on timeout (OOP or server misbehaving)
 - [ ] Add my workflow and some tips and tricks
-- [ ] Add trophies and call to action (like in go-fuzz)
 - [ ] Log unique stack traces for each exception
 - [ ] Determine why instrumentation varies across runs
 - [ ] Verify that instructions after try/catch/finally blocks are instrumented
