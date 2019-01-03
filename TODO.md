@@ -1,6 +1,7 @@
 ## Features
 
-- [ ] Smaller JSON test file in README (also explain why it's better)
+- [ ] Add acknowledgements section
+- [ ] Smaller .NET assembly test files
 - [ ] Document what to expect on timeout (OOP or server misbehaving)
 - [ ] Add my workflow and some tips and tricks
 - [ ] Add trophies and call to action (like in go-fuzz)
