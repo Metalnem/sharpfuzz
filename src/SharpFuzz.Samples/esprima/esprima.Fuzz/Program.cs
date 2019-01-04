@@ -17,6 +17,7 @@ namespace esprima.Fuzz
 					var parser = new JavaScriptParser(text);
 					parser.ParseProgram();
 				}
+				catch (ArgumentOutOfRangeException) { }
 				catch (IndexOutOfRangeException) { }
 				catch (InvalidCastException) { }
 				catch (InvalidOperationException) { }
