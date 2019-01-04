@@ -9,8 +9,12 @@ namespace CommonMark.Fuzz
 		{
 			Fuzzer.Run(() =>
 			{
-				var text = File.ReadAllText(args[0]);
-				CommonMarkConverter.Convert(text);
+				try
+				{
+					var text = File.ReadAllText(args[0]);
+					CommonMarkConverter.Convert(text);
+				}
+				catch (CommonMarkException) { }
 			});
 		}
 	}
