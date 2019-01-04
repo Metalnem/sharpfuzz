@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\SharpFuzz.Common\SharpFuzz.Common.csproj" />
+    <ProjectReference Include="..\..\..\SharpFuzz\SharpFuzz.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Esprima">
+      <HintPath>Esprima.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
