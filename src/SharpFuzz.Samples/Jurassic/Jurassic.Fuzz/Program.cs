@@ -22,7 +22,6 @@ namespace Jurassic.Fuzz
 						engine.Execute(text);
 					}
 				}
-				catch (FormatException) { }
 				catch (JavaScriptException) { }
 			});
 		}
