@@ -315,9 +315,17 @@ is that if you specify the timeout parameter, and the
 timeout expires, the whole fuzzing process will be
 terminated. The second one is that uncatchable exceptions
 (**AccessViolationException** and **StackOverflowException**)
-will also stop the fuzzing. However, the input that has
-caused either of these problems is not lost, and it can
-be found in the file ```findings_dir/.cur_input```.
+will also stop the fuzzing. In both cases, afl-fuzz will
+terminate and display the following error message:
+
+```
+[-] PROGRAM ABORT : Unable to communicate with fork server (OOM?)
+         Location : run_target(), afl-fuzz.c:2405
+```
+
+If you encounter this message during fuzzing, you can recover
+the input data that has caused the premature exit from the file
+```findings_dir/.cur_input```.
 
 ## Acknowledgements
 
