@@ -12,11 +12,13 @@
 [license-link]: https://github.com/metalnem/sharpfuzz/blob/master/LICENSE
 
 SharpFuzz is a tool that brings the power of [afl-fuzz]
-to .NET platform. For more details visit my blog post
+to .NET platform. If you want to learn more about fuzzing,
+my motivation for writing SharpFuzz, the types of bugs
+it can find, or the technical details about how the
+integration with afl-fuzz works, visit my blog post
 [SharpFuzz: Bringing the power of afl-fuzz to .NET platform](https://mijailovic.net/2019/01/03/sharpfuzz/).
 
 [afl-fuzz]: http://lcamtuf.coredump.cx/afl/
-[blog]: https://mijailovic.net/
 
 ## Trophies
 
