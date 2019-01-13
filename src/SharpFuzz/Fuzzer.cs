@@ -25,6 +25,13 @@ namespace SharpFuzz
 			{
 				using (var module = ModuleDefinition.ReadModule(source))
 				{
+					var common = typeof(SharpFuzz.Common.Trace).Assembly.GetName().Name;
+
+					if (module.AssemblyReferences.Any(name => name.Name == common))
+					{
+						throw new InstrumentationException("The specified assembly is already instrumented.");
+					}
+
 					var traceType = GetTraceType();
 					var sharedMemDef = traceType.Fields.Single(f => f.Name == nameof(Common.Trace.SharedMem));
 					var prevLocationDef = traceType.Fields.Single(f => f.Name == nameof(Common.Trace.PrevLocation));
