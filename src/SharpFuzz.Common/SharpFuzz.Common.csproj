@@ -4,6 +4,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <PackageId>SharpFuzz.Common</PackageId>
     <Title>SharpFuzz.Common</Title>
     <PackageVersion>1.0.0</PackageVersion>
