@@ -150,7 +150,6 @@ namespace SharpFuzz
 				}
 			}
 
-
 			private static void WaitForParent(int pid)
 			{
 				try
