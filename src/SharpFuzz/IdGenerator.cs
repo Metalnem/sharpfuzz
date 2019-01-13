@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 
 namespace SharpFuzz
 {
@@ -21,19 +20,20 @@ namespace SharpFuzz
 		// also not catastrophic).
 		public static int Next()
 		{
-			var id = MemoryMarshal.Cast<byte, ushort>(data);
+			int id = 0;
 
 			for (int i = 0; i < Retries; ++i)
 			{
 				random.NextBytes(data);
+				id = BitConverter.ToUInt16(data, 0);
 
-				if (ids.Add(id[0]))
+				if (ids.Add(id))
 				{
 					break;
 				}
 			}
 
-			return id[0];
+			return id;
 		}
 	}
 }

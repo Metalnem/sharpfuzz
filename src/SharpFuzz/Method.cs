@@ -18,7 +18,6 @@ namespace SharpFuzz
 		private readonly ILProcessor il;
 		private readonly List<Instruction> instructions;
 		private readonly Dictionary<Instruction, Instruction> instrumented;
-		private readonly TypeReference byteType;
 
 		private Method(FieldReference sharedMem, FieldReference prevLocation, MethodDefinition method)
 		{
@@ -29,7 +28,6 @@ namespace SharpFuzz
 			il = body.GetILProcessor();
 			instructions = body.Instructions.ToList();
 			instrumented = new Dictionary<Instruction, Instruction>();
-			byteType = method.Module.ImportReference(typeof(byte));
 
 			body.SimplifyMacros();
 			body.Instructions.Clear();
@@ -123,7 +121,7 @@ namespace SharpFuzz
 			yield return il.Create(OpCodes.Ldc_I4, id);
 			yield return il.Create(OpCodes.Ldsfld, prevLocation);
 			yield return il.Create(OpCodes.Xor);
-			yield return il.Create(OpCodes.Ldelema, byteType);
+			yield return il.Create(OpCodes.Add);
 			yield return il.Create(OpCodes.Dup);
 			yield return il.Create(OpCodes.Ldind_U1);
 			yield return il.Create(OpCodes.Ldc_I4_1);

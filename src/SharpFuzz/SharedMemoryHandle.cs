@@ -1,4 +1,3 @@
-using System;
 using Microsoft.Win32.SafeHandles;
 
 namespace SharpFuzz
@@ -8,11 +7,7 @@ namespace SharpFuzz
 	// space of the calling process using the shmat system call.
 	internal sealed class SharedMemoryHandle : SafeHandleMinusOneIsInvalid
 	{
-		public SharedMemoryHandle() : base(true)
-		{
-		}
-
-		public unsafe Span<byte> Span(int length) => new Span<byte>(handle.ToPointer(), length);
+		public SharedMemoryHandle() : base(true) { }
 		protected override bool ReleaseHandle() => Native.shmdt(handle) == 0;
 	}
 }

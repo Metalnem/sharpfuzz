@@ -80,7 +80,7 @@ namespace SharpFuzz
 		/// uncaught exception escapes the call, FAULT_CRASH execution
 		/// status code is reported to afl-fuzz.
 		/// </param>
-		public static void Run(Action action)
+		public static unsafe void Run(Action action)
 		{
 			ThrowIfNull(action, nameof(action));
 			var s = Environment.GetEnvironmentVariable("__AFL_SHM_ID");
@@ -94,17 +94,16 @@ namespace SharpFuzz
 			using (var r = new BinaryReader(new AnonymousPipeClientStream(PipeDirection.In, "198")))
 			using (var w = new BinaryWriter(new AnonymousPipeClientStream(PipeDirection.Out, "199")))
 			{
-				var pid = Process.GetCurrentProcess().Id;
-				var local = SharpFuzz.Common.Trace.SharedMem.AsSpan();
-				var shared = shmaddr.Span(local.Length);
-
+				Common.Trace.SharedMem = (byte*)shmaddr.DangerousGetHandle();
 				w.Write(0);
+
+				var pid = Process.GetCurrentProcess().Id;
 
 				while (true)
 				{
 					r.ReadInt32();
 					w.Write(pid);
-					local.Clear();
+
 					var fault = Fault.None;
 
 					try
@@ -116,8 +115,7 @@ namespace SharpFuzz
 						fault = Fault.Crash;
 					}
 
-					local.CopyTo(shared);
-					w.Write((int)fault);
+					w.Write(fault);
 				}
 			}
 		}
