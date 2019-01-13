@@ -110,7 +110,6 @@ namespace SharpFuzz
 				{
 					r.ReadInt32();
 					w.Write(pid);
-
 					var fault = Fault.None;
 
 					try
