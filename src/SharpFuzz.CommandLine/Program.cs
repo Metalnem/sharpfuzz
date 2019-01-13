@@ -31,6 +31,11 @@ path-to-assembly:
 			{
 				Fuzzer.Instrument(path);
 			}
+			catch (InstrumentationException ex)
+			{
+				Console.Error.WriteLine(ex.Message);
+				return;
+			}
 			catch (AssemblyResolutionException ex) when (ex.AssemblyReference != null)
 			{
 				Console.Error.WriteLine($"Assembly '{ex.AssemblyReference}' is missing.");
