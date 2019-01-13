@@ -123,19 +123,7 @@ namespace SharpFuzz
 				// The only way to ensure that the child process is terminated
 				// after the fork server is stopped is to monitor the parent
 				// process, and exit early if we detect that the parent is dead.
-				Task.Run(() =>
-				{
-					try
-					{
-						var parent = Process.GetProcessById(pid);
-						parent.Exited += (sender, args) => Environment.Exit(1);
-					}
-					catch
-					{
-						// Parent process was killed before we even managed to start the child.
-						Environment.Exit(1);
-					}
-				});
+				Task.Run(() => WaitForParent(pid));
 
 				using (var shmaddr = Native.shmat(shmid, IntPtr.Zero, 0))
 				using (var ctl = new BinaryReader(new AnonymousPipeClientStream(PipeDirection.In, ctlHandle)))
@@ -159,6 +147,31 @@ namespace SharpFuzz
 
 						st.Write(fault);
 					}
+				}
+			}
+
+
+			private static void WaitForParent(int pid)
+			{
+				try
+				{
+					for (; ; )
+					{
+						var parent = Process.GetProcessById(pid);
+
+						// On macOS, the parent process can sometimes be dead, but WaitForExit
+						// doesn't detect that. In such situations, Process.GetProcessById will
+						// return Process instance with the empty ProcessName property.
+						if (String.IsNullOrEmpty(parent.ProcessName) || parent.WaitForExit(100))
+						{
+							Environment.Exit(1);
+						}
+					}
+				}
+				catch
+				{
+					// Parent process was killed before we even managed to start the child.
+					Environment.Exit(1);
 				}
 			}
 		}
