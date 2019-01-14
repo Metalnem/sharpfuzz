@@ -343,12 +343,13 @@ using two different .NET processes: the master process for
 the communication with afl-fuzz, and the child process for
 the actual fuzzing. If the fuzzing process dies, the master
 process will just restart it. This comes with the big
-performance costs if you expect a lot of uncatchable exceptions
-or timeouts (starting the new .NET process for each input
-takes a lot of time), so it's best to fix such bugs as early
-as possible and enjoy the best fuzzing performance. Using
-the out-of-process fuzzer is as simple as replacing the call
-to **Fuzzer.Run** with the call to **Fuzzer.OutOfProcess.Run**.
+performance costs if the library you are testing throws
+a lot of uncatchable exceptions, or timeouts often (starting
+the new .NET process for each input takes a lot of time), so
+it's best to fix such bugs as early as possible in order to
+enjoy the best fuzzing performance. Using the out-of-process
+fuzzer is as simple as replacing the call to **Fuzzer.Run**
+with the call to **Fuzzer.OutOfProcess.Run**.
 
 ## Acknowledgements
 
