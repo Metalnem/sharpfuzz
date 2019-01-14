@@ -20,6 +20,16 @@ integration with afl-fuzz works, read my blog post
 
 [afl-fuzz]: http://lcamtuf.coredump.cx/afl/
 
+## Table of contents
+
+- [Trophies](#trophies)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Limitations](#limitations)
+- [Acknowledgements](#acknowledgements)
+- [Resources](#resources)
+
 ## Trophies
 
 If you find some interesting bugs with SharpFuzz, and
