@@ -26,7 +26,7 @@ integration with afl-fuzz works, read my blog post
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Limitations](#limitations)
+- [Advanced topics](#advanced-topics)
 - [Acknowledgements](#acknowledgements)
 - [Resources](#resources)
 
@@ -318,7 +318,7 @@ the afl-fuzz status screen.
 [SharpFuzz]: https://www.nuget.org/packages/SharpFuzz
 [dictionary]: https://lcamtuf.blogspot.com/2015/01/afl-fuzz-making-up-grammar-with.html
 
-## Limitations
+## Advanced topics
 
 SharpFuzz has several limitations compared to using
 afl-fuzz directly with native programs. The first one
@@ -337,6 +337,18 @@ terminate and display the following error message:
 If you encounter this message during fuzzing, you can recover
 the input data that has caused the premature exit from the file
 ```findings_dir/.cur_input```.
+
+There is also an out-of-process version of fuzzer which is
+using two different .NET processes: the master process for
+the communication with afl-fuzz, and the child process for
+the actual fuzzing. If the fuzzing process dies, the master
+process will just restart it. This comes with the big
+performance costs if you expect a lot of uncatchable exceptions
+or timeouts (starting the new .NET process for each input
+takes a lot of time), so it's best to fix such bugs as early
+as possible and enjoy the best fuzzing performance. Using
+the out-of-process fuzzer is as simple as replacing the call
+to **Fuzzer.Run** with the call to **Fuzzer.OutOfProcess.Run**.
 
 ## Acknowledgements
 
