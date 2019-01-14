@@ -313,6 +313,12 @@ will appear in ```findings_dir/crashes```. The total
 number of unique crashes will be displayed in red on
 the afl-fuzz status screen.
 
+In practice, the real number of unique exceptions will often
+be much lower than the reported number, which is why it's
+usually best to write a small program that just goes through
+the crashing inputs, runs the fuzzing function on each of
+them, and saves only the inputs that produce unique stack traces.
+
 [download package]: https://www.nuget.org/api/v2/package/Jil/2.16.0
 [Sigil]: https://www.nuget.org/packages/Sigil/
 [SharpFuzz]: https://www.nuget.org/packages/SharpFuzz
