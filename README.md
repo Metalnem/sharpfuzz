@@ -118,8 +118,7 @@ patch < RemoveInstrumentationCheck.diff
 
 # Install afl-fuzz
 make install
-cd ..
-rm -rf afl-2.52b/
+rm -rf ../afl-2.52b/
 
 # Install SharpFuzz.CommandLine global .NET tool
 dotnet tool install --global SharpFuzz.CommandLine --version 0.7.0
