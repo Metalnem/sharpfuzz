@@ -14,6 +14,7 @@ namespace SharpFuzz
 		private const string ControlHandle = "__SHARPFUZZ_CTL";
 		private const string StatusHandle = "__SHARPFUZZ_ST";
 		private const string ParentId = "__SHARPFUZZ_PID";
+		private const string InitialRun = "__SHARPFUZZ_INIT";
 
 		/// <summary>
 		/// OutOfProccess class contains the special fork server implementation
@@ -50,19 +51,22 @@ namespace SharpFuzz
 				var ctl = Environment.GetEnvironmentVariable(ControlHandle);
 				var st = Environment.GetEnvironmentVariable(StatusHandle);
 				var pid = Environment.GetEnvironmentVariable(ParentId);
+				var initial = Environment.GetEnvironmentVariable(InitialRun);
 
-				if (ctl is null || st is null || pid is null)
+				if (ctl is null || st is null || pid is null || initial is null)
 				{
 					RunServer();
 				}
 				else
 				{
-					RunClient(action, shmid, ctl, st, Int32.Parse(pid));
+					RunClient(action, shmid, ctl, st, Int32.Parse(pid), Boolean.Parse(initial));
 				}
 			}
 
 			private static void RunServer()
 			{
+				bool initial = true;
+
 				using (var r = new BinaryReader(new AnonymousPipeClientStream(PipeDirection.In, "198")))
 				using (var w = new BinaryWriter(new AnonymousPipeClientStream(PipeDirection.Out, "199")))
 				{
@@ -80,8 +84,10 @@ namespace SharpFuzz
 							info.Environment[ControlHandle] = ctlPipe.GetClientHandleAsString();
 							info.Environment[StatusHandle] = stPipe.GetClientHandleAsString();
 							info.Environment[ParentId] = Process.GetCurrentProcess().Id.ToString();
+							info.Environment[InitialRun] = initial.ToString();
 
 							var child = Process.Start(info);
+							initial = false;
 
 							ctlPipe.DisposeLocalCopyOfClientHandle();
 							stPipe.DisposeLocalCopyOfClientHandle();
@@ -118,7 +124,13 @@ namespace SharpFuzz
 				}
 			}
 
-			private static unsafe void RunClient(Action action, int shmid, string ctlHandle, string stHandle, int pid)
+			private static unsafe void RunClient(
+				Action action,
+				int shmid,
+				string ctlHandle,
+				string stHandle,
+				int pid,
+				bool initial)
 			{
 				// The only way to ensure that the child process is terminated
 				// after the fork server is stopped is to monitor the parent
@@ -130,6 +142,18 @@ namespace SharpFuzz
 				using (var st = new BinaryWriter(new AnonymousPipeClientStream(PipeDirection.Out, stHandle)))
 				{
 					Common.Trace.SharedMem = (byte*)shmaddr.DangerousGetHandle();
+
+					// Unfortunately, we cannot ignore the first run each
+					// time we start the new child process. If the previous
+					// child was terminated because of the timeout, testing
+					// the next input twice would almost certainly result
+					// in the new timeout, but it will probably also produce
+					// the different trace bits. That's why we do this only
+					// as the part of the dry run.
+					if (initial)
+					{
+						Setup(action);
+					}
 
 					while (true)
 					{
