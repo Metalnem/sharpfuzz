@@ -30,7 +30,6 @@ integration with afl-fuzz works, read my blog post
   - [Out-of-process fuzzing](#out-of-process-fuzzing)
   - [Test case minimization](#test-case-minimization)
 - [Acknowledgements](#acknowledgements)
-- [Resources](#resources)
 
 ## Trophies
 
@@ -367,16 +366,13 @@ afl-tmin -i test_case -o minimized_result \
 ```
 
 The only change you have to make in your fuzzing
-project is replacing the **Fuzzer.Run** call with
+project is to replace the **Fuzzer.Run** call with
 the call to **Fuzzer.RunOnce**.
 
 ## Acknowledgements
 
-Big thanks to Michal Zalewski for making afl-fuzz,
-Dmitry Vyukov for making go-fuzz, and Rody Kersten
-for his work on fuzzing Java programs.
-
-## Resources
-
-[american fuzzy lop (2.52b)](http://lcamtuf.coredump.cx/afl/)  
-[go-fuzz: randomized testing for Go](https://github.com/dvyukov/go-fuzz)  
+- **Michal Zalewski** - [american fuzzy lop](http://lcamtuf.coredump.cx/afl/)
+- **Dmitry Vyukov** - [go-fuzz: randomized testing for Go](https://github.com/dvyukov/go-fuzz)
+- **Rody Kersten** - [Kelinci: AFL-based fuzzing for Java](https://github.com/isstac/kelinci)
+- **Jb Evain** - [Mono.Cecil](https://github.com/jbevain/cecil)
+- **0xd4d** - [dnlib](https://github.com/0xd4d/dnlib)
