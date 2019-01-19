@@ -346,6 +346,12 @@ enjoy the best fuzzing performance. Using the out-of-process
 fuzzer is as simple as replacing the call to **Fuzzer.Run**
 with the call to **Fuzzer.OutOfProcess.Run**.
 
+Another problem with the out-of-process fuzzer is that
+the static constructors and all other types of static
+initialization code are going to run again each time
+the new child process is started, which will likely
+negatively affect the trace bits.
+
 ### Test case minimization
 
 AFL comes with the tool for test case minimization called
