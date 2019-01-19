@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using Mono.Cecil;
-using Mono.Cecil.Cil;
-using Mono.Cecil.Rocks;
+using dnlib.DotNet;
+using dnlib.DotNet.Emit;
 
 namespace SharpFuzz
 {
@@ -11,25 +10,23 @@ namespace SharpFuzz
 	// instrumentation method is exposed for ease of use.
 	internal sealed class Method
 	{
-		private readonly FieldReference sharedMem;
-		private readonly FieldReference prevLocation;
+		private readonly MemberRef sharedMem;
+		private readonly MemberRef prevLocation;
 
-		private readonly MethodBody body;
-		private readonly ILProcessor il;
+		private readonly CilBody body;
 		private readonly List<Instruction> instructions;
 		private readonly Dictionary<Instruction, Instruction> instrumented;
 
-		private Method(FieldReference sharedMem, FieldReference prevLocation, MethodDefinition method)
+		private Method(MemberRef sharedMem, MemberRef prevLocation, MethodDef method)
 		{
 			this.sharedMem = sharedMem;
 			this.prevLocation = prevLocation;
 
 			body = method.Body;
-			il = body.GetILProcessor();
 			instructions = body.Instructions.ToList();
 			instrumented = new Dictionary<Instruction, Instruction>();
 
-			body.SimplifyMacros();
+			body.SimplifyBranches();
 			body.Instructions.Clear();
 
 			FindInstrumentationTargets();
@@ -37,10 +34,10 @@ namespace SharpFuzz
 			UpdateBranchTargets();
 			UpdateExceptionHandlers();
 
-			body.OptimizeMacros();
+			body.OptimizeBranches();
 		}
 
-		public static void Instrument(FieldReference sharedMem, FieldReference prevLocation, MethodDefinition method)
+		public static void Instrument(MemberRef sharedMem, MemberRef prevLocation, MethodDef method)
 		{
 			new Method(sharedMem, prevLocation, method);
 		}
@@ -54,13 +51,14 @@ namespace SharpFuzz
 		{
 			instrumented.Add(instructions[0], null);
 
-			foreach (var ins in instructions)
+			for (int i = 0; i < instructions.Count; ++i)
 			{
+				var ins = instructions[i];
 				var flowControl = ins.OpCode.FlowControl;
 
 				if (flowControl == FlowControl.Cond_Branch)
 				{
-					instrumented[ins.Next] = null;
+					instrumented[instructions[i + 1]] = null;
 				}
 
 				if (ins.OpCode == OpCodes.Switch)
@@ -95,16 +93,16 @@ namespace SharpFuzz
 					{
 						it.MoveNext();
 						instrumented[ins] = it.Current;
-						il.Append(it.Current);
+						body.Instructions.Add(it.Current);
 
 						while (it.MoveNext())
 						{
-							il.Append(it.Current);
+							body.Instructions.Add(it.Current);
 						}
 					}
 				}
 
-				il.Append(ins);
+				body.Instructions.Add(ins);
 			}
 		}
 
@@ -117,19 +115,19 @@ namespace SharpFuzz
 		{
 			int id = IdGenerator.Next();
 
-			yield return il.Create(OpCodes.Ldsfld, sharedMem);
-			yield return il.Create(OpCodes.Ldc_I4, id);
-			yield return il.Create(OpCodes.Ldsfld, prevLocation);
-			yield return il.Create(OpCodes.Xor);
-			yield return il.Create(OpCodes.Add);
-			yield return il.Create(OpCodes.Dup);
-			yield return il.Create(OpCodes.Ldind_U1);
-			yield return il.Create(OpCodes.Ldc_I4_1);
-			yield return il.Create(OpCodes.Add);
-			yield return il.Create(OpCodes.Conv_U1);
-			yield return il.Create(OpCodes.Stind_I1);
-			yield return il.Create(OpCodes.Ldc_I4, id >> 1);
-			yield return il.Create(OpCodes.Stsfld, prevLocation);
+			yield return Instruction.Create(OpCodes.Ldsfld, sharedMem);
+			yield return Instruction.Create(OpCodes.Ldc_I4, id);
+			yield return Instruction.Create(OpCodes.Ldsfld, prevLocation);
+			yield return Instruction.Create(OpCodes.Xor);
+			yield return Instruction.Create(OpCodes.Add);
+			yield return Instruction.Create(OpCodes.Dup);
+			yield return Instruction.Create(OpCodes.Ldind_U1);
+			yield return Instruction.Create(OpCodes.Ldc_I4_1);
+			yield return Instruction.Create(OpCodes.Add);
+			yield return Instruction.Create(OpCodes.Conv_U1);
+			yield return Instruction.Create(OpCodes.Stind_I1);
+			yield return Instruction.Create(OpCodes.Ldc_I4, id >> 1);
+			yield return Instruction.Create(OpCodes.Stsfld, prevLocation);
 		}
 
 		// Change all branch destinations to point to the first instruction

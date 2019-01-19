@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
-using Mono.Cecil;
+using dnlib.DotNet;
 
 namespace SharpFuzz
 {
@@ -23,23 +23,26 @@ namespace SharpFuzz
 
 			using (var memory = new MemoryStream())
 			{
-				using (var module = ModuleDefinition.ReadModule(source))
-				{
-					var common = typeof(SharpFuzz.Common.Trace).Assembly.GetName().Name;
+				var common = typeof(Common.Trace).Assembly;
+				var commonLoc = common.Location;
+				var commonName = common.GetName().Name;
 
-					if (module.AssemblyReferences.Any(name => name.Name == common))
+				using (var commonMod = ModuleDefMD.Load(commonLoc))
+				using (var sourceMod = ModuleDefMD.Load(source))
+				{
+					if (sourceMod.GetAssemblyRefs().Any(name => name.Name == commonName))
 					{
 						throw new InstrumentationException("The specified assembly is already instrumented.");
 					}
 
-					var traceType = GetTraceType();
+					var traceType = commonMod.Types.Single(t => t.FullName == typeof(Common.Trace).FullName);
 					var sharedMemDef = traceType.Fields.Single(f => f.Name == nameof(Common.Trace.SharedMem));
 					var prevLocationDef = traceType.Fields.Single(f => f.Name == nameof(Common.Trace.PrevLocation));
 
-					var sharedMemRef = module.ImportReference(sharedMemDef);
-					var prevLocationRef = module.ImportReference(prevLocationDef);
+					var sharedMemRef = sourceMod.Import(sharedMemDef);
+					var prevLocationRef = sourceMod.Import(prevLocationDef);
 
-					foreach (var type in module.Types)
+					foreach (var type in sourceMod.Types)
 					{
 						foreach (var method in type.Methods)
 						{
@@ -50,11 +53,7 @@ namespace SharpFuzz
 						}
 					}
 
-					var resolver = (DefaultAssemblyResolver)module.AssemblyResolver;
-					var sourceDir = Path.GetDirectoryName(source);
-
-					resolver.AddSearchDirectory(sourceDir);
-					module.Write(memory);
+					sourceMod.Write(memory);
 				}
 
 				memory.Position = 0;
@@ -63,16 +62,6 @@ namespace SharpFuzz
 				{
 					memory.CopyTo(file);
 				}
-			}
-		}
-
-		private static TypeDefinition GetTraceType()
-		{
-			var common = typeof(SharpFuzz.Common.Trace).Assembly.Location;
-
-			using (var module = ModuleDefinition.ReadModule(common))
-			{
-				return module.Types.Single(t => t.FullName == typeof(Common.Trace).FullName);
 			}
 		}
 

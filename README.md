@@ -171,25 +171,10 @@ like this:
 sharpfuzz jil.2.16.0/lib/netstandard2.0/Jil.dll
 ```
 
-This will work most of the time, and the assembly
-will be overwritten with the instrumented version.
-
-If the specified assembly has a reference to some
-other library, this command will fail. Jil depends
-on [Sigil], which is why you will see the following
-error after attempting to instrument it:
-
-> Assembly 'Sigil, Version=4.7.0.0, Culture=neutral, PublicKeyToken=2d06c3494341c8ab' is missing.
-> Place it in the same directory as the assembly you want to instrument and then try again.
-
-This means you will have to download and
-extract the Sigil package from NuGet, copy
-```sigil.4.7.0/lib/netstandard1.5/Sigil.dll```
-to ```jil.2.16.0/lib/netstandard2.0```, and
-then run ```sharpfuzz``` again. This time
-everything should work fine, and
-```jil.2.16.0/lib/netstandard2.0/Jil.dll```
-will contain the instrumented version of Jil.
+The instrumentation is performed in place, which
+means that ```jil.2.16.0/lib/netstandard2.0/Jil.dll```
+will contain the instrumented version of Jil after
+running this command.
 
 **4.** Create a new .NET console project, and add
 the instrumented library to it, along with all of

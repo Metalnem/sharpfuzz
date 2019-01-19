@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using Mono.Cecil;
 
 namespace SharpFuzz.CommandLine
 {
@@ -34,12 +33,6 @@ path-to-assembly:
 			catch (InstrumentationException ex)
 			{
 				Console.Error.WriteLine(ex.Message);
-				return;
-			}
-			catch (AssemblyResolutionException ex) when (ex.AssemblyReference != null)
-			{
-				Console.Error.WriteLine($"Assembly '{ex.AssemblyReference}' is missing.");
-				Console.Error.WriteLine("Place it in the same directory as the assembly you want to instrument and then try again.");
 				return;
 			}
 			catch
