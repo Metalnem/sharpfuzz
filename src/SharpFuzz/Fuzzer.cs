@@ -93,24 +93,14 @@ namespace SharpFuzz
 				Common.Trace.SharedMem = (byte*)shmaddr.DangerousGetHandle();
 				w.Write(0);
 
+				Setup(action);
 				var pid = Process.GetCurrentProcess().Id;
 
 				while (true)
 				{
 					r.ReadInt32();
 					w.Write(pid);
-					var fault = Fault.None;
-
-					try
-					{
-						action();
-					}
-					catch
-					{
-						fault = Fault.Crash;
-					}
-
-					w.Write(fault);
+					w.Write(Execute(action));
 				}
 			}
 		}
@@ -138,6 +128,36 @@ namespace SharpFuzz
 				Common.Trace.SharedMem = (byte*)shmaddr.DangerousGetHandle();
 				action();
 			}
+		}
+
+		// Initial run will usually have the different trace bits
+		// from the subsequent runs because static constructors
+		// and other types of static initialization are going to
+		// be executed only once. To prevent "WARNING: Instrumentation
+		// output varies across runs" message in the afl-fuzz, we can
+		// safely ignore the first execution during the dry run.
+		private static unsafe void Setup(Action action)
+		{
+			Execute(action);
+
+			for (int i = 0; i < 65536; ++i)
+			{
+				Common.Trace.SharedMem[i] = 0;
+			}
+		}
+
+		private static int Execute(Action action)
+		{
+			try
+			{
+				action();
+			}
+			catch
+			{
+				return Fault.Crash;
+			}
+
+			return Fault.None;
 		}
 
 		private static void ThrowIfNull(object value, string name)

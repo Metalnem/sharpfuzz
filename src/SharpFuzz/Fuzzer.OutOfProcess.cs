@@ -134,18 +134,7 @@ namespace SharpFuzz
 					while (true)
 					{
 						ctl.ReadInt32();
-						var fault = Fault.None;
-
-						try
-						{
-							action();
-						}
-						catch
-						{
-							fault = Fault.Crash;
-						}
-
-						st.Write(fault);
+						st.Write(Execute(action));
 					}
 				}
 			}
