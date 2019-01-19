@@ -115,6 +115,31 @@ namespace SharpFuzz
 			}
 		}
 
+		/// <summary>
+		/// RunOnce method executes the passed action once and writes the
+		/// trace bits to the shared memory. This function will only work
+		/// if the executable that is calling it is running under afl-fuzz.
+		/// </summary>
+		/// <param name="action">
+		/// Some action that calls the instrumented library.
+		/// </param>
+		public static unsafe void RunOnce(Action action)
+		{
+			ThrowIfNull(action, nameof(action));
+			var s = Environment.GetEnvironmentVariable("__AFL_SHM_ID");
+
+			if (s is null || !Int32.TryParse(s, out var shmid))
+			{
+				throw new Exception("This program can only be run under afl-fuzz.");
+			}
+
+			using (var shmaddr = Native.shmat(shmid, IntPtr.Zero, 0))
+			{
+				Common.Trace.SharedMem = (byte*)shmaddr.DangerousGetHandle();
+				action();
+			}
+		}
+
 		private static void ThrowIfNull(object value, string name)
 		{
 			if (value == null)
