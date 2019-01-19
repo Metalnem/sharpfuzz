@@ -27,6 +27,8 @@ integration with afl-fuzz works, read my blog post
 - [Installation](#installation)
 - [Usage](#usage)
 - [Advanced topics](#advanced-topics)
+  - [Out-of-process fuzzing](#out-of-process-fuzzing)
+  - [Test case minimization](#test-case-minimization)
 - [Acknowledgements](#acknowledgements)
 - [Resources](#resources)
 
@@ -312,6 +314,8 @@ them, and saves only the inputs that produce unique stack traces.
 
 ## Advanced topics
 
+### Out-of-process fuzzing
+
 SharpFuzz has several limitations compared to using
 afl-fuzz directly with native programs. The first one
 is that if you specify the timeout parameter, and the
@@ -342,6 +346,29 @@ it's best to fix such bugs as early as possible in order to
 enjoy the best fuzzing performance. Using the out-of-process
 fuzzer is as simple as replacing the call to **Fuzzer.Run**
 with the call to **Fuzzer.OutOfProcess.Run**.
+
+### Test case minimization
+
+AFL comes with the tool for test case minimization called
+afl-tmin:
+
+> **afl-tmin** is simple test case minimizer that
+> takes an input file and tries to remove as
+> much data as possible while keeping the binary
+> in a crashing state or producing consistent
+> instrumentation output (the mode is auto-selected
+> based on initially observed behavior).
+
+You can run it using the following command:
+
+```shell
+afl-tmin -i test_case -o minimized_result \
+  dotnet path_to_assembly @@
+```
+
+The only change you have to make in your fuzzing
+project is replacing the **Fuzzer.Run** call with
+the call to **Fuzzer.RunOnce**.
 
 ## Acknowledgements
 
