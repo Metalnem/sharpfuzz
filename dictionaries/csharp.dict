@@ -207,12 +207,12 @@ InterpolatedStringEndToken="\""
 InterpolatedVerbatimStringStartTokenAt="$@\""
 InterpolatedVerbatimStringStartTokenDollar="@$\""
 
-// additional preprocessor keywords (continued)
+# additional preprocessor keywords (continued)
 LoadKeyword="load"
 NullableKeyword="nullable"
 EnableKeyword="enable"
 SafeOnlyKeyword="safeonly"
 
-// other
+# other
 VarKeyword="var"
 UnderscoreToken="_"
