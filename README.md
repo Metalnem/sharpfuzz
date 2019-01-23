@@ -70,6 +70,10 @@ request for the README file, or file an issue.
 - [NCrontab: CrontabSchedule.Parse throws OverflowException instead of CrontabException](https://github.com/atifaziz/NCrontab/issues/43)
 - [NUglify: Uglify.Js hangs permanently](https://github.com/xoofx/NUglify/issues/63)
 - [Open XML SDK: Add some security/fuzz testing](https://github.com/OfficeDev/Open-XML-SDK/issues/441)
+- [OpenMCDF: OutOfMemoryException when parsing Excel document / endless while-loop](https://github.com/ironfede/openmcdf/issues/30) **fixed**
+- [OpenMCDF: System.ArgumentOutOfRangeException take 2](https://github.com/ironfede/openmcdf/issues/39) **fixed**
+- [OpenMCDF: System.ArgumentOutOfRangeException when trying to open certain invalid files](https://github.com/ironfede/openmcdf/issues/38) **fixed**
+- [OpenMCDF: System.OutOfMemoryException when reading corrupt Word document](https://github.com/ironfede/openmcdf/issues/40) **fixed**
 - [protobuf-net: Serializer.Deserialize can throw many unexpected exceptions](https://github.com/mgravell/protobuf-net/issues/481)
 - [protobuf-net: Serializer.Deserialize hangs permanently](https://github.com/mgravell/protobuf-net/issues/479)
 - [Scriban: Template.ParseLiquid throws ArgumentOutOfRangeException](https://github.com/lunet-io/scriban/issues/121)
