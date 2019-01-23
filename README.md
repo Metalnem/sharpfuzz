@@ -194,21 +194,24 @@ running this command.
 
 **4.** Create a new .NET console project, and add
 the instrumented library to it, along with all of
-its dependencies. To do that, copy both ```Jil.dll```
-and ```Sigil.dll``` to the root directory of the
-project, and then add the following element to
-your project file:
+its dependencies. To do that, copy ```Jil.dll```
+to the root directory of the project, and then add
+the following element to your project file:
 
 ```xml
 <ItemGroup>
   <Reference Include="Jil">
     <HintPath>Jil.dll</HintPath>
   </Reference>
-
-  <Reference Include="Sigil">
-    <HintPath>Sigil.dll</HintPath>
-  </Reference>
 </ItemGroup>
+```
+
+Jil depends on [Sigil], which is why you also have to
+manually add the reference to Sigil. You can install it
+from NuGet with the following command:
+
+```shell
+dotnet add package Sigil --version 4.7.0
 ```
 
 **5.** Add the [SharpFuzz] package to the project by running
