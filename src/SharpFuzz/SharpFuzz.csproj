@@ -9,8 +9,8 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageId>SharpFuzz</PackageId>
     <Title>SharpFuzz</Title>
-    <PackageVersion>1.0.0</PackageVersion>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <PackageVersion>1.1.0</PackageVersion>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
     <Description>AFL-based fuzz testing for .NET</Description>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
