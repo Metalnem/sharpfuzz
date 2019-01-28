@@ -86,7 +86,14 @@ request for the README file, or file an issue.
 - [SixLabors.Fonts: FontDescription.LoadDescription throws ArgumentException](https://github.com/SixLabors/Fonts/issues/96) **fixed**
 - [SixLabors.Fonts: FontDescription.LoadDescription throws NullReferenceException](https://github.com/SixLabors/Fonts/issues/97) **fixed**
 - [SixLabors.ImageSharp: Image.Load terminates the process with AccessViolationException](https://github.com/SixLabors/ImageSharp/issues/798) **fixed**
+- [SixLabors.ImageSharp: Image.Load throws AccessViolationException](https://github.com/SixLabors/ImageSharp/issues/827)
+- [SixLabors.ImageSharp: Image.Load throws ArgumentException](https://github.com/SixLabors/ImageSharp/issues/826)
+- [SixLabors.ImageSharp: Image.Load throws ArgumentOutOfRangeException](https://github.com/SixLabors/ImageSharp/issues/825)
+- [SixLabors.ImageSharp: Image.Load throws DivideByZeroException](https://github.com/SixLabors/ImageSharp/issues/821)
+- [SixLabors.ImageSharp: Image.Load throws DivideByZeroException](https://github.com/SixLabors/ImageSharp/issues/822)
+- [SixLabors.ImageSharp: Image.Load throws IndexOutOfRangeException](https://github.com/SixLabors/ImageSharp/issues/824)
 - [SixLabors.ImageSharp: Image.Load throws NullReferenceException](https://github.com/SixLabors/ImageSharp/issues/797) **fixed**
+- [SixLabors.ImageSharp: Image.Load throws NullReferenceException](https://github.com/SixLabors/ImageSharp/issues/823)
 - [Utf8Json: JsonSerializer.Deserialize can throw many unexpected exceptions](https://github.com/neuecc/Utf8Json/issues/142)
 - [Web Markup Minifier: HtmlMinifier.Minify hangs permanently](https://github.com/Taritsyn/WebMarkupMin/issues/73)
 - [Web Markup Minifier: HtmlMinifier.Minify throws InvalidOperationException](https://github.com/Taritsyn/WebMarkupMin/issues/77)
