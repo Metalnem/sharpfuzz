@@ -170,7 +170,7 @@ which is a fast JSON serializer and deserializer
 of complete fuzzing projects).
 
 [Jil]: https://www.nuget.org/packages/Jil/
-[SharpFuzz.Samples]: https://github.com/Metalnem/sharpfuzz/tree/master/src/SharpFuzz.Samples
+[SharpFuzz.Samples]: https://github.com/Metalnem/sharpfuzz-samples
 
 **1.** Download the package from the NuGet gallery.
 You can do that by clicking the [download package]
