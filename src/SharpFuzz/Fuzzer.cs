@@ -42,7 +42,7 @@ namespace SharpFuzz
 					var sharedMemRef = sourceMod.Import(sharedMemDef);
 					var prevLocationRef = sourceMod.Import(prevLocationDef);
 
-					foreach (var type in sourceMod.Types)
+					foreach (var type in sourceMod.GetTypes())
 					{
 						foreach (var method in type.Methods)
 						{
