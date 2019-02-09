@@ -39,6 +39,7 @@ them to this list. Please send me an email, make a pull
 request for the README file, or file an issue.
 
 - [AngleSharp: HtmlParser.Parse throws InvalidOperationException](https://github.com/AngleSharp/AngleSharp/issues/735) **fixed**
+- [CoreFX: BigInteger.TryParse out-of-bounds access](https://github.com/dotnet/corefx/issues/35176) **fixed**
 - [CoreFX: Uri.TryCreate throws IndexOutOfRangeException](https://github.com/dotnet/corefx/issues/35072)
 - [CoreFX: XmlReader.Create throws IndexOutOfRangeException](https://github.com/dotnet/corefx/issues/35073)
 - [DotLiquid: Template.Parse throws ArgumentNullException instead of SyntaxException](https://github.com/dotliquid/dotliquid/issues/333)
