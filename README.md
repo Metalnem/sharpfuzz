@@ -67,7 +67,7 @@ request for the README file, or file an issue.
 - [Jurassic: ScriptEngine.ExecuteFile throws FormatException](https://github.com/paulbartrum/jurassic/issues/137) **fixed**
 - [LumenWorks CSV Reader: CsvReader.ReadNextRecord throws IndexOutOfRangeException](https://github.com/phatcher/CsvReader/issues/67)
 - [Markdig: Markdown.ToHtml hangs permanently](https://github.com/lunet-io/markdig/issues/278) **fixed**
-- [Markdig: Markdown.ToHtml takes more than two minutes to complete when processing the 32K file](https://github.com/lunet-io/markdig/issues/306)
+- [Markdig: Markdown.ToHtml takes more than two minutes to complete when processing the 32K file](https://github.com/lunet-io/markdig/issues/306) **fixed**
 - [Markdig: Markdown.ToHtml throws ArgumentOutOfRangeException](https://github.com/lunet-io/markdig/issues/275) **fixed**
 - [Markdig: Markdown.ToHtml throws IndexOutOfRangeException](https://github.com/lunet-io/markdig/issues/276) **fixed**
 - [Markdig: Markdown.ToHtml throws IndexOutOfRangeException](https://github.com/lunet-io/markdig/issues/303)
