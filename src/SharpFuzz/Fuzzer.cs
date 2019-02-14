@@ -63,7 +63,7 @@ namespace SharpFuzz
 
 				foreach (var type in sourceMod.GetTypes())
 				{
-					if (type.Namespace == "System.Globalization")
+					if (ShouldInstrumentCoreLibType(type))
 					{
 						foreach (var method in type.Methods)
 						{
@@ -183,6 +183,13 @@ namespace SharpFuzz
 			body.Instructions.Add(OpCodes.Ret.ToInstruction());
 
 			return traceType;
+		}
+
+		private static bool ShouldInstrumentCoreLibType(TypeDef type)
+		{
+			return type.Namespace == "System.Globalization"
+				|| type.FullName == "System.DateTimeParse"
+				|| type.FullName == "System.Number";
 		}
 
 		/// <summary>
