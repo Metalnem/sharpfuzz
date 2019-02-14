@@ -25,26 +25,45 @@ namespace SharpFuzz
 
 			using (var memory = new MemoryStream())
 			{
-				var common = typeof(Common.Trace).Assembly;
-				var commonLoc = common.Location;
-				var commonName = common.GetName().Name;
-
-				using (var commonMod = ModuleDefMD.Load(commonLoc))
-				using (var sourceMod = ModuleDefMD.Load(source))
+				if (Path.GetFileNameWithoutExtension(source) == "System.Private.CoreLib")
 				{
-					if (sourceMod.GetAssemblyRefs().Any(name => name.Name == commonName))
-					{
-						throw new InstrumentationException("The specified assembly is already instrumented.");
-					}
+					InstrumentCoreLib(source, memory);
+				}
+				else
+				{
+					Instrument(source, memory);
+				}
 
-					var traceType = commonMod.Types.Single(t => t.FullName == typeof(Common.Trace).FullName);
-					var sharedMemDef = traceType.Fields.Single(f => f.Name == nameof(Common.Trace.SharedMem));
-					var prevLocationDef = traceType.Fields.Single(f => f.Name == nameof(Common.Trace.PrevLocation));
+				memory.Position = 0;
 
-					var sharedMemRef = sourceMod.Import(sharedMemDef);
-					var prevLocationRef = sourceMod.Import(prevLocationDef);
+				using (var file = File.Create(source))
+				{
+					memory.CopyTo(file);
+				}
+			}
+		}
 
-					foreach (var type in sourceMod.GetTypes())
+		private static void InstrumentCoreLib(string source, Stream destination)
+		{
+			using (var sourceMod = ModuleDefMD.Load(source))
+			{
+				if (sourceMod.TypeExistsNormal(typeof(Common.Trace).FullName))
+				{
+					throw new InstrumentationException("The specified assembly is already instrumented.");
+				}
+
+				var traceType = GenerateTraceType(sourceMod);
+				sourceMod.Types.Add(traceType);
+
+				var sharedMemDef = traceType.Fields.Single(f => f.Name == nameof(Common.Trace.SharedMem));
+				var prevLocationDef = traceType.Fields.Single(f => f.Name == nameof(Common.Trace.PrevLocation));
+
+				var sharedMemRef = sourceMod.Import(sharedMemDef);
+				var prevLocationRef = sourceMod.Import(prevLocationDef);
+
+				foreach (var type in sourceMod.GetTypes())
+				{
+					if (type.Namespace == "System.Globalization")
 					{
 						foreach (var method in type.Methods)
 						{
@@ -54,16 +73,45 @@ namespace SharpFuzz
 							}
 						}
 					}
-
-					sourceMod.Write(memory);
 				}
 
-				memory.Position = 0;
+				sourceMod.Write(destination);
+			}
+		}
 
-				using (var file = File.Create(source))
+		private static void Instrument(string source, Stream destination)
+		{
+			var common = typeof(Common.Trace).Assembly;
+			var commonLoc = common.Location;
+			var commonName = common.GetName().Name;
+
+			using (var commonMod = ModuleDefMD.Load(commonLoc))
+			using (var sourceMod = ModuleDefMD.Load(source))
+			{
+				if (sourceMod.GetAssemblyRefs().Any(name => name.Name == commonName))
 				{
-					memory.CopyTo(file);
+					throw new InstrumentationException("The specified assembly is already instrumented.");
 				}
+
+				var traceType = commonMod.Types.Single(t => t.FullName == typeof(Common.Trace).FullName);
+				var sharedMemDef = traceType.Fields.Single(f => f.Name == nameof(Common.Trace.SharedMem));
+				var prevLocationDef = traceType.Fields.Single(f => f.Name == nameof(Common.Trace.PrevLocation));
+
+				var sharedMemRef = sourceMod.Import(sharedMemDef);
+				var prevLocationRef = sourceMod.Import(prevLocationDef);
+
+				foreach (var type in sourceMod.GetTypes())
+				{
+					foreach (var method in type.Methods)
+					{
+						if (method.HasBody)
+						{
+							Method.Instrument(sharedMemRef, prevLocationRef, method);
+						}
+					}
+				}
+
+				sourceMod.Write(destination);
 			}
 		}
 
