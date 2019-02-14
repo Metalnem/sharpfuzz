@@ -3,7 +3,9 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
+using System.Runtime.InteropServices;
 using dnlib.DotNet;
+using dnlib.DotNet.Emit;
 
 namespace SharpFuzz
 {
@@ -63,6 +65,76 @@ namespace SharpFuzz
 					memory.CopyTo(file);
 				}
 			}
+		}
+
+		private static TypeDefUser GenerateTraceType(ModuleDefMD mod)
+		{
+			var traceType = new TypeDefUser(
+				typeof(SharpFuzz.Common.Trace).FullName,
+				mod.CorLibTypes.Object.TypeDefOrRef
+			);
+
+			traceType.Attributes = TypeAttributes.Public
+				| TypeAttributes.Abstract
+				| TypeAttributes.Sealed
+				| TypeAttributes.BeforeFieldInit;
+
+			var sharedMemField = new FieldDefUser(
+				nameof(Common.Trace.SharedMem),
+				new FieldSig(new PtrSig(mod.CorLibTypes.Byte)),
+				FieldAttributes.Public | FieldAttributes.Static
+			);
+
+			var prevLocationField = new FieldDefUser(
+				nameof(Common.Trace.PrevLocation),
+				new FieldSig(mod.CorLibTypes.Int32),
+				FieldAttributes.Public | FieldAttributes.Static
+			);
+
+			traceType.Fields.Add(sharedMemField);
+			traceType.Fields.Add(prevLocationField);
+
+			var cctorSig = MethodSig.CreateStatic(mod.CorLibTypes.Void);
+			var cctorImplFlags = MethodImplAttributes.IL | MethodImplAttributes.Managed;
+
+			var cctorFlags = MethodAttributes.Private
+				| MethodAttributes.HideBySig
+				| MethodAttributes.SpecialName
+				| MethodAttributes.RTSpecialName
+				| MethodAttributes.Static;
+
+			var cctor = new MethodDefUser(".cctor", cctorSig, cctorImplFlags, cctorFlags);
+			traceType.Methods.Add(cctor);
+
+			var body = new CilBody { InitLocals = false, MaxStack = 1 };
+			cctor.Body = body;
+
+			var local = new Local(mod.CorLibTypes.IntPtr);
+			body.Variables.Add(local);
+
+			var marshalType = mod.Types.Single(type => type.FullName == typeof(Marshal).FullName);
+			var intPtrType = mod.Types.Single(type => type.FullName == typeof(IntPtr).FullName);
+
+			var allocHGlobal = marshalType.FindMethod(
+				nameof(Marshal.AllocHGlobal),
+				MethodSig.CreateStatic(mod.CorLibTypes.IntPtr,
+				mod.CorLibTypes.Int32)
+			);
+
+			var toPointer = intPtrType.FindMethod(
+				nameof(IntPtr.ToPointer),
+				MethodSig.CreateInstance(new PtrSig(mod.CorLibTypes.Void))
+			);
+
+			body.Instructions.Add(OpCodes.Ldc_I4.ToInstruction(65536));
+			body.Instructions.Add(OpCodes.Call.ToInstruction(allocHGlobal));
+			body.Instructions.Add(OpCodes.Stloc_0.ToInstruction());
+			body.Instructions.Add(OpCodes.Ldloca_S.ToInstruction(local));
+			body.Instructions.Add(OpCodes.Call.ToInstruction(toPointer));
+			body.Instructions.Add(OpCodes.Stsfld.ToInstruction(sharedMemField));
+			body.Instructions.Add(OpCodes.Ret.ToInstruction());
+
+			return traceType;
 		}
 
 		/// <summary>
