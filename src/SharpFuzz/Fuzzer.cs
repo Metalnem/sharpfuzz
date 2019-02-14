@@ -210,10 +210,20 @@ namespace SharpFuzz
 			using (var r = new BinaryReader(new AnonymousPipeClientStream(PipeDirection.In, "198")))
 			using (var w = new BinaryWriter(new AnonymousPipeClientStream(PipeDirection.Out, "199")))
 			{
-				Common.Trace.SharedMem = (byte*)shmaddr.DangerousGetHandle();
-				w.Write(0);
+				byte* sharedMem = (byte*)shmaddr.DangerousGetHandle();
+				Common.Trace.SharedMem = sharedMem;
 
-				Setup(action);
+				var types = typeof(object).Assembly.GetTypes();
+				var traceType = types.FirstOrDefault(t => t.FullName == typeof(Common.Trace).FullName);
+
+				if (traceType != null)
+				{
+					var sharedMemField = traceType.GetField(nameof(Common.Trace.SharedMem));
+					sharedMemField.SetValue(null, System.Reflection.Pointer.Box(sharedMem, typeof(byte*)));
+				}
+
+				w.Write(0);
+				Setup(action, sharedMem);
 				var pid = Process.GetCurrentProcess().Id;
 
 				while (true)
@@ -256,13 +266,13 @@ namespace SharpFuzz
 		// be executed only once. To prevent "WARNING: Instrumentation
 		// output varies across runs" message in the afl-fuzz, we can
 		// safely ignore the first execution during the dry run.
-		private static unsafe void Setup(Action action)
+		private static unsafe void Setup(Action action, byte* sharedMem)
 		{
 			Execute(action);
 
 			for (int i = 0; i < 65536; ++i)
 			{
-				Common.Trace.SharedMem[i] = 0;
+				sharedMem[i] = 0;
 			}
 		}
 

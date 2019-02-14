@@ -141,7 +141,8 @@ namespace SharpFuzz
 				using (var ctl = new BinaryReader(new AnonymousPipeClientStream(PipeDirection.In, ctlHandle)))
 				using (var st = new BinaryWriter(new AnonymousPipeClientStream(PipeDirection.Out, stHandle)))
 				{
-					Common.Trace.SharedMem = (byte*)shmaddr.DangerousGetHandle();
+					byte* sharedMem = (byte*)shmaddr.DangerousGetHandle();
+					Common.Trace.SharedMem = sharedMem;
 
 					// Unfortunately, we cannot ignore the first run each
 					// time we start the new child process. If the previous
@@ -152,7 +153,7 @@ namespace SharpFuzz
 					// as the part of the dry run.
 					if (initial)
 					{
-						Setup(action);
+						Setup(action, sharedMem);
 					}
 
 					while (true)
