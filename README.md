@@ -152,7 +152,7 @@ make install
 rm -rf ../afl-2.52b/
 
 # Install SharpFuzz.CommandLine global .NET tool
-dotnet tool install --global SharpFuzz.CommandLine --version 1.2.0
+dotnet tool install --global SharpFuzz.CommandLine --version 1.3.0
 ```
 
 [SharpFuzz.CommandLine]: https://www.nuget.org/packages/SharpFuzz.CommandLine/
@@ -233,7 +233,7 @@ dotnet add package Sigil --version 4.7.0
 the following command:
 
 ```shell
-dotnet add package SharpFuzz --version 1.2.0
+dotnet add package SharpFuzz --version 1.3.0
 ```
 
 **6.** Now it's time to write some code. The **Main**
