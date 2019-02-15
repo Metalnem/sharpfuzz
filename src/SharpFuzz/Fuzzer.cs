@@ -188,6 +188,7 @@ namespace SharpFuzz
 		private static bool ShouldInstrumentCoreLibType(TypeDef type)
 		{
 			return type.Namespace == "System.Globalization"
+				|| type.FullName == "System.DateTimeFormat"
 				|| type.FullName == "System.DateTimeParse"
 				|| type.FullName == "System.Number";
 		}
