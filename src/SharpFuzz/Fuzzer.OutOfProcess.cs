@@ -142,7 +142,7 @@ namespace SharpFuzz
 				using (var st = new BinaryWriter(new AnonymousPipeClientStream(PipeDirection.Out, stHandle)))
 				{
 					byte* sharedMem = (byte*)shmaddr.DangerousGetHandle();
-					Common.Trace.SharedMem = sharedMem;
+					InitializeSharedMemory(sharedMem);
 
 					// Unfortunately, we cannot ignore the first run each
 					// time we start the new child process. If the previous
