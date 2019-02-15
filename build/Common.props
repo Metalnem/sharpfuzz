@@ -9,7 +9,7 @@
     <RepositoryUrl>https://github.com/Metalnem/sharpfuzz.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/Metalnem/sharpfuzz/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Copyright>Copyright © 2018, Nemanja Mijailovic</Copyright>
     <PackageTags>fuzzing testing fuzz-testing fuzzer</PackageTags>
