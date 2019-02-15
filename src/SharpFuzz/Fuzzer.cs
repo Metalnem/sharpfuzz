@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
@@ -14,6 +15,21 @@ namespace SharpFuzz
 	/// </summary>
 	public static partial class Fuzzer
 	{
+		private static readonly HashSet<string> coreLibNamespaces = new HashSet<string>
+		{
+			"System.Globalization",
+			"System.Text"
+		};
+
+		private static readonly HashSet<string> coreLibTypes = new HashSet<string>
+		{
+			"System.Convert",
+			"System.DateTimeFormat",
+			"System.DateTimeParse",
+			"System.Number",
+			"System.ParseNumbers"
+		};
+
 		/// <summary>
 		/// Instrument method performs the in-place afl-fuzz
 		/// instrumentation of the <paramref name="source"/> assembly.
@@ -187,10 +203,9 @@ namespace SharpFuzz
 
 		private static bool ShouldInstrumentCoreLibType(TypeDef type)
 		{
-			return type.Namespace == "System.Globalization"
-				|| type.FullName == "System.DateTimeFormat"
-				|| type.FullName == "System.DateTimeParse"
-				|| type.FullName == "System.Number";
+			return (!(type.Namespace is null)
+				&& coreLibNamespaces.Contains(type.Namespace))
+				|| coreLibTypes.Contains(type.FullName);
 		}
 
 		/// <summary>
