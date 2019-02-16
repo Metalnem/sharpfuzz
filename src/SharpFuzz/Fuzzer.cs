@@ -17,8 +17,7 @@ namespace SharpFuzz
 	{
 		private static readonly HashSet<string> coreLibNamespaces = new HashSet<string>
 		{
-			"System.Globalization",
-			"System.Text"
+			"System.Globalization"
 		};
 
 		private static readonly HashSet<string> coreLibTypes = new HashSet<string>
