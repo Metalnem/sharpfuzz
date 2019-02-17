@@ -43,6 +43,7 @@ request for the README file, or file an issue.
 - [CoreFX: DataContractJsonSerializer.ReadObject throws ArgumentOutOfRangeException](https://github.com/dotnet/corefx/issues/35205)
 - [CoreFX: DataContractJsonSerializer.ReadObject throws IndexOutOfRangeException](https://github.com/dotnet/corefx/issues/35204)
 - [CoreFX: DataContractSerializer.ReadObject throws ArgumentNullException](https://github.com/dotnet/corefx/issues/35203)
+- [CoreFX: G17 format specifier doesn't always round-trip double values](https://github.com/dotnet/corefx/issues/35369)
 - [CoreFX: Uri.TryCreate throws IndexOutOfRangeException](https://github.com/dotnet/corefx/issues/35072)
 - [CoreFX: XmlReader.Create throws IndexOutOfRangeException](https://github.com/dotnet/corefx/issues/35073)
 - [DotLiquid: Template.Parse throws ArgumentNullException instead of SyntaxException](https://github.com/dotliquid/dotliquid/issues/333)
