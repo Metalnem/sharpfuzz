@@ -41,13 +41,21 @@ namespace SharpFuzz
 
 			using (var memory = new MemoryStream())
 			{
-				if (Path.GetFileNameWithoutExtension(source) == "System.Private.CoreLib")
+				using (var sourceMod = ModuleDefMD.Load(source))
 				{
-					InstrumentCoreLib(source, memory);
-				}
-				else
-				{
-					Instrument(source, memory);
+					if (!sourceMod.IsILOnly)
+					{
+						throw new InstrumentationException("Cannot instrument mixed-mode assemblies.");
+					}
+
+					if (Path.GetFileNameWithoutExtension(source) == "System.Private.CoreLib")
+					{
+						InstrumentCoreLib(sourceMod, memory);
+					}
+					else
+					{
+						Instrument(sourceMod, memory);
+					}
 				}
 
 				memory.Position = 0;
@@ -59,50 +67,46 @@ namespace SharpFuzz
 			}
 		}
 
-		private static void InstrumentCoreLib(string source, Stream destination)
+		private static void InstrumentCoreLib(ModuleDefMD sourceMod, Stream destination)
 		{
-			using (var sourceMod = ModuleDefMD.Load(source))
+			if (sourceMod.TypeExistsNormal(typeof(Common.Trace).FullName))
 			{
-				if (sourceMod.TypeExistsNormal(typeof(Common.Trace).FullName))
+				throw new InstrumentationException("The specified assembly is already instrumented.");
+			}
+
+			var traceType = GenerateTraceType(sourceMod);
+			sourceMod.Types.Add(traceType);
+
+			var sharedMemDef = traceType.Fields.Single(f => f.Name == nameof(Common.Trace.SharedMem));
+			var prevLocationDef = traceType.Fields.Single(f => f.Name == nameof(Common.Trace.PrevLocation));
+
+			var sharedMemRef = sourceMod.Import(sharedMemDef);
+			var prevLocationRef = sourceMod.Import(prevLocationDef);
+
+			foreach (var type in sourceMod.GetTypes())
+			{
+				if (ShouldInstrumentCoreLibType(type))
 				{
-					throw new InstrumentationException("The specified assembly is already instrumented.");
-				}
-
-				var traceType = GenerateTraceType(sourceMod);
-				sourceMod.Types.Add(traceType);
-
-				var sharedMemDef = traceType.Fields.Single(f => f.Name == nameof(Common.Trace.SharedMem));
-				var prevLocationDef = traceType.Fields.Single(f => f.Name == nameof(Common.Trace.PrevLocation));
-
-				var sharedMemRef = sourceMod.Import(sharedMemDef);
-				var prevLocationRef = sourceMod.Import(prevLocationDef);
-
-				foreach (var type in sourceMod.GetTypes())
-				{
-					if (ShouldInstrumentCoreLibType(type))
+					foreach (var method in type.Methods)
 					{
-						foreach (var method in type.Methods)
+						if (method.HasBody)
 						{
-							if (method.HasBody)
-							{
-								Method.Instrument(sharedMemRef, prevLocationRef, method);
-							}
+							Method.Instrument(sharedMemRef, prevLocationRef, method);
 						}
 					}
 				}
-
-				sourceMod.Write(destination);
 			}
+
+			sourceMod.Write(destination);
 		}
 
-		private static void Instrument(string source, Stream destination)
+		private static void Instrument(ModuleDefMD sourceMod, Stream destination)
 		{
 			var common = typeof(Common.Trace).Assembly;
 			var commonLoc = common.Location;
 			var commonName = common.GetName().Name;
 
 			using (var commonMod = ModuleDefMD.Load(commonLoc))
-			using (var sourceMod = ModuleDefMD.Load(source))
 			{
 				if (sourceMod.GetAssemblyRefs().Any(name => name.Name == commonName))
 				{
