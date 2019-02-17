@@ -25,6 +25,7 @@ namespace SharpFuzz
 			"System.Convert",
 			"System.DateTimeFormat",
 			"System.DateTimeParse",
+			"System.Guid",
 			"System.Number",
 			"System.ParseNumbers"
 		};
