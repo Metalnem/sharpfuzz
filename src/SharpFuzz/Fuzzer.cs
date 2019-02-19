@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
@@ -23,10 +24,13 @@ namespace SharpFuzz
 		/// A function that accepts the full name of the class and returns
 		/// true if the class should be instrumented, false otherwise.
 		/// </param>
-		public static void Instrument(string source, Func<string, bool> matcher)
+		/// <returns>An ordered collection of instrumented types.</returns>
+		public static IEnumerable<string> Instrument(string source, Func<string, bool> matcher)
 		{
 			ThrowIfNull(source, nameof(source));
 			ThrowIfNull(matcher, nameof(matcher));
+
+			SortedSet<string> types;
 
 			using (var dst = new MemoryStream())
 			{
@@ -54,14 +58,14 @@ namespace SharpFuzz
 					{
 						var traceType = GenerateTraceType(src);
 						src.Types.Add(traceType);
-						Instrument(src, dst, matcher, traceType);
+						types = Instrument(src, dst, matcher, traceType);
 					}
 					else
 					{
 						using (var commonMod = ModuleDefMD.Load(common.Location))
 						{
 							var traceType = commonMod.Types.Single(t => t.FullName == typeof(Common.Trace).FullName);
-							Instrument(src, dst, matcher, traceType);
+							types = Instrument(src, dst, matcher, traceType);
 						}
 					}
 				}
@@ -73,9 +77,11 @@ namespace SharpFuzz
 					dst.CopyTo(file);
 				}
 			}
+
+			return types;
 		}
 
-		private static void Instrument(ModuleDefMD src, Stream dst, Func<string, bool> matcher, TypeDef traceType)
+		private static SortedSet<string> Instrument(ModuleDefMD src, Stream dst, Func<string, bool> matcher, TypeDef traceType)
 		{
 			var sharedMemDef = traceType.Fields.Single(f => f.Name == nameof(Common.Trace.SharedMem));
 			var prevLocationDef = traceType.Fields.Single(f => f.Name == nameof(Common.Trace.PrevLocation));
@@ -83,21 +89,32 @@ namespace SharpFuzz
 			var sharedMemRef = src.Import(sharedMemDef);
 			var prevLocationRef = src.Import(prevLocationDef);
 
+			var types = new SortedSet<string>();
+
 			foreach (var type in src.GetTypes())
 			{
 				if (type.HasMethods && matcher(type.FullName))
 				{
+					bool instrumented = false;
+
 					foreach (var method in type.Methods)
 					{
 						if (method.HasBody)
 						{
 							Method.Instrument(sharedMemRef, prevLocationRef, method);
+
+							if (!instrumented)
+							{
+								types.Add(type.FullName);
+								instrumented = true;
+							}
 						}
 					}
 				}
 			}
 
 			src.Write(dst);
+			return types;
 		}
 
 		private static TypeDefUser GenerateTraceType(ModuleDefMD mod)
