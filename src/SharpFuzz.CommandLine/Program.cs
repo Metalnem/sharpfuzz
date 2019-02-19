@@ -1,18 +1,29 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 
 namespace SharpFuzz.CommandLine
 {
 	public class Program
 	{
-		private const string Usage = @"Usage: sharpfuzz [path-to-assembly]
+		private const string Usage = @"Usage: sharpfuzz [path-to-assembly] [prefix ...]
 
 path-to-assembly:
-  The path to an assembly .dll file to instrument.";
+  The path to an assembly .dll file to instrument.
+
+prefix:
+  The class or the namespace to instrument.
+  If not present, all types in the assembly will be instrumented.
+  At least one prefix is required when instrumenting System.Private.CoreLib.
+  
+Examples:
+  sharpfuzz Newtonsoft.Json.dll
+  sharpfuzz System.Private.CoreLib.dll System.Number
+  sharpfuzz System.Private.CoreLib.dll System.DateTimeFormat System.DateTimeParse";
 
 		public static void Main(string[] args)
 		{
-			if (args.Length != 1)
+			if (args.Length == 0)
 			{
 				Console.WriteLine(Usage);
 				return;
@@ -26,9 +37,18 @@ path-to-assembly:
 				return;
 			}
 
+			var isCoreLib = Path.GetFileNameWithoutExtension(path) == "System.Private.CoreLib";
+			var prefixes = args.Skip(1).ToList();
+
+			if (isCoreLib && prefixes.Count == 0)
+			{
+				Console.Error.WriteLine("At least one prefix is required when instrumenting System.Private.CoreLib.");
+				return;
+			}
+
 			try
 			{
-				Fuzzer.Instrument(path);
+				Fuzzer.Instrument(path, Matcher);
 			}
 			catch (InstrumentationException ex)
 			{
@@ -39,6 +59,11 @@ path-to-assembly:
 			{
 				Console.Error.WriteLine("Failed to instrument the specified file, most likely because it's not a valid .NET assembly.");
 				return;
+			}
+
+			bool Matcher(string type)
+			{
+				return prefixes.Count == 0 || prefixes.Any(prefix => type.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
 			}
 		}
 	}

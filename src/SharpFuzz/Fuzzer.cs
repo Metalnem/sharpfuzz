@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
@@ -15,77 +14,78 @@ namespace SharpFuzz
 	/// </summary>
 	public static partial class Fuzzer
 	{
-		private static readonly HashSet<string> coreLibNamespaces = new HashSet<string>
-		{
-			"System.Globalization"
-		};
-
-		private static readonly HashSet<string> coreLibTypes = new HashSet<string>
-		{
-			"System.Convert",
-			"System.DateTimeFormat",
-			"System.DateTimeParse",
-			"System.Guid",
-			"System.Number",
-			"System.ParseNumbers"
-		};
-
 		/// <summary>
 		/// Instrument method performs the in-place afl-fuzz
 		/// instrumentation of the <paramref name="source"/> assembly.
 		/// </summary>
 		/// <param name="source">The assembly to instrument.</param>
-		public static void Instrument(string source)
+		/// <param name="matcher">
+		/// A function that accepts the full name of the class and returns
+		/// true if the class should be instrumented, false otherwise.
+		/// </param>
+		public static void Instrument(string source, Func<string, bool> matcher)
 		{
 			ThrowIfNull(source, nameof(source));
+			ThrowIfNull(matcher, nameof(matcher));
 
-			using (var memory = new MemoryStream())
+			using (var dst = new MemoryStream())
 			{
-				using (var sourceMod = ModuleDefMD.Load(source))
+				using (var src = ModuleDefMD.Load(source))
 				{
-					if (!sourceMod.IsILOnly)
+					if (!src.IsILOnly)
 					{
 						throw new InstrumentationException("Cannot instrument mixed-mode assemblies.");
 					}
 
+					if (src.TypeExistsNormal(typeof(Common.Trace).FullName))
+					{
+						throw new InstrumentationException("The specified assembly is already instrumented.");
+					}
+
+					var common = typeof(Common.Trace).Assembly;
+					var commonName = common.GetName().Name;
+
+					if (src.GetAssemblyRefs().Any(name => name.Name == commonName))
+					{
+						throw new InstrumentationException("The specified assembly is already instrumented.");
+					}
+
 					if (Path.GetFileNameWithoutExtension(source) == "System.Private.CoreLib")
 					{
-						InstrumentCoreLib(sourceMod, memory);
+						var traceType = GenerateTraceType(src);
+						src.Types.Add(traceType);
+						Instrument(src, dst, matcher, traceType);
 					}
 					else
 					{
-						Instrument(sourceMod, memory);
+						using (var commonMod = ModuleDefMD.Load(common.Location))
+						{
+							var traceType = commonMod.Types.Single(t => t.FullName == typeof(Common.Trace).FullName);
+							Instrument(src, dst, matcher, traceType);
+						}
 					}
 				}
 
-				memory.Position = 0;
+				dst.Position = 0;
 
 				using (var file = File.Create(source))
 				{
-					memory.CopyTo(file);
+					dst.CopyTo(file);
 				}
 			}
 		}
 
-		private static void InstrumentCoreLib(ModuleDefMD sourceMod, Stream destination)
+		private static void Instrument(ModuleDefMD src, Stream dst, Func<string, bool> matcher, TypeDef traceType)
 		{
-			if (sourceMod.TypeExistsNormal(typeof(Common.Trace).FullName))
-			{
-				throw new InstrumentationException("The specified assembly is already instrumented.");
-			}
-
-			var traceType = GenerateTraceType(sourceMod);
-			sourceMod.Types.Add(traceType);
-
 			var sharedMemDef = traceType.Fields.Single(f => f.Name == nameof(Common.Trace.SharedMem));
 			var prevLocationDef = traceType.Fields.Single(f => f.Name == nameof(Common.Trace.PrevLocation));
 
-			var sharedMemRef = sourceMod.Import(sharedMemDef);
-			var prevLocationRef = sourceMod.Import(prevLocationDef);
+			var sharedMemRef = src.Import(sharedMemDef);
+			var prevLocationRef = src.Import(prevLocationDef);
 
-			foreach (var type in sourceMod.GetTypes())
+			foreach (var type in src.GetTypes())
 			{
-				if (ShouldInstrumentCoreLibType(type))
+				if (type.HasMethods && matcher(type.FullName))
 				{
 					foreach (var method in type.Methods)
 					{
@@ -97,42 +97,7 @@ namespace SharpFuzz
 				}
 			}
 
-			sourceMod.Write(destination);
-		}
-
-		private static void Instrument(ModuleDefMD sourceMod, Stream destination)
-		{
-			var common = typeof(Common.Trace).Assembly;
-			var commonLoc = common.Location;
-			var commonName = common.GetName().Name;
-
-			using (var commonMod = ModuleDefMD.Load(commonLoc))
-			{
-				if (sourceMod.GetAssemblyRefs().Any(name => name.Name == commonName))
-				{
-					throw new InstrumentationException("The specified assembly is already instrumented.");
-				}
-
-				var traceType = commonMod.Types.Single(t => t.FullName == typeof(Common.Trace).FullName);
-				var sharedMemDef = traceType.Fields.Single(f => f.Name == nameof(Common.Trace.SharedMem));
-				var prevLocationDef = traceType.Fields.Single(f => f.Name == nameof(Common.Trace.PrevLocation));
-
-				var sharedMemRef = sourceMod.Import(sharedMemDef);
-				var prevLocationRef = sourceMod.Import(prevLocationDef);
-
-				foreach (var type in sourceMod.GetTypes())
-				{
-					foreach (var method in type.Methods)
-					{
-						if (method.HasBody)
-						{
-							Method.Instrument(sharedMemRef, prevLocationRef, method);
-						}
-					}
-				}
-
-				sourceMod.Write(destination);
-			}
+			src.Write(dst);
 		}
 
 		private static TypeDefUser GenerateTraceType(ModuleDefMD mod)
@@ -203,13 +168,6 @@ namespace SharpFuzz
 			body.Instructions.Add(OpCodes.Ret.ToInstruction());
 
 			return traceType;
-		}
-
-		private static bool ShouldInstrumentCoreLibType(TypeDef type)
-		{
-			return (!(type.Namespace is null)
-				&& coreLibNamespaces.Contains(type.Namespace))
-				|| coreLibTypes.Contains(type.FullName);
 		}
 
 		/// <summary>
