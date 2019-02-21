@@ -100,6 +100,7 @@ request for the README file, or file an issue.
 - [SixLabors.ImageSharp: Image.Load throws ArgumentOutOfRangeException](https://github.com/SixLabors/ImageSharp/issues/825) **fixed**
 - [SixLabors.ImageSharp: Image.Load throws DivideByZeroException](https://github.com/SixLabors/ImageSharp/issues/821) **fixed**
 - [SixLabors.ImageSharp: Image.Load throws DivideByZeroException](https://github.com/SixLabors/ImageSharp/issues/822) **fixed**
+- [SixLabors.ImageSharp: Image.Load throws ExecutionEngineException](https://github.com/SixLabors/ImageSharp/issues/839)
 - [SixLabors.ImageSharp: Image.Load throws IndexOutOfRangeException](https://github.com/SixLabors/ImageSharp/issues/824) **fixed**
 - [SixLabors.ImageSharp: Image.Load throws NullReferenceException](https://github.com/SixLabors/ImageSharp/issues/797) **fixed**
 - [SixLabors.ImageSharp: Image.Load throws NullReferenceException](https://github.com/SixLabors/ImageSharp/issues/823) **fixed**
