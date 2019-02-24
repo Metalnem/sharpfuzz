@@ -21,12 +21,12 @@ Examples:
   sharpfuzz System.Private.CoreLib.dll System.Number
   sharpfuzz System.Private.CoreLib.dll System.DateTimeFormat System.DateTimeParse";
 
-		public static void Main(string[] args)
+		public static int Main(string[] args)
 		{
 			if (args.Length == 0)
 			{
 				Console.WriteLine(Usage);
-				return;
+				return 0;
 			}
 
 			string path = args[0];
@@ -34,7 +34,7 @@ Examples:
 			if (!File.Exists(path))
 			{
 				Console.Error.WriteLine("Specified file does not exist.");
-				return;
+				return 1;
 			}
 
 			var isCoreLib = Path.GetFileNameWithoutExtension(path) == "System.Private.CoreLib";
@@ -43,7 +43,7 @@ Examples:
 			if (isCoreLib && prefixes.Count == 0)
 			{
 				Console.Error.WriteLine("At least one prefix is required when instrumenting System.Private.CoreLib.");
-				return;
+				return 1;
 			}
 
 			try
@@ -53,18 +53,20 @@ Examples:
 			catch (InstrumentationException ex)
 			{
 				Console.Error.WriteLine(ex.Message);
-				return;
+				return 1;
 			}
 			catch
 			{
 				Console.Error.WriteLine("Failed to instrument the specified file, most likely because it's not a valid .NET assembly.");
-				return;
+				return 1;
 			}
 
 			bool Matcher(string type)
 			{
 				return prefixes.Count == 0 || prefixes.Any(prefix => type.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
 			}
+
+			return 0;
 		}
 	}
 }
