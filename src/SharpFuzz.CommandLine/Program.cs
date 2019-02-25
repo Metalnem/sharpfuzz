@@ -48,7 +48,15 @@ Examples:
 
 			try
 			{
-				Fuzzer.Instrument(path, Matcher);
+				var types = Fuzzer.Instrument(path, Matcher);
+
+				if (!(Environment.GetEnvironmentVariable("SHARPFUZZ_DEBUG") is null))
+				{
+					foreach (var type in types)
+					{
+						Console.WriteLine(type);
+					}
+				}
 			}
 			catch (InstrumentationException ex)
 			{
