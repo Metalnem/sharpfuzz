@@ -40,6 +40,7 @@ request for the README file, or file an issue.
 
 - [AngleSharp: HtmlParser.Parse throws InvalidOperationException](https://github.com/AngleSharp/AngleSharp/issues/735) **fixed**
 - [CoreFX: BigInteger.TryParse out-of-bounds access](https://github.com/dotnet/corefx/issues/35176) **fixed**
+- [CoreFX: BinaryFormatter.Deserialize throws many unexpected exceptions](https://github.com/dotnet/corefx/issues/35491)
 - [CoreFX: DataContractJsonSerializer.ReadObject throws ArgumentOutOfRangeException](https://github.com/dotnet/corefx/issues/35205)
 - [CoreFX: DataContractJsonSerializer.ReadObject throws IndexOutOfRangeException](https://github.com/dotnet/corefx/issues/35204)
 - [CoreFX: DataContractSerializer.ReadObject throws ArgumentNullException](https://github.com/dotnet/corefx/issues/35203)
