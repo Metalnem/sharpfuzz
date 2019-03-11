@@ -88,9 +88,9 @@ request for the README file, or file an issue.
 - [OpenMCDF: System.OutOfMemoryException when reading corrupt Word document](https://github.com/ironfede/openmcdf/issues/40) **fixed**
 - [protobuf-net: Serializer.Deserialize can throw many unexpected exceptions](https://github.com/mgravell/protobuf-net/issues/481)
 - [protobuf-net: Serializer.Deserialize hangs permanently](https://github.com/mgravell/protobuf-net/issues/479)
-- [Scriban: Template.ParseLiquid throws ArgumentOutOfRangeException](https://github.com/lunet-io/scriban/issues/121)
-- [Scriban: Template.ParseLiquid throws NullReferenceException](https://github.com/lunet-io/scriban/issues/120)
-- [Scriban: Template.Render throws InvalidCastException](https://github.com/lunet-io/scriban/issues/122)
+- [Scriban: Template.ParseLiquid throws ArgumentOutOfRangeException](https://github.com/lunet-io/scriban/issues/121) **fixed**
+- [Scriban: Template.ParseLiquid throws NullReferenceException](https://github.com/lunet-io/scriban/issues/120) **fixed**
+- [Scriban: Template.Render throws InvalidCastException](https://github.com/lunet-io/scriban/issues/122) **fixed**
 - [SharpCompress: Enumerating ZipArchive.Entries collection throws NullReferenceException](https://github.com/adamhathcock/sharpcompress/issues/431)
 - [SharpZipLib: ZipInputStream.GetNextEntry hangs permanently](https://github.com/icsharpcode/SharpZipLib/issues/300)
 - [SixLabors.Fonts: FontDescription.LoadDescription throws ArgumentException](https://github.com/SixLabors/Fonts/issues/96) **fixed**
