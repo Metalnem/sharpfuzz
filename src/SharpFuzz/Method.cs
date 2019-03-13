@@ -184,6 +184,11 @@ namespace SharpFuzz
 				{
 					handler.HandlerEnd = handlerEnd;
 				}
+
+				if (handler.FilterStart != null && instrumented.TryGetValue(handler.FilterStart, out var filterStart))
+				{
+					handler.FilterStart = filterStart;
+				}
 			}
 		}
 	}
