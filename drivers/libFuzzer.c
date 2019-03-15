@@ -102,7 +102,7 @@ static void init()
 		}
 
 		execlp(target_path, "", NULL);
-		die("execv() failed");
+		die("execlp() failed");
 	}
 	else
 	{
