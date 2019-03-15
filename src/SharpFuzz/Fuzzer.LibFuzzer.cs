@@ -21,9 +21,8 @@ namespace SharpFuzz
 			/// it is running under libFuzzer.
 			/// </summary>
 			/// <param name="action">
-			/// Some action that calls the instrumented library. If an
-			/// uncaught exception escapes the call, FAULT_CRASH execution
-			/// status code is reported to libFuzzer.
+			/// Some action that calls the instrumented library. If an uncaught
+			/// exception escapes the call, crash is reported to libFuzzer.
 			/// </param>
 			public static unsafe void Run(ReadOnlySpanAction action)
 			{
