@@ -1,3 +1,4 @@
+#include "errno.h"
 #include "stddef.h"
 #include "stdint.h"
 #include "stdio.h"
@@ -128,14 +129,26 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 	memset(trace_bits, 0, MAP_SIZE);
 	memcpy(trace_bits + MAP_SIZE, data, size);
 
-	if (write(ctl_fd, &size, LEN_FLD_SIZE) != LEN_FLD_SIZE)
+	int result;
+
+	while ((result = write(ctl_fd, &size, LEN_FLD_SIZE)) == -1 && errno == EINTR)
+	{
+		continue;
+	}
+
+	if (result != LEN_FLD_SIZE)
 	{
 		die("write() failed");
 	}
 
 	int status;
 
-	if (read(st_fd, &status, LEN_FLD_SIZE) != LEN_FLD_SIZE)
+	while ((result = read(st_fd, &status, LEN_FLD_SIZE)) == -1 && errno == EINTR)
+	{
+		continue;
+	}
+
+	if (result != LEN_FLD_SIZE)
 	{
 		die("read() failed");
 	}
