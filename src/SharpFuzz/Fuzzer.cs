@@ -15,6 +15,8 @@ namespace SharpFuzz
 	/// </summary>
 	public static partial class Fuzzer
 	{
+		private const int MapSize = 1 << 16;
+
 		/// <summary>
 		/// Instrument method performs the in-place afl-fuzz
 		/// instrumentation of the <paramref name="source"/> assembly.
@@ -176,7 +178,7 @@ namespace SharpFuzz
 				MethodSig.CreateInstance(new PtrSig(mod.CorLibTypes.Void))
 			);
 
-			body.Instructions.Add(OpCodes.Ldc_I4.ToInstruction(65536));
+			body.Instructions.Add(OpCodes.Ldc_I4.ToInstruction(MapSize));
 			body.Instructions.Add(OpCodes.Call.ToInstruction(allocHGlobal));
 			body.Instructions.Add(OpCodes.Stloc_0.ToInstruction());
 			body.Instructions.Add(OpCodes.Ldloca_S.ToInstruction(local));
@@ -276,11 +278,7 @@ namespace SharpFuzz
 		private static unsafe void Setup(Action action, byte* sharedMem)
 		{
 			Execute(action);
-
-			for (int i = 0; i < 65536; ++i)
-			{
-				sharedMem[i] = 0;
-			}
+			new Span<byte>(sharedMem, MapSize).Clear();
 		}
 
 		private static int Execute(Action action)
