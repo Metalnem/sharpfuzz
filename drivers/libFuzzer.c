@@ -54,7 +54,7 @@ static void init()
 
 	if (!target_path)
 	{
-		die("getenv() failed");
+		die("You must specify the target path by placing it in the __LIBFUZZER_TARGET_PATH environment variable.");
 	}
 
 	int ctl_pipe[2];
