@@ -32,6 +32,12 @@ static void die(const char *msg)
 	exit(1);
 }
 
+static void die_sys(const char *msg)
+{
+	printf("%s: %s\n", msg, strerror(errno));
+	exit(1);
+}
+
 static void remove_shm()
 {
 	shmctl(shm_id, IPC_RMID, NULL);
@@ -56,14 +62,14 @@ static void init()
 
 	if (pipe(ctl_pipe) || pipe(st_pipe))
 	{
-		die("pipe() failed");
+		die_sys("pipe() failed");
 	}
 
 	shm_id = shmget(IPC_PRIVATE, MAP_SIZE + DATA_SIZE, IPC_CREAT | IPC_EXCL | 0600);
 
 	if (shm_id < 0)
 	{
-		die("shmget() failed");
+		die_sys("shmget() failed");
 	}
 
 	atexit(remove_shm);
@@ -72,21 +78,21 @@ static void init()
 
 	if (trace_bits == (void *)-1)
 	{
-		die("shmat() failed");
+		die_sys("shmat() failed");
 	}
 
 	child_pid = fork();
 
 	if (child_pid < 0)
 	{
-		die("fork() failed");
+		die_sys("fork() failed");
 	}
 
 	if (!child_pid)
 	{
 		if (dup2(ctl_pipe[0], CTL_FD) < 0 || dup2(st_pipe[1], ST_FD) < 0)
 		{
-			die("dup() failed");
+			die_sys("dup() failed");
 		}
 
 		close(ctl_pipe[0]);
@@ -99,11 +105,11 @@ static void init()
 
 		if (setenv(SHM_ID_VAR, shm_str, 1))
 		{
-			die("setenv() failed");
+			die_sys("setenv() failed");
 		}
 
 		execlp(target_path, "", NULL);
-		die("execlp() failed");
+		die_sys("execlp() failed");
 	}
 	else
 	{
@@ -113,11 +119,17 @@ static void init()
 		ctl_fd = ctl_pipe[1];
 		st_fd = st_pipe[0];
 
+		int result;
 		int status;
 
-		if (read(st_fd, &status, LEN_FLD_SIZE) != LEN_FLD_SIZE)
+		while ((result = read(st_fd, &status, LEN_FLD_SIZE)) == -1 && errno == EINTR)
 		{
-			die("read() failed");
+			continue;
+		}
+
+		if (result != LEN_FLD_SIZE)
+		{
+			die_sys("read() failed");
 		}
 	}
 }
@@ -143,7 +155,7 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 
 	if (result != LEN_FLD_SIZE)
 	{
-		die("write() failed");
+		die_sys("write() failed");
 	}
 
 	int status;
@@ -155,7 +167,7 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 
 	if (result != LEN_FLD_SIZE)
 	{
-		die("read() failed");
+		die_sys("read() failed");
 	}
 
 	memcpy(extra_counters, trace_bits, MAP_SIZE);
