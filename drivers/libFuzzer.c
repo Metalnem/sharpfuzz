@@ -14,11 +14,16 @@
 #define ST_FD 199
 #define LEN_FLD_SIZE 4
 
-#define TARGET_PATH_VAR "__LIBFUZZER_TARGET_PATH"
 #define SHM_ID_VAR "__LIBFUZZER_SHM_ID"
 
 __attribute__((weak, section("__libfuzzer_extra_counters")))
 uint8_t extra_counters[MAP_SIZE];
+
+static const char *target_path_name = "--target_path";
+static const char *target_arg_name = "--target_arg";
+
+static const char *target_path;
+static const char *target_arg;
 
 static int ctl_fd;
 static int st_fd;
@@ -43,18 +48,43 @@ static void remove_shm()
 	shmctl(shm_id, IPC_RMID, NULL);
 }
 
-static void init()
+static const char *read_flag_value(const char *param, const char *name)
 {
-	if (child_pid)
+	size_t len = strlen(name);
+
+	if (strstr(param, name) == param && param[len] == '=' && param[len + 1])
 	{
-		return;
+		return &param[len + 1];
 	}
 
-	char *target_path = getenv(TARGET_PATH_VAR);
+	return NULL;
+}
+
+static void parse_flags(int argc, char **argv)
+{
+	for (int i = 0; i < argc; ++i)
+	{
+		char *param = argv[i];
+
+		if (!target_path)
+		{
+			target_path = read_flag_value(param, target_path_name);
+		}
+
+		if (!target_arg)
+		{
+			target_arg = read_flag_value(param, target_arg_name);
+		}
+	}
+}
+
+int LLVMFuzzerInitialize(int *argc, char ***argv)
+{
+	parse_flags(*argc, *argv);
 
 	if (!target_path)
 	{
-		die("You must specify the target path by placing it in the __LIBFUZZER_TARGET_PATH environment variable.");
+		die("You must specify the target path by using the --target_path command line flag.");
 	}
 
 	int ctl_pipe[2];
@@ -108,7 +138,15 @@ static void init()
 			die_sys("setenv() failed");
 		}
 
-		execlp(target_path, "", NULL);
+		if (target_arg)
+		{
+			execlp(target_path, "", target_arg, NULL);
+		}
+		else
+		{
+			execlp(target_path, "", NULL);
+		}
+
 		die_sys("execlp() failed");
 	}
 	else
@@ -132,6 +170,8 @@ static void init()
 			die_sys("read() failed");
 		}
 	}
+
+	return 0;
 }
 
 int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
@@ -140,8 +180,6 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 	{
 		die("Size of the input data must not exceed 1 MiB.");
 	}
-
-	init();
 
 	memset(trace_bits, 0, MAP_SIZE);
 	memcpy(trace_bits + MAP_SIZE, data, size);
