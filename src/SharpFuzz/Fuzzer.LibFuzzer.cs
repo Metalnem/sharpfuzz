@@ -46,18 +46,21 @@ namespace SharpFuzz
 					{
 						var size = r.ReadInt32();
 						var data = new ReadOnlySpan<byte>(sharedMem + MapSize, size);
-						var status = Fault.None;
 
 						try
 						{
 							action(data);
+							w.Write(Fault.None);
 						}
-						catch
+						catch (Exception ex)
 						{
-							status = Fault.Crash;
-						}
+							Console.WriteLine(ex);
+							w.Write(Fault.Crash);
 
-						w.Write(status);
+							// The program instrumented with libFuzzer will exit
+							// after the first error, so we should do the same.
+							return;
+						}
 					}
 				}
 			}
