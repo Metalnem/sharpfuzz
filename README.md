@@ -467,3 +467,4 @@ the [libFuzzer Tutorial].
 - **Rody Kersten** - [Kelinci: AFL-based fuzzing for Java](https://github.com/isstac/kelinci)
 - **Jb Evain** - [Mono.Cecil](https://github.com/jbevain/cecil)
 - **0xd4d** - [dnlib](https://github.com/0xd4d/dnlib)
+- **Guido Vranken** - [go-fuzz: libFuzzer support](https://github.com/dvyukov/go-fuzz/pull/217)
