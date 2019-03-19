@@ -17,8 +17,9 @@ namespace SharpFuzz
 			/// <summary>
 			/// Run method starts the libFuzzer runner. It repeatedly executes
 			/// the passed action and reports the execution result to libFuzzer.
-			/// This function will only work if the executable that is calling
-			/// it is running under libFuzzer.
+			/// Tf the executable that is calling it is not running under libFuzzer,
+			/// the action will be executed normally, and will receive its input
+			/// from the file specified in the first command line parameter.
 			/// </summary>
 			/// <param name="action">
 			/// Some action that calls the instrumented library. If an uncaught
@@ -31,7 +32,8 @@ namespace SharpFuzz
 
 				if (s is null || !Int32.TryParse(s, out var shmid))
 				{
-					throw new Exception("This program can only be run under libFuzzer.");
+					RunWithoutLibFuzzer(action);
+					return;
 				}
 
 				using (var shmaddr = Native.shmat(shmid, IntPtr.Zero, 0))
@@ -54,7 +56,7 @@ namespace SharpFuzz
 						}
 						catch (Exception ex)
 						{
-							Console.WriteLine(ex);
+							Console.Error.WriteLine(ex);
 							w.Write(Fault.Crash);
 
 							// The program instrumented with libFuzzer will exit
@@ -62,6 +64,20 @@ namespace SharpFuzz
 							return;
 						}
 					}
+				}
+			}
+
+			private static void RunWithoutLibFuzzer(ReadOnlySpanAction action)
+			{
+				var args = Environment.GetCommandLineArgs();
+
+				if (args.Length > 1)
+				{
+					action(File.ReadAllBytes(args[1]));
+				}
+				else
+				{
+					Console.Error.WriteLine("You must specify the input path as the first command line argument when not running under libFuzzer.");
 				}
 			}
 		}
