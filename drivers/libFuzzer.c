@@ -8,7 +8,7 @@
 #include <sys/shm.h>
 
 #define MAP_SIZE (1 << 16)
-#define SHM_SIZE (1 << 20)
+#define DATA_SIZE (1 << 20)
 
 #define CTL_FD 198
 #define ST_FD 199
@@ -59,7 +59,7 @@ static void init()
 		die("pipe() failed");
 	}
 
-	shm_id = shmget(IPC_PRIVATE, SHM_SIZE, IPC_CREAT | IPC_EXCL | 0600);
+	shm_id = shmget(IPC_PRIVATE, MAP_SIZE + DATA_SIZE, IPC_CREAT | IPC_EXCL | 0600);
 
 	if (shm_id < 0)
 	{
@@ -124,6 +124,11 @@ static void init()
 
 int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 {
+	if (size > DATA_SIZE)
+	{
+		die("Size of the input data must not exceed 1 MiB.");
+	}
+
 	init();
 
 	memset(trace_bits, 0, MAP_SIZE);
