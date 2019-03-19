@@ -192,8 +192,9 @@ namespace SharpFuzz
 		/// <summary>
 		/// Run method starts the .NET equivalent of AFL fork server.
 		/// It repeatedly executes the passed action and reports the
-		/// execution result to afl-fuzz. This function will only work
-		/// if the executable that is calling it is running under afl-fuzz.
+		/// execution result to afl-fuzz. If the executable that is
+		/// calling it is not running under afl-fuzz, the action will
+		/// be executed only once.
 		/// </summary>
 		/// <param name="action">
 		/// Some action that calls the instrumented library. If an
@@ -207,7 +208,8 @@ namespace SharpFuzz
 
 			if (s is null || !Int32.TryParse(s, out var shmid))
 			{
-				throw new Exception("This program can only be run under afl-fuzz.");
+				RunWithoutAflFuzz(action);
+				return;
 			}
 
 			using (var shmaddr = Native.shmat(shmid, IntPtr.Zero, 0))
@@ -227,6 +229,15 @@ namespace SharpFuzz
 					w.Write(pid);
 					w.Write(Execute(action));
 				}
+			}
+		}
+
+		private static unsafe void RunWithoutAflFuzz(Action action)
+		{
+			fixed (byte* sharedMem = new byte[MapSize])
+			{
+				InitializeSharedMemory(sharedMem);
+				action();
 			}
 		}
 

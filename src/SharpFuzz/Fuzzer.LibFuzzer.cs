@@ -17,7 +17,7 @@ namespace SharpFuzz
 			/// <summary>
 			/// Run method starts the libFuzzer runner. It repeatedly executes
 			/// the passed action and reports the execution result to libFuzzer.
-			/// Tf the executable that is calling it is not running under libFuzzer,
+			/// If the executable that is calling it is not running under libFuzzer,
 			/// the action will be executed normally, and will receive its input
 			/// from the file specified in the first command line parameter.
 			/// </summary>
@@ -67,17 +67,19 @@ namespace SharpFuzz
 				}
 			}
 
-			private static void RunWithoutLibFuzzer(ReadOnlySpanAction action)
+			private static unsafe void RunWithoutLibFuzzer(ReadOnlySpanAction action)
 			{
 				var args = Environment.GetCommandLineArgs();
 
-				if (args.Length > 1)
-				{
-					action(File.ReadAllBytes(args[1]));
-				}
-				else
+				if (args.Length <= 1)
 				{
 					Console.Error.WriteLine("You must specify the input path as the first command line argument when not running under libFuzzer.");
+				}
+
+				fixed (byte* sharedMem = new byte[MapSize])
+				{
+					InitializeSharedMemory(sharedMem);
+					action(File.ReadAllBytes(args[1]));
 				}
 			}
 		}
