@@ -10,7 +10,7 @@ namespace SharpFuzz
 	public static partial class Fuzzer
 	{
 		/// <summary>
-		/// Experimental implementation of libFuzzer runner.
+		/// Experimental implementation of the libFuzzer runner.
 		/// </summary>
 		public static class LibFuzzer
 		{
