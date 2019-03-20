@@ -114,3 +114,80 @@ afl-fuzz -i Testcases -o Findings \
 [SharpFuzz samples]: https://github.com/Metalnem/sharpfuzz-samples
 [MyGet feed]: https://dotnet.myget.org/feed/dotnet-core/package/nuget/Microsoft.Private.CoreFx.NETCoreApp
 [this]: https://github.com/dotnet/corefx/blob/master/Documentation/project-docs/dogfooding.md
+
+## Fuzzing classes inside the System.Private.CoreLib
+
+As an example, we are going to fuzz the [DateTime] struct.
+The complete fuzzing project from this tutorial can be found
+in the [System.Private.CoreLib2] directory, which is a part of
+the [SharpFuzz samples] repository.
+
+**1.** Again, we have to create the fuzzing project, and then
+write the fuzzing function:
+
+```csharp
+public static void Main(string[] args)
+{
+  Fuzzer.Run(() =>
+  {
+    var text = File.ReadAllText(args[0]);
+
+    if (DateTime.TryParse(text, out var dt1))
+    {
+      var s = dt1.ToString("O");
+      var dt2 = DateTime.Parse(s, null, DateTimeStyles.RoundtripKind);
+
+      if (dt1 != dt2)
+      {
+        throw new Exception();
+      }
+    }
+  });
+}
+```
+
+**2.** Build the [CoreCLR] repository. If you are using .NET Core 2.2,
+you should build the **release/2.2** branch. In the case of .NET Core
+3.0, you can just build the master. The important thing is to create
+the IL-only build, which you can do like this:
+
+```shell
+./build.sh skiptests skipcrossgen skipnative release
+```
+
+As the result of this operation, you will have the IL-only version
+of the ```System.Private.CoreLib.dll``` assembly in the
+```bin/Product/Linux.x64.Release``` (or ```bin/Product/OSX.x64.Release```).
+
+**3.** Publish your project as a self-contained application,
+and then copy the ```System.Private.CoreLib.dll``` to the
+resulting ```publish``` directory.
+
+**4.** Instrument the class you want. In contrast to fuzzing
+ordinary assemblies, you can't just instrument all the classes.
+The most important reason for this is that fuzzing all the
+classes would lead the fuzzer to explore many irrelevant paths.
+Instead of instrumenting the whole assembly, you will have to
+select the list of classes/namespaces (or just any prefixes
+of the full class names located in the assembly) like this:
+
+```shell
+sharpfuzz bin/Debug/netcoreapp2.2/linux-x64/publish/System.Private.CoreLib.dll System.DateTime System.Globalization.DateTime
+```
+
+The tricky part is to select all the relevant classes.
+Unfortunately, you will have to do this manually, which
+requires some familiarity with the CoreCLR.
+
+**5.** You are now ready to start the fuzzing. As in the previous
+example, you can run afl-fuzz with the following command:
+
+```shell
+afl-fuzz -i Testcases -o Findings \
+  bin/Debug/netcoreapp2.2/linux-x64/publish/project_name @@
+```
+
+[DateTime]: https://docs.microsoft.com/en-us/dotnet/api/system.datetime?view=netcore-2.2
+[System.Private.CoreLib2]: https://github.com/Metalnem/sharpfuzz-samples/tree/master/System.Private.CoreLib2
+[SharpFuzz samples]: https://github.com/Metalnem/sharpfuzz-samples
+[CoreCLR]: https://github.com/dotnet/coreclr
