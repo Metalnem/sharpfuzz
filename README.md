@@ -156,6 +156,10 @@ rm -rf ../afl-2.52b/
 dotnet tool install --global SharpFuzz.CommandLine --version 1.3.3
 ```
 
+The alternative to patching afl-fuzz in order to skip the
+instrumentation check is to set the **AFL_SKIP_BIN_CHECK**
+environment variable.
+
 [SharpFuzz.CommandLine]: https://www.nuget.org/packages/SharpFuzz.CommandLine/
 [script]: https://github.com/Metalnem/sharpfuzz/raw/master/build/Install.sh
 
