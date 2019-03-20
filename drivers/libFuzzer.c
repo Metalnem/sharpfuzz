@@ -48,6 +48,8 @@ static void remove_shm()
 	shmctl(shm_id, IPC_RMID, NULL);
 }
 
+// Read the flag value from the single command line parameter. For example,
+// read_flag_value("--target_path=binary", "--target-path") will return "binary".
 static const char *read_flag_value(const char *param, const char *name)
 {
 	size_t len = strlen(name);
@@ -60,6 +62,8 @@ static const char *read_flag_value(const char *param, const char *name)
 	return NULL;
 }
 
+// Read target_path (the path to .NET executable) and target_arg (optional command
+// line argument that can be passed to .NET executable) from the command line parameters.
 static void parse_flags(int argc, char **argv)
 {
 	for (int i = 0; i < argc; ++i)
@@ -78,6 +82,8 @@ static void parse_flags(int argc, char **argv)
 	}
 }
 
+// Start the .NET child process and initialize two pipes and one shared
+// memory segment for the communication between the parent and the child.
 int LLVMFuzzerInitialize(int *argc, char ***argv)
 {
 	parse_flags(*argc, *argv);
@@ -174,6 +180,10 @@ int LLVMFuzzerInitialize(int *argc, char ***argv)
 	return 0;
 }
 
+// Fuzz the data by writing it to the shared memory segment, sending
+// the size of the data to the .NET process (which will then run
+// its own fuzzing function on the shared memory data), and receiving
+// the status of the executed operation.
 int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 {
 	if (size > DATA_SIZE)
