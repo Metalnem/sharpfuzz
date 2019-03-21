@@ -34,7 +34,7 @@ clang -fsanitize=fuzzer libFuzzer.c -o libfuzzer-dotnet
 If you don't have clang installed, you can download the
 necessary packages [here]. Alternatively, you can just
 download the [prebuilt libfuzzer-dotnet binary]. I can't
-guarantee whether it will work on your Linux distribution,
+guarantee that it will work on your Linux distribution,
 but it worked for me on Ubuntu 16.04, Ubuntu 18.04,
 Debian 8.10, Debian 9.7, and Fedora 27.
 
