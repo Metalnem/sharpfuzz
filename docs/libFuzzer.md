@@ -28,13 +28,20 @@ dotnet publish -r linux-x64
 libFuzzer and .NET programs):
 
 ```shell
-clang -fsanitize=fuzzer libFuzzer.c -o fuzzer-dotnet
+clang -fsanitize=fuzzer libFuzzer.c -o libfuzzer-dotnet
 ```
+
+If you don't have clang installed, you can download the
+necessary packages [here]. Alternatively, you can just
+download the [prebuilt libfuzzer-dotnet binary]. I can't
+guarantee whether it will work on your Linux distribution,
+but it worked for me on Ubuntu 16.04, Ubuntu 18.04,
+Debian 8.10, Debian 9.7, and Fedora 27.
 
 **5.** Start the fuzzing with the following command:
 
 ```shell
-./fuzzer-dotnet --target_path=path_to_assembly testcases_dir
+./libfuzzer-dotnet --target_path=path_to_assembly testcases_dir
 ```
 
 This is just the most basic way of using libFuzzer.
@@ -44,4 +51,6 @@ the [libFuzzer Tutorial].
 [libFuzzer]: http://llvm.org/docs/LibFuzzer.html
 [structure-aware fuzzing]: https://github.com/google/fuzzer-test-suite/blob/master/tutorial/structure-aware-fuzzing.md
 [libFuzzer.c]: https://github.com/Metalnem/sharpfuzz/raw/master/drivers/libFuzzer.c
+[here]: https://apt.llvm.org
+[prebuilt libfuzzer-dotnet binary]: https://github.com/Metalnem/sharpfuzz/releases/download/libfuzzer-0.1.0/libfuzzer-dotnet-0.1.0.zip
 [libFuzzer Tutorial]: https://github.com/google/fuzzer-test-suite/blob/master/tutorial/libFuzzerTutorial.md
