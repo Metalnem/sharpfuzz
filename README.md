@@ -63,7 +63,7 @@ request for the README file, or file an issue.
 - [Jint: Engine.Execute throws OutOfMemoryException after 45s (even with the 2s timeout)](https://github.com/sebastienros/jint/issues/587)
 - [Json.NET: JsonConvert.DeserializeObject can throw several unexpected exceptions](https://github.com/JamesNK/Newtonsoft.Json/issues/1947)
 - [Jurassic: ScriptEngine.Execute terminates the process with StackOverflowException](https://github.com/paulbartrum/jurassic/issues/141)
-- [Jurassic: ScriptEngine.Execute throws some unexpected exceptions](https://github.com/paulbartrum/jurassic/issues/142)
+- [Jurassic: ScriptEngine.Execute throws some unexpected exceptions](https://github.com/paulbartrum/jurassic/issues/142) **fixed**
 - [Jurassic: ScriptEngine.ExecuteFile hangs permanently instead of throwing JavaScriptException](https://github.com/paulbartrum/jurassic/issues/138) **fixed**
 - [Jurassic: ScriptEngine.ExecuteFile throws FormatException](https://github.com/paulbartrum/jurassic/issues/137) **fixed**
 - [LumenWorks CSV Reader: CsvReader.ReadNextRecord throws IndexOutOfRangeException](https://github.com/phatcher/CsvReader/issues/67)
