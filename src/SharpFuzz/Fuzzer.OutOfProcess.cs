@@ -68,7 +68,6 @@ namespace SharpFuzz
 			private static void RunServer()
 			{
 				var initial = true;
-				var name = Process.GetCurrentProcess().ProcessName;
 
 				using (var r = new BinaryReader(new AnonymousPipeClientStream(PipeDirection.In, "198")))
 				using (var w = new BinaryWriter(new AnonymousPipeClientStream(PipeDirection.Out, "199")))
@@ -82,7 +81,7 @@ namespace SharpFuzz
 						using (var ctl = new BinaryWriter(ctlPipe))
 						using (var st = new BinaryReader(stPipe))
 						{
-							var info = new ProcessStartInfo(name, Environment.CommandLine);
+							var info = new ProcessStartInfo("dotnet", Environment.CommandLine);
 
 							info.Environment[ControlHandle] = ctlPipe.GetClientHandleAsString();
 							info.Environment[StatusHandle] = stPipe.GetClientHandleAsString();
