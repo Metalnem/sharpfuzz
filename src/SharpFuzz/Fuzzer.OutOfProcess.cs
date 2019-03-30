@@ -35,9 +35,10 @@ namespace SharpFuzz
 			/// be executed only once.
 			/// </summary>
 			/// <param name="action">
-			/// Some action that calls the instrumented library. If an
-			/// uncaught exception escapes the call, FAULT_CRASH execution
-			/// status code is reported to afl-fuzz.
+			/// Some action that calls the instrumented library. The stream
+			/// argument passed to the action contains the input data, and
+			/// must never be closed. If an uncaught exception escapes the
+			/// call, FAULT_CRASH execution status code is reported to afl-fuzz.
 			/// </param>
 			public static void Run(Action<Stream> action)
 			{

@@ -10,7 +10,10 @@ namespace SharpFuzz
 	public static partial class Fuzzer
 	{
 		/// <summary>
-		/// Experimental implementation of the libFuzzer runner.
+		/// LibFuzzer class contains the libFuzzer runner. It enables users
+		/// to fuzz their code with libFuzzer by using the libFuzzer-dotnet
+		/// binary, which acts as a bridge between the libFuzzer and the
+		/// managed code (it currently works only on Linux).
 		/// </summary>
 		public static class LibFuzzer
 		{
@@ -22,7 +25,8 @@ namespace SharpFuzz
 			/// from the file specified in the first command line parameter.
 			/// </summary>
 			/// <param name="action">
-			/// Some action that calls the instrumented library. If an uncaught
+			/// Some action that calls the instrumented library. The span argument
+			/// passed to the action contains the input data. If an uncaught
 			/// exception escapes the call, crash is reported to libFuzzer.
 			/// </param>
 			public static unsafe void Run(ReadOnlySpanAction action)
