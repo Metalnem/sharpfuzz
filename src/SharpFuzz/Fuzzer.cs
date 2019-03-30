@@ -201,43 +201,62 @@ namespace SharpFuzz
 		/// uncaught exception escapes the call, FAULT_CRASH execution
 		/// status code is reported to afl-fuzz.
 		/// </param>
-		public static unsafe void Run(Action action)
+		public static unsafe void Run(Action<Stream> action)
 		{
 			ThrowIfNull(action, nameof(action));
 			var s = Environment.GetEnvironmentVariable("__AFL_SHM_ID");
 
-			if (s is null || !Int32.TryParse(s, out var shmid))
+			using (var stream = Console.OpenStandardInput())
 			{
-				RunWithoutAflFuzz(action);
-				return;
-			}
-
-			using (var shmaddr = Native.shmat(shmid, IntPtr.Zero, 0))
-			using (var r = new BinaryReader(new AnonymousPipeClientStream(PipeDirection.In, "198")))
-			using (var w = new BinaryWriter(new AnonymousPipeClientStream(PipeDirection.Out, "199")))
-			{
-				byte* sharedMem = (byte*)shmaddr.DangerousGetHandle();
-				InitializeSharedMemory(sharedMem);
-
-				w.Write(0);
-				Setup(action, sharedMem);
-				var pid = Process.GetCurrentProcess().Id;
-
-				while (true)
+				if (s is null || !Int32.TryParse(s, out var shmid))
 				{
-					r.ReadInt32();
-					w.Write(pid);
-					w.Write(Execute(action));
+					RunWithoutAflFuzz(action, stream);
+					return;
+				}
+
+				using (var shmaddr = Native.shmat(shmid, IntPtr.Zero, 0))
+				using (var r = new BinaryReader(new AnonymousPipeClientStream(PipeDirection.In, "198")))
+				using (var w = new BinaryWriter(new AnonymousPipeClientStream(PipeDirection.Out, "199")))
+				{
+					byte* sharedMem = (byte*)shmaddr.DangerousGetHandle();
+					InitializeSharedMemory(sharedMem);
+
+					w.Write(0);
+					var pid = Process.GetCurrentProcess().Id;
+
+					using (var memory = new MemoryStream())
+					{
+						// In the first run, we have to consume the input stream twice:
+						// first time to run the Setup function, second time to actually
+						// report the results. That's why we have to use the MemoryStream
+						// in order to be able to seek back to the beginning of the input.
+						stream.CopyTo(memory);
+						memory.Seek(0, SeekOrigin.Begin);
+
+						Setup(action, memory, sharedMem);
+						memory.Seek(0, SeekOrigin.Begin);
+
+						r.ReadInt32();
+						w.Write(pid);
+						w.Write(Execute(action, memory));
+					}
+
+					while (true)
+					{
+						r.ReadInt32();
+						w.Write(pid);
+						w.Write(Execute(action, stream));
+					}
 				}
 			}
 		}
 
-		private static unsafe void RunWithoutAflFuzz(Action action)
+		private static unsafe void RunWithoutAflFuzz(Action<Stream> action, Stream stream)
 		{
 			fixed (byte* sharedMem = new byte[MapSize])
 			{
 				InitializeSharedMemory(sharedMem);
-				action();
+				action(stream);
 			}
 		}
 
@@ -286,17 +305,17 @@ namespace SharpFuzz
 		// be executed only once. To prevent "WARNING: Instrumentation
 		// output varies across runs" message in the afl-fuzz, we can
 		// safely ignore the first execution during the dry run.
-		private static unsafe void Setup(Action action, byte* sharedMem)
+		private static unsafe void Setup(Action<Stream> action, Stream stream, byte* sharedMem)
 		{
-			Execute(action);
+			Execute(action, stream);
 			new Span<byte>(sharedMem, MapSize).Clear();
 		}
 
-		private static int Execute(Action action)
+		private static int Execute(Action<Stream> action, Stream stream)
 		{
 			try
 			{
-				action();
+				action(stream);
 			}
 			catch
 			{

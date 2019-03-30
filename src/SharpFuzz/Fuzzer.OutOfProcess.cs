@@ -39,29 +39,32 @@ namespace SharpFuzz
 			/// uncaught exception escapes the call, FAULT_CRASH execution
 			/// status code is reported to afl-fuzz.
 			/// </param>
-			public static void Run(Action action)
+			public static void Run(Action<Stream> action)
 			{
 				ThrowIfNull(action, nameof(action));
 				var s = Environment.GetEnvironmentVariable("__AFL_SHM_ID");
 
-				if (s is null || !Int32.TryParse(s, out var shmid))
+				using (var stream = Console.OpenStandardInput())
 				{
-					RunWithoutAflFuzz(action);
-					return;
-				}
+					if (s is null || !Int32.TryParse(s, out var shmid))
+					{
+						RunWithoutAflFuzz(action, stream);
+						return;
+					}
 
-				var ctl = Environment.GetEnvironmentVariable(ControlHandle);
-				var st = Environment.GetEnvironmentVariable(StatusHandle);
-				var pid = Environment.GetEnvironmentVariable(ParentId);
-				var initial = Environment.GetEnvironmentVariable(InitialRun);
+					var ctl = Environment.GetEnvironmentVariable(ControlHandle);
+					var st = Environment.GetEnvironmentVariable(StatusHandle);
+					var pid = Environment.GetEnvironmentVariable(ParentId);
+					var initial = Environment.GetEnvironmentVariable(InitialRun);
 
-				if (ctl is null || st is null || pid is null || initial is null)
-				{
-					RunServer();
-				}
-				else
-				{
-					RunClient(action, shmid, ctl, st, Int32.Parse(pid), Boolean.Parse(initial));
+					if (ctl is null || st is null || pid is null || initial is null)
+					{
+						RunServer();
+					}
+					else
+					{
+						RunClient(action, stream, shmid, ctl, st, Int32.Parse(pid), Boolean.Parse(initial));
+					}
 				}
 			}
 
@@ -127,7 +130,8 @@ namespace SharpFuzz
 			}
 
 			private static unsafe void RunClient(
-				Action action,
+				Action<Stream> action,
+				Stream stream,
 				int shmid,
 				string ctlHandle,
 				string stHandle,
@@ -155,13 +159,27 @@ namespace SharpFuzz
 					// as the part of the dry run.
 					if (initial)
 					{
-						Setup(action, sharedMem);
+						using (var memory = new MemoryStream())
+						{
+							// In the first run, we have to consume the input stream twice:
+							// first time to run the Setup function, second time to actually
+							// report the results. That's why we have to use the MemoryStream
+							// in order to be able to seek back to the beginning of the input.
+							stream.CopyTo(memory);
+							memory.Seek(0, SeekOrigin.Begin);
+
+							Setup(action, memory, sharedMem);
+							memory.Seek(0, SeekOrigin.Begin);
+
+							ctl.ReadInt32();
+							st.Write(Execute(action, memory));
+						}
 					}
 
 					while (true)
 					{
 						ctl.ReadInt32();
-						st.Write(Execute(action));
+						st.Write(Execute(action, stream));
 					}
 				}
 			}
