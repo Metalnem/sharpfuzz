@@ -5,6 +5,7 @@ using System.IO;
 using System.IO.Pipes;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 using dnlib.DotNet;
 using dnlib.DotNet.Emit;
 
@@ -16,6 +17,7 @@ namespace SharpFuzz
 	public static partial class Fuzzer
 	{
 		private const int MapSize = 1 << 16;
+		private const int DefaultBufferSize = 10_000_000;
 
 		/// <summary>
 		/// Instrument method performs the in-place afl-fuzz
@@ -198,9 +200,9 @@ namespace SharpFuzz
 		/// </summary>
 		/// <param name="action">
 		/// Some action that calls the instrumented library. The stream
-		/// argument passed to the action contains the input data, and
-		/// must never be closed. If an uncaught exception escapes the
-		/// call, FAULT_CRASH execution status code is reported to afl-fuzz.
+		/// argument passed to the action contains the input data. If an
+		/// uncaught exception escapes the call, FAULT_CRASH execution
+		/// status code is reported to afl-fuzz.
 		/// </param>
 		public static unsafe void Run(Action<Stream> action)
 		{
@@ -251,6 +253,45 @@ namespace SharpFuzz
 					}
 				}
 			}
+		}
+
+		/// <summary>
+		/// Run method starts the .NET equivalent of AFL fork server.
+		/// It repeatedly executes the passed action and reports the
+		/// execution result to afl-fuzz. If the executable that is
+		/// calling it is not running under afl-fuzz, the action will
+		/// be executed only once.
+		/// </summary>
+		/// <param name="action">
+		/// Some action that calls the instrumented library. The string
+		/// argument passed to the action contains the input data. If an
+		/// uncaught exception escapes the call, FAULT_CRASH execution
+		/// status code is reported to afl-fuzz.
+		/// </param>
+		/// <param name="bufferSize">
+		/// Optional size (in bytes) of the input buffer that will be used
+		/// to read the whole stream before it's converted to a string. You
+		/// should avoid using this parameter, unless fuzzer detects some
+		/// interesting input that exceeds 10 MB (which is highly unlikely).
+		/// </param>
+		/// <exception cref="InvalidOperationException">
+		/// Thrown if input data size in bytes exceeds <paramref name="bufferSize"/>.
+		/// </exception>
+		public static void Run(Action<string> action, int bufferSize = DefaultBufferSize)
+		{
+			var buffer = new byte[Math.Max(bufferSize, DefaultBufferSize)];
+
+			Run((Stream stream) =>
+			{
+				var read = stream.Read(buffer, 0, buffer.Length);
+
+				if (read == buffer.Length)
+				{
+					throw new InvalidOperationException($"Input data size must not exceed {bufferSize} bytes.");
+				}
+
+				action(Encoding.UTF8.GetString(buffer, 0, read));
+			});
 		}
 
 		private static unsafe void RunWithoutAflFuzz(Action<Stream> action, Stream stream)
