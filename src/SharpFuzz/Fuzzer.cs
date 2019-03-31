@@ -297,9 +297,10 @@ namespace SharpFuzz
 		/// if the executable that is calling it is running under afl-fuzz.
 		/// </summary>
 		/// <param name="action">
-		/// Some action that calls the instrumented library.
+		/// Some action that calls the instrumented library. The stream
+		/// argument passed to the action contains the input data.
 		/// </param>
-		public static unsafe void RunOnce(Action action)
+		public static unsafe void RunOnce(Action<Stream> action)
 		{
 			ThrowIfNull(action, nameof(action));
 			var s = Environment.GetEnvironmentVariable("__AFL_SHM_ID");
@@ -309,10 +310,12 @@ namespace SharpFuzz
 				throw new Exception("This program can only be run under afl-fuzz.");
 			}
 
+			using (var stdin = Console.OpenStandardInput())
+			using (var stream = new UnclosableStreamWrapper(stdin))
 			using (var shmaddr = Native.shmat(shmid, IntPtr.Zero, 0))
 			{
 				InitializeSharedMemory((byte*)shmaddr.DangerousGetHandle());
-				action();
+				action(stream);
 			}
 		}
 
