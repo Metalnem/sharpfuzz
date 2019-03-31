@@ -238,7 +238,7 @@ dotnet add package Sigil --version 4.7.0
 the following command:
 
 ```shell
-dotnet add package SharpFuzz --version 1.4.1
+dotnet add package SharpFuzz --version 1.4.2
 ```
 
 **6.** Now it's time to write some code. The **Main**
