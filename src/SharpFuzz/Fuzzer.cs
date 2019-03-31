@@ -228,7 +228,7 @@ namespace SharpFuzz
 					w.Write(0);
 					var pid = Process.GetCurrentProcess().Id;
 
-					using (var memory = new MemoryStream())
+					using (var memory = new UnclosableStreamWrapper(new MemoryStream()))
 					{
 						// In the first run, we have to consume the input stream twice:
 						// first time to run the Setup function, second time to actually
