@@ -279,19 +279,7 @@ namespace SharpFuzz
 		/// </exception>
 		public static void Run(Action<string> action, int bufferSize = DefaultBufferSize)
 		{
-			var buffer = new byte[Math.Max(bufferSize, DefaultBufferSize)];
-
-			Run((Stream stream) =>
-			{
-				var read = stream.Read(buffer, 0, buffer.Length);
-
-				if (read == buffer.Length)
-				{
-					throw new InvalidOperationException($"Input data size must not exceed {bufferSize} bytes.");
-				}
-
-				action(Encoding.UTF8.GetString(buffer, 0, read));
-			});
+			Run(Wrap(action, bufferSize));
 		}
 
 		private static unsafe void RunWithoutAflFuzz(Action<Stream> action, Stream stream)
@@ -366,6 +354,23 @@ namespace SharpFuzz
 			}
 
 			return Fault.None;
+		}
+
+		private static Action<Stream> Wrap(Action<string> action, int bufferSize)
+		{
+			var buffer = new byte[Math.Max(bufferSize, DefaultBufferSize)];
+
+			return stream =>
+			{
+				var read = stream.Read(buffer, 0, buffer.Length);
+
+				if (read == buffer.Length)
+				{
+					throw new InvalidOperationException($"Input data size must not exceed {bufferSize} bytes.");
+				}
+
+				action(Encoding.UTF8.GetString(buffer, 0, read));
+			};
 		}
 
 		private static void ThrowIfNull(object value, string name)

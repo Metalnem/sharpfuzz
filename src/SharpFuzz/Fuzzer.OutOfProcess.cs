@@ -70,6 +70,33 @@ namespace SharpFuzz
 				}
 			}
 
+			/// <summary>
+			/// Run method starts the .NET equivalent of AFL fork server.
+			/// It repeatedly executes the passed action and reports the
+			/// execution result to afl-fuzz. If the executable that is
+			/// calling it is not running under afl-fuzz, the action will
+			/// be executed only once.
+			/// </summary>
+			/// <param name="action">
+			/// Some action that calls the instrumented library. The stream
+			/// argument passed to the action contains the input data. If an
+			/// uncaught exception escapes the call, FAULT_CRASH execution
+			/// status code is reported to afl-fuzz.
+			/// </param>
+			/// <param name="bufferSize">
+			/// Optional size (in bytes) of the input buffer that will be used
+			/// to read the whole stream before it's converted to a string. You
+			/// should avoid using this parameter, unless fuzzer detects some
+			/// interesting input that exceeds 10 MB (which is highly unlikely).
+			/// </param>
+			/// <exception cref="InvalidOperationException">
+			/// Thrown if input data size in bytes exceeds <paramref name="bufferSize"/>.
+			/// </exception>
+			public static void Run(Action<string> action, int bufferSize = DefaultBufferSize)
+			{
+				Run(Wrap(action, bufferSize));
+			}
+
 			private static void RunServer()
 			{
 				var initial = true;
