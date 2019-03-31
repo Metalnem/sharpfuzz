@@ -45,7 +45,8 @@ namespace SharpFuzz
 				ThrowIfNull(action, nameof(action));
 				var s = Environment.GetEnvironmentVariable("__AFL_SHM_ID");
 
-				using (var stream = Console.OpenStandardInput())
+				using (var stdin = Console.OpenStandardInput())
+				using (var stream = new UnclosableStreamWrapper(stdin))
 				{
 					if (s is null || !Int32.TryParse(s, out var shmid))
 					{
