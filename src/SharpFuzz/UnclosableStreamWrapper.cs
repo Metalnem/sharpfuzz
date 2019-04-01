@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 namespace SharpFuzz
 {
 	// The stream passed to the fuzzer users should never be closed.
-	// To ensure that, we can simply make Close method do nothing.
+	// This wrapper class forwards all method calls to the underlying
+	// stream, but never disposes of it.
 	internal sealed class UnclosableStreamWrapper : Stream, IDisposable
 	{
 		private readonly Stream baseStream;
@@ -67,6 +68,5 @@ namespace SharpFuzz
 		}
 
 		public override void WriteByte(byte value) => baseStream.WriteByte(value);
-		protected override void Dispose(bool disposing) => base.Dispose(disposing);
 	}
 }

@@ -36,10 +36,9 @@ namespace SharpFuzz
 			/// </summary>
 			/// <param name="action">
 			/// Some action that calls the instrumented library. The stream
-			/// argument passed to the action contains the input data. It's
-			/// allowed to call the Close method on the stream, but calling
-			/// the Dispose method is not. If an uncaught exception escapes
-			/// the call, FAULT_CRASH execution status code is reported to afl-fuzz.
+			/// argument passed to the action contains the input data. If an
+			/// uncaught exception escapes the call, FAULT_CRASH execution
+			/// status code is reported to afl-fuzz.
 			/// </param>
 			public static void Run(Action<Stream> action)
 			{
