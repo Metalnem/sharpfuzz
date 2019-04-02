@@ -163,8 +163,8 @@ int LLVMFuzzerInitialize(int *argc, char ***argv)
 		ctl_fd = ctl_pipe[1];
 		st_fd = st_pipe[0];
 
-		int result;
-		int status;
+		ssize_t result;
+		int32_t status;
 
 		while ((result = read(st_fd, &status, LEN_FLD_SIZE)) == -1 && errno == EINTR)
 		{
@@ -194,7 +194,7 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 	memset(trace_bits, 0, MAP_SIZE);
 	memcpy(trace_bits + MAP_SIZE, data, size);
 
-	int result;
+	ssize_t result;
 
 	while ((result = write(ctl_fd, &size, LEN_FLD_SIZE)) == -1 && errno == EINTR)
 	{
@@ -206,7 +206,7 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 		die_sys("write() failed");
 	}
 
-	int status;
+	int32_t status;
 
 	while ((result = read(st_fd, &status, LEN_FLD_SIZE)) == -1 && errno == EINTR)
 	{
