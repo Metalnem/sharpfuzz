@@ -257,13 +257,13 @@ namespace Jil.Fuzz
   {
     public static void Main(string[] args)
     {
-      Fuzzer.Run(() =>
+      Fuzzer.Run(stream =>
       {
         try
         {
-          using (var file = File.OpenText(args[0]))
+          using (var reader = new StreamReader(stream))
           {
-            JSON.DeserializeDynamic(file);
+            JSON.DeserializeDynamic(reader);
           }
         }
         catch (DeserializationException) { }
@@ -275,9 +275,10 @@ namespace Jil.Fuzz
 
 We want to fuzz the deserialization capabilities of Jil,
 which is why we are calling the **JSON.DeserializeDynamic**
-method. The path to the input file being tested will always
-be provided to our program as the first command line argument
-(afl-fuzz will take care of that during the fuzzing process).
+method. The input data will be be provided to us via the
+**stream** parameter (if the code you are testing takes
+its input as a string, you can use an additional overload
+of **Fuzzer.Run** that accepts **Action&lt;string&gt;**).
 
 If the code passed to **Fuzzer.Run** throws an exception,
 it will be reported to afl-fuzz as a crash. However, we
