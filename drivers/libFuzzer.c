@@ -178,7 +178,7 @@ int LLVMFuzzerInitialize(int *argc, char ***argv)
 
 		if (result != LEN_FLD_SIZE)
 		{
-			printf("short read: expected %d, got %zd\n", LEN_FLD_SIZE, result);
+			printf("short read: expected %d bytes, got %zd bytes\n", LEN_FLD_SIZE, result);
 			exit(1);
 		}
 	}
@@ -214,7 +214,7 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 
 	if (result != LEN_FLD_SIZE)
 	{
-		printf("short write: expected %d, got %zd\n", LEN_FLD_SIZE, result);
+		printf("short write: expected %d bytes, got %zd bytes\n", LEN_FLD_SIZE, result);
 		exit(1);
 	}
 
@@ -232,9 +232,14 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 		die_sys("read() failed");
 	}
 
+	if (result == 0)
+	{
+		die("The child process terminated unexpectedly.");
+	}
+
 	if (result != LEN_FLD_SIZE)
 	{
-		printf("short read: expected %d, got %zd\n", LEN_FLD_SIZE, result);
+		printf("short read: expected %d bytes, got %zd bytes\n", LEN_FLD_SIZE, result);
 		exit(1);
 	}
 
