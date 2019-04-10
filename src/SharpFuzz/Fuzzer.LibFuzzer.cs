@@ -48,25 +48,37 @@ namespace SharpFuzz
 					InitializeSharedMemory(sharedMem);
 					w.Write(0);
 
-					while (true)
+					try
 					{
-						var size = r.ReadInt32();
-						var data = new ReadOnlySpan<byte>(sharedMem + MapSize, size);
+						var status = Fault.None;
 
-						try
+						// The program instrumented with libFuzzer will exit
+						// after the first error, so we should do the same.
+						while (status != Fault.Crash)
 						{
-							action(data);
-							w.Write(Fault.None);
-						}
-						catch (Exception ex)
-						{
-							Console.Error.WriteLine(ex);
-							w.Write(Fault.Crash);
+							var size = r.ReadInt32();
+							var data = new ReadOnlySpan<byte>(sharedMem + MapSize, size);
 
-							// The program instrumented with libFuzzer will exit
-							// after the first error, so we should do the same.
-							return;
+							try
+							{
+								action(data);
+							}
+							catch (Exception ex)
+							{
+								Console.Error.WriteLine(ex);
+								status = Fault.Crash;
+							}
+
+							w.Write(status);
 						}
+					}
+					catch
+					{
+						// Error communicating with the parent process, most likely
+						// because it was terminated after the timeout expired, or
+						// it was killed by the user. In any case, the exception
+						// details don't matter here, so we can just exit silently.
+						return;
 					}
 				}
 			}
