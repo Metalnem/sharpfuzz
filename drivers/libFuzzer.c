@@ -171,9 +171,15 @@ int LLVMFuzzerInitialize(int *argc, char ***argv)
 			continue;
 		}
 
-		if (result != LEN_FLD_SIZE)
+		if (result == -1)
 		{
 			die_sys("read() failed");
+		}
+
+		if (result != LEN_FLD_SIZE)
+		{
+			printf("short read: expected %zd, got %zd\n", LEN_FLD_SIZE, result);
+			exit(1);
 		}
 	}
 
@@ -201,9 +207,15 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 		continue;
 	}
 
-	if (result != LEN_FLD_SIZE)
+	if (result == -1)
 	{
 		die_sys("write() failed");
+	}
+
+	if (result != LEN_FLD_SIZE)
+	{
+		printf("short write: expected %zd, got %zd\n", LEN_FLD_SIZE, result);
+		exit(1);
 	}
 
 	int32_t status;
@@ -213,12 +225,18 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 		continue;
 	}
 
-	if (result != LEN_FLD_SIZE)
+	memcpy(extra_counters, trace_bits, MAP_SIZE);
+
+	if (result == -1)
 	{
 		die_sys("read() failed");
 	}
 
-	memcpy(extra_counters, trace_bits, MAP_SIZE);
+	if (result != LEN_FLD_SIZE)
+	{
+		printf("short read: expected %zd, got %zd\n", LEN_FLD_SIZE, result);
+		exit(1);
+	}
 
 	if (status)
 	{
