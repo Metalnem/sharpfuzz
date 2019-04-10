@@ -52,5 +52,5 @@ the [libFuzzer Tutorial].
 [structure-aware fuzzing]: https://github.com/google/fuzzer-test-suite/blob/master/tutorial/structure-aware-fuzzing.md
 [libFuzzer.c]: https://github.com/Metalnem/sharpfuzz/raw/master/drivers/libFuzzer.c
 [here]: https://apt.llvm.org
-[prebuilt libfuzzer-dotnet binary]: https://github.com/Metalnem/sharpfuzz/releases/download/libfuzzer-0.1.0/libfuzzer-dotnet-0.1.0.zip
+[prebuilt libfuzzer-dotnet binary]: https://github.com/Metalnem/sharpfuzz/releases/download/libFuzzer-0.2.0/libfuzzer-dotnet-0.2.0.zip
 [libFuzzer Tutorial]: https://github.com/google/fuzzer-test-suite/blob/master/tutorial/libFuzzerTutorial.md
