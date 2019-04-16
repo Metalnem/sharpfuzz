@@ -1,0 +1,26 @@
+syntax = "proto3";
+package libfuzzer;
+
+enum Method {
+  GET = 0;
+  HEAD = 1;
+  POST = 2;
+  PUT = 3;
+  DELETE = 4;
+  CONNECT = 5;
+  OPTIONS = 6;
+  TRACE = 7;
+  PATCH = 8;
+}
+
+message Header {
+  string name = 1;
+  string value = 2;
+}
+
+message Request {
+  Method method = 1;
+  string path = 2;
+  repeated Header headers = 3;
+  bytes body = 4;
+}
