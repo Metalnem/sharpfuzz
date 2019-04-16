@@ -21,6 +21,7 @@ message Header {
 message Request {
   Method method = 1;
   string path = 2;
-  repeated Header headers = 3;
-  bytes body = 4;
+  string host = 3;
+  repeated Header headers = 4;
+  bytes body = 5;
 }
