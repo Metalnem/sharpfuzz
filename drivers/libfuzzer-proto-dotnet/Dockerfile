@@ -4,8 +4,8 @@ WORKDIR /app
 RUN apt-get update \
 	&& apt-get install -y git gnupg wget \
 	&& wget -qO - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - \
-	&& echo 'deb http://apt.llvm.org/stretch/ llvm-toolchain-stretch main' >> /etc/apt/sources.list.d/libFuzzer.list \
-	&& echo 'deb-src http://apt.llvm.org/stretch/ llvm-toolchain-stretch main' >> /etc/apt/sources.list.d/libFuzzer.list \
+	&& echo 'deb http://apt.llvm.org/stretch/ llvm-toolchain-stretch main' >> /etc/apt/sources.list.d/llvm.list \
+	&& echo 'deb-src http://apt.llvm.org/stretch/ llvm-toolchain-stretch main' >> /etc/apt/sources.list.d/llvm.list \
 	&& git clone https://github.com/google/libprotobuf-mutator.git
 
 RUN apt-get update && apt-get install -y \
