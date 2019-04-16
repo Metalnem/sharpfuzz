@@ -1,5 +1,5 @@
 syntax = "proto3";
-package libfuzzer;
+package libfuzzer.http;
 
 enum Method {
   GET = 0;

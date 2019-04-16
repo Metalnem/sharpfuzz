@@ -7,7 +7,7 @@
 #include "unistd.h"
 #include <sys/shm.h>
 
-#include "src/libfuzzer/libfuzzer.pb.h"
+#include "src/libfuzzer/libfuzzer-http.pb.h"
 #include "src/libfuzzer/libfuzzer_macro.h"
 
 #define MAP_SIZE (1 << 16)
@@ -198,7 +198,7 @@ extern "C" size_t LLVMFuzzerCustomMutator(
 	unsigned int seed)
 {
 	using protobuf_mutator::libfuzzer::CustomProtoMutator;
-	libfuzzer::Message input;
+	libfuzzer::http::Request input;
 
 	return CustomProtoMutator(true, data, size, max_size, seed, &input);
 }
@@ -213,8 +213,8 @@ extern "C" size_t LLVMFuzzerCustomCrossOver(
 	unsigned int seed)
 {
 	using protobuf_mutator::libfuzzer::CustomProtoCrossOver;
-	libfuzzer::Message input1;
-	libfuzzer::Message input2;
+	libfuzzer::http::Request input1;
+	libfuzzer::http::Request input2;
 
 	return CustomProtoCrossOver(true, data1, size1, data2, size2, out, max_out_size, seed, &input1, &input2);
 }
