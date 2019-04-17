@@ -20,11 +20,10 @@ it might look in the case of **XmlReader**:
 ```csharp
 public static void Main(string[] args)
 {
-  Fuzzer.Run(() =>
+  Fuzzer.Run(stream =>
   {
     try
     {
-      using (var stream = File.OpenRead(args[0]))
       using (var xml = XmlReader.Create(stream))
       {
         while (xml.Read()) { }
@@ -106,7 +105,7 @@ look something like this:
 
 ```shell
 afl-fuzz -i Testcases -o Findings \
-  bin/Debug/netcoreapp2.2/linux-x64/publish/project_name @@
+  bin/Debug/netcoreapp2.2/linux-x64/publish/project_name
 ```
 
 [XmlReader]: https://docs.microsoft.com/en-us/dotnet/api/system.xml.xmlreader?view=netcore-2.2
@@ -128,10 +127,8 @@ write the fuzzing function:
 ```csharp
 public static void Main(string[] args)
 {
-  Fuzzer.Run(() =>
+  Fuzzer.Run(text =>
   {
-    var text = File.ReadAllText(args[0]);
-
     if (DateTime.TryParse(text, out var dt1))
     {
       var s = dt1.ToString("O");
@@ -184,7 +181,7 @@ example, you can run afl-fuzz with the following command:
 
 ```shell
 afl-fuzz -i Testcases -o Findings \
-  bin/Debug/netcoreapp2.2/linux-x64/publish/project_name @@
+  bin/Debug/netcoreapp2.2/linux-x64/publish/project_name
 ```
 
 [DateTime]: https://docs.microsoft.com/en-us/dotnet/api/system.datetime?view=netcore-2.2

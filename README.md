@@ -304,7 +304,7 @@ the following command:
 
 ```shell
 afl-fuzz -i testcases_dir -o findings_dir \
-  dotnet path_to_assembly @@
+  dotnet path_to_assembly
 ```
 
 Let's say that our working directory is called ```Fuzzing```.
@@ -314,7 +314,7 @@ look like this:
 
 ```shell
 afl-fuzz -i Testcases -o Findings \
-  dotnet bin/Debug/netcoreapp2.1/Fuzzing.dll @@
+  dotnet bin/Debug/netcoreapp2.1/Fuzzing.dll
 ```
 
 For formats such as HTML, JavaScript, JSON, or SQL,
@@ -327,7 +327,7 @@ With this in mind, we can improve our fuzzing of Jil like this:
 ```shell
 afl-fuzz -i Testcases -o Findings \
   -x /usr/local/share/afl/dictionaries/json.dict \
-  dotnet bin/Debug/netcoreapp2.1/Fuzzing.dll @@
+  dotnet bin/Debug/netcoreapp2.1/Fuzzing.dll
 ```
 
 **9.** Sit back and relax! You will often have

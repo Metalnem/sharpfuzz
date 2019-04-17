@@ -53,7 +53,7 @@ You can run it using the following command:
 
 ```shell
 afl-tmin -i test_case -o minimized_result \
-  dotnet path_to_assembly @@
+  dotnet path_to_assembly
 ```
 
 The only change you have to make in your fuzzing
