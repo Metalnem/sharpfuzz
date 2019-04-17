@@ -330,6 +330,25 @@ afl-fuzz -i Testcases -o Findings \
   dotnet bin/Debug/netcoreapp2.1/Fuzzing.dll
 ```
 
+Sometimes you may encounter the following error when
+running afl-fuzz:
+
+```
+[-] Oops, the program crashed with one of the test cases provided. There are
+    several possible explanations:
+```
+
+This usually happens when some of your test inputs
+are causing your fuzzing function to throw an exception,
+but sometimes this can happen due to low default
+memory limit. You can fix it by increasing the
+memory limit for your program to some large value:
+
+```shell
+afl-fuzz -i testcases_dir -o findings_dir -m 10000 \
+  dotnet path_to_assembly
+```
+
 **9.** Sit back and relax! You will often have
 some useful results within minutes, but sometimes
 it can take more than a day, so be patient.
