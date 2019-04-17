@@ -26,7 +26,7 @@ COPY CMakeLists.txt libfuzzer-http.proto libfuzzer-proto-dotnet.cc src/libfuzzer
 WORKDIR build
 
 RUN cmake .. -GNinja \
-	-DCMAKE_BUILD_TYPE=Debug \
+	-DCMAKE_BUILD_TYPE=Release \
 	-DCMAKE_C_COMPILER=clang-9 \
 	-DCMAKE_CXX_COMPILER=clang++-9 \
 	-DLIB_PROTO_MUTATOR_DOWNLOAD_PROTOBUF=ON
