@@ -338,11 +338,12 @@ running afl-fuzz:
     several possible explanations:
 ```
 
-This usually happens when some of your test inputs
-are causing your fuzzing function to throw an exception,
-but sometimes this can happen due to low default
-memory limit. You can fix it by increasing the
-memory limit for your program to some large value:
+This usually happens when some of your provided test
+inputs cause the fuzzing function to throw an exception,
+but sometimes this can happen due to low default memory
+limit (I see this very often in the cloud environment).
+You can fix it by increasing the memory limit for your
+program to some large value:
 
 ```shell
 afl-fuzz -i testcases_dir -o findings_dir -m 10000 \
