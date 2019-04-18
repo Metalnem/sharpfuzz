@@ -25,7 +25,8 @@ RUN apt-get update && apt-get install -y \
 	pkg-config
 
 WORKDIR libprotobuf-mutator
-COPY CMakeLists.txt libfuzzer-http.proto libfuzzer-proto-dotnet.cc src/libfuzzer/
+COPY CMakeLists.txt libfuzzer-http.proto libfuzzer-proto-dotnet.cc src/libfuzzer-dotnet/
+RUN echo 'add_subdirectory(libfuzzer-dotnet)' >> src/CMakeLists.txt
 WORKDIR build
 
 RUN /opt/cmake-3.14.2-Linux-x86_64/bin/cmake .. -GNinja \

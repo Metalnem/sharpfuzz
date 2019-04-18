@@ -7,7 +7,7 @@
 #include "unistd.h"
 #include <sys/shm.h>
 
-#include "src/libfuzzer/libfuzzer-http.pb.h"
+#include "src/libfuzzer-dotnet/libfuzzer-http.pb.h"
 #include "src/libfuzzer/libfuzzer_macro.h"
 
 #define MAP_SIZE (1 << 16)
