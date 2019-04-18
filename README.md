@@ -54,8 +54,8 @@ request for the README file, or file an issue.
 - [Google.Protobuf: MessageParser.ParseFrom throws unexpected exceptions (C#)](https://github.com/protocolbuffers/protobuf/issues/5513) **fixed**
 - [GraphQL-Parser: Parser.Parse takes around 18s to parse the 58K file](https://github.com/graphql-dotnet/parser/issues/22) **fixed**
 - [GraphQL-Parser: Parser.Parse throws ArgumentOutOfRangeException](https://github.com/graphql-dotnet/parser/issues/21) **fixed**
-- [Handlebars.Net: Handlebars.Compile hangs permanently](https://github.com/rexm/Handlebars.Net/issues/283)
-- [Handlebars.Net: Template engine throws some unexpected exceptions](https://github.com/rexm/Handlebars.Net/issues/282)
+- [Handlebars.Net: Handlebars.Compile hangs permanently](https://github.com/rexm/Handlebars.Net/issues/283) **fixed**
+- [Handlebars.Net: Template engine throws some unexpected exceptions](https://github.com/rexm/Handlebars.Net/issues/282) **fixed**
 - [Jil: JSON.DeserializeDynamic throws ArgumentException](https://github.com/kevin-montrose/Jil/issues/316) **fixed**
 - [Jint: Engine.Execute can throw many unexpected exceptions](https://github.com/sebastienros/jint/issues/571)
 - [Jint: Engine.Execute takes more than two minutes to complete (even with the 2s timeout)](https://github.com/sebastienros/jint/issues/586)
