@@ -33,10 +33,20 @@ clang -fsanitize=fuzzer libFuzzer.c -o libfuzzer-dotnet
 
 If you don't have clang installed, you can download the
 necessary packages [here]. Alternatively, you can just
-download the [prebuilt libfuzzer-dotnet binary]. I can't
-guarantee that it will work on your Linux distribution,
-but it worked for me on Ubuntu 16.04, Ubuntu 18.04,
-Debian 8.10, Debian 9.7, and Fedora 27.
+download the [prebuilt libfuzzer-dotnet binary]. It was
+confirmed to work on the following Linux distributions:
+
+- Ubuntu 14.04 (Trusty)
+- Ubuntu 16.04 (Xenial)
+- Ubuntu 18.04 (Bionic)
+- Ubuntu 18.10 (Cosmic)
+- Ubuntu 19.04 (Disco)
+- Debian 8 (Jessie)
+- Debian 9 (Stretch)
+- openSUSE Leap 42.3
+- openSUSE Leap 15.0
+- openSUSE Leap 15.1
+- Fedora 29
 
 **5.** Start the fuzzing with the following command:
 
