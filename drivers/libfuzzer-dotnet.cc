@@ -196,6 +196,7 @@ extern "C" int LLVMFuzzerInitialize(int *argc, char ***argv)
 }
 
 #ifndef DISABLE_CUSTOM_MUTATIONS
+// Mutates the binary protobuf message in data using libprotobuf-mutator.
 extern "C" size_t LLVMFuzzerCustomMutator(
 	uint8_t *data,
 	size_t size,
@@ -208,6 +209,7 @@ extern "C" size_t LLVMFuzzerCustomMutator(
 	return CustomProtoMutator(true, data, size, max_size, seed, &input);
 }
 
+// Combines pieces of binary protobuf messages in data1 and data2 using libprotobuf-mutator.
 extern "C" size_t LLVMFuzzerCustomCrossOver(
 	const uint8_t *data1,
 	size_t size1,
