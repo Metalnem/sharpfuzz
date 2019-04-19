@@ -8,7 +8,7 @@ add_library(libfuzzer-http-proto
 set_property(TARGET libfuzzer-http-proto
              PROPERTY COMPILE_FLAGS ${NO_FUZZING_FLAGS})
 
-add_executable(libfuzzer-proto-dotnet libfuzzer-proto-dotnet.cc)
+add_executable(libfuzzer-proto-dotnet libfuzzer-dotnet.cc)
 
 target_link_libraries(libfuzzer-proto-dotnet
                       libfuzzer-http-proto

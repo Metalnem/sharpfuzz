@@ -24,8 +24,11 @@ RUN apt-get update && apt-get install -y \
 	ninja-build \
 	pkg-config
 
+COPY libfuzzer-dotnet.cc /app
+RUN clang++-9 -DDISABLE_CUSTOM_MUTATIONS -fsanitize=fuzzer libfuzzer-dotnet.cc -o libfuzzer-dotnet
+
 WORKDIR libprotobuf-mutator
-COPY CMakeLists.txt libfuzzer-http.proto libfuzzer-proto-dotnet.cc src/libfuzzer-dotnet/
+COPY CMakeLists.txt libfuzzer-dotnet.cc libfuzzer-http.proto src/libfuzzer-dotnet/
 RUN echo 'add_subdirectory(libfuzzer-dotnet)' >> src/CMakeLists.txt
 WORKDIR build
 

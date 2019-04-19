@@ -7,8 +7,10 @@
 #include "unistd.h"
 #include <sys/shm.h>
 
+#ifndef DISABLE_CUSTOM_MUTATIONS
 #include "src/libfuzzer-dotnet/libfuzzer-http.pb.h"
 #include "src/libfuzzer/libfuzzer_macro.h"
+#endif
 
 #define MAP_SIZE (1 << 16)
 #define DATA_SIZE (1 << 20)
@@ -19,7 +21,9 @@
 
 #define SHM_ID_VAR "__LIBFUZZER_SHM_ID"
 
+#ifndef DISABLE_CUSTOM_MUTATIONS
 protobuf_mutator::protobuf::LogSilencer log_silencer;
+#endif
 
 __attribute__((weak, section("__libfuzzer_extra_counters")))
 uint8_t extra_counters[MAP_SIZE];
@@ -191,6 +195,7 @@ extern "C" int LLVMFuzzerInitialize(int *argc, char ***argv)
 	return 0;
 }
 
+#ifndef DISABLE_CUSTOM_MUTATIONS
 extern "C" size_t LLVMFuzzerCustomMutator(
 	uint8_t *data,
 	size_t size,
@@ -218,6 +223,7 @@ extern "C" size_t LLVMFuzzerCustomCrossOver(
 
 	return CustomProtoCrossOver(true, data1, size1, data2, size2, out, max_out_size, seed, &input1, &input2);
 }
+#endif
 
 // Fuzz the data by writing it to the shared memory segment, sending
 // the size of the data to the .NET process (which will then run
