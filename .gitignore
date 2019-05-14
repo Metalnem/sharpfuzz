@@ -7,7 +7,3 @@
 
 # BenchmarkDotNet
 **/BenchmarkDotNet.Artifacts/*
-
-# libFuzzer
-libfuzzer-dotnet
-libfuzzer-dotnet.zip
