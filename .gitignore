@@ -8,5 +8,6 @@
 # BenchmarkDotNet
 **/BenchmarkDotNet.Artifacts/*
 
-# DocFX
-/api
+# libFuzzer
+libfuzzer-dotnet
+libfuzzer-dotnet.zip
