@@ -153,7 +153,7 @@ make install
 rm -rf ../afl-2.52b/
 
 # Install SharpFuzz.CommandLine global .NET tool
-dotnet tool install --global SharpFuzz.CommandLine --version 1.3.3
+dotnet tool install --global SharpFuzz.CommandLine
 ```
 
 The alternative to patching afl-fuzz in order to skip the
