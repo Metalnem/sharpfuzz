@@ -2,7 +2,7 @@ FROM ubuntu:trusty
 WORKDIR /app
 
 RUN apt-get update \
-	&& apt-get install -y git wget \
+	&& apt-get install -y wget \
 	&& wget -qO - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - \
 	&& echo 'deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty main' >> /etc/apt/sources.list.d/llvm.list \
 	&& echo 'deb-src http://apt.llvm.org/trusty/ llvm-toolchain-trusty main' >> /etc/apt/sources.list.d/llvm.list \
