@@ -3,14 +3,14 @@
   <Import Project="..\..\build\Common.props" />
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFrameworks>netcoreapp2.1;netcoreapp3.0</TargetFrameworks>
     <OutputType>Exe</OutputType>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>sharpfuzz</ToolCommandName>
     <PackageId>SharpFuzz.CommandLine</PackageId>
     <Title>SharpFuzz.CommandLine</Title>
-    <PackageVersion>1.3.3</PackageVersion>
-    <AssemblyVersion>1.3.3.0</AssemblyVersion>
+    <PackageVersion>1.3.4</PackageVersion>
+    <AssemblyVersion>1.3.4.0</AssemblyVersion>
     <Description>Command line tool for SharpFuzz instrumentation</Description>
   </PropertyGroup>
 
