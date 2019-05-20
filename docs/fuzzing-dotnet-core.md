@@ -56,7 +56,7 @@ package:
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="Microsoft.Private.CoreFx.NETCoreApp" Version="4.6.0-preview6.19268.5" />
+  <PackageReference Include="Microsoft.Private.CoreFx.NETCoreApp" Version="4.6.0-*" />
 </ItemGroup>
 ```
 
