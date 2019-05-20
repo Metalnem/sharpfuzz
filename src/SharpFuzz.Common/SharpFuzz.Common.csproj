@@ -7,8 +7,8 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <PackageId>SharpFuzz.Common</PackageId>
     <Title>SharpFuzz.Common</Title>
-    <PackageVersion>2.0.0</PackageVersion>
-    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <PackageVersion>2.1.0</PackageVersion>
+    <AssemblyVersion>2.1.0.0</AssemblyVersion>
     <Description>Internal implementation package not meant for direct consumption</Description>
   </PropertyGroup>
 

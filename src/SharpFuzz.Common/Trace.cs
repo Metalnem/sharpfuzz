@@ -1,4 +1,6 @@
-﻿namespace SharpFuzz.Common
+﻿using System.Collections.Generic;
+
+namespace SharpFuzz.Common
 {
 	/// <summary>
 	/// Trace contains instrumentation injected into fuzzed programs.
@@ -16,5 +18,12 @@
 		/// Identifier of the last executed branch.
 		/// </summary>
 		public static int PrevLocation;
+
+		/// <summary>
+		/// Full execution trace. Contains identifiers of all branches
+		/// hit during the run, in the order of their execution. This
+		/// list is not populated by default.
+		/// </summary>
+		public static readonly List<int> Path = new List<int>();
 	}
 }
