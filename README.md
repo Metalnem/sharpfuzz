@@ -375,7 +375,7 @@ them, and saves only the inputs that produce unique stack traces.
 - [Fuzzing .NET Core](https://github.com/Metalnem/sharpfuzz/blob/master/docs/fuzzing-dotnet-core.md)
 - [Out-of-process fuzzing](https://github.com/Metalnem/sharpfuzz/blob/master/docs/miscellaneous.md#out-of-process-fuzzing)
 - [Test case minimization](https://github.com/Metalnem/sharpfuzz/blob/master/docs/miscellaneous.md#test-case-minimization)
-- [Using libFuzzer](https://github.com/Metalnem/sharpfuzz/blob/master/docs/libFuzzer.md)
+- [Using libFuzzer with SharpFuzz](https://github.com/Metalnem/sharpfuzz/blob/master/docs/libFuzzer.md)
 
 ## Acknowledgements
 

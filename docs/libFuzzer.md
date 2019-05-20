@@ -1,4 +1,4 @@
-## Using libFuzzer
+## Using libFuzzer with SharpFuzz
 
 SharpFuzz can now also be used with [libFuzzer] (currently
 only on Linux, but Windows and macOS support is coming in
