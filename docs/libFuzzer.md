@@ -24,16 +24,7 @@ self-contained executable:
 dotnet publish -r linux-x64
 ```
 
-**4.** Build the [libFuzzer.c] (the bridge between
-libFuzzer and .NET programs):
-
-```shell
-clang -fsanitize=fuzzer libFuzzer.c -o libfuzzer-dotnet
-```
-
-If you don't have clang installed, you can download the
-necessary packages [here]. Alternatively, you can just
-download the [prebuilt libfuzzer-dotnet binary]. It was
+**4.** Download the [libfuzzer-dotnet binary]. It was
 confirmed to work on the following Linux distributions:
 
 - Ubuntu 14.04 (Trusty)
@@ -60,7 +51,5 @@ the [libFuzzer Tutorial].
 
 [libFuzzer]: http://llvm.org/docs/LibFuzzer.html
 [structure-aware fuzzing]: https://github.com/google/fuzzer-test-suite/blob/master/tutorial/structure-aware-fuzzing.md
-[libFuzzer.c]: https://github.com/Metalnem/sharpfuzz/raw/master/drivers/libFuzzer.c
-[here]: https://apt.llvm.org
-[prebuilt libfuzzer-dotnet binary]: https://github.com/Metalnem/sharpfuzz/releases/download/libfuzzer-dotnet-0.2.1/libfuzzer-dotnet-0.2.1.zip
+[libfuzzer-dotnet binary]: https://github.com/Metalnem/libfuzzer-dotnet/releases/latest/download/libfuzzer-dotnet.tar.gz
 [libFuzzer Tutorial]: https://github.com/google/fuzzer-test-suite/blob/master/tutorial/libFuzzerTutorial.md
