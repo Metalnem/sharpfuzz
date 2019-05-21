@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using dnlib.DotNet;
@@ -12,15 +13,30 @@ namespace SharpFuzz
 	{
 		private readonly MemberRef sharedMem;
 		private readonly MemberRef prevLocation;
+		private readonly MemberRef onBranch;
+		private readonly bool enableOnBranchCallback;
 
+		private readonly IMethod invoke;
 		private readonly CilBody body;
 		private readonly List<Instruction> instructions;
 		private readonly Dictionary<Instruction, Instruction> instrumented;
 
-		private Method(MemberRef sharedMem, MemberRef prevLocation, MethodDef method)
+		private Method(
+			MemberRef sharedMem,
+			MemberRef prevLocation,
+			MemberRef onBranch,
+			bool enableOnBranchCallback,
+			MethodDef method)
 		{
 			this.sharedMem = sharedMem;
 			this.prevLocation = prevLocation;
+			this.onBranch = onBranch;
+			this.enableOnBranchCallback = enableOnBranchCallback;
+
+			if (enableOnBranchCallback)
+			{
+				invoke = method.Module.Import(typeof(Action<int, string>).GetMethod(nameof(Action.Invoke)));
+			}
 
 			body = method.Body;
 			instructions = body.Instructions.ToList();
@@ -30,16 +46,21 @@ namespace SharpFuzz
 			body.Instructions.Clear();
 
 			FindInstrumentationTargets();
-			Instrument();
+			Instrument(method.FullName);
 			UpdateBranchTargets();
 			UpdateExceptionHandlers();
 
 			body.OptimizeBranches();
 		}
 
-		public static void Instrument(MemberRef sharedMem, MemberRef prevLocation, MethodDef method)
+		public static void Instrument(
+			MemberRef sharedMem,
+			MemberRef prevLocation,
+			MemberRef onBranch,
+			bool enableOnBranchCallback,
+			MethodDef method)
 		{
-			new Method(sharedMem, prevLocation, method);
+			new Method(sharedMem, prevLocation, onBranch, enableOnBranchCallback, method);
 		}
 
 		// Find all the locations that we want to instrument. These are:
@@ -83,13 +104,13 @@ namespace SharpFuzz
 		// Regenerate the IL for the method. If some instruction was
 		// previously marked as an instrumentation target, generate
 		// the instrumentation code and put it before the instruction.
-		private void Instrument()
+		private void Instrument(string methodName)
 		{
 			foreach (var ins in instructions)
 			{
 				if (instrumented.ContainsKey(ins))
 				{
-					using (var it = GenerateInstrumentationInstructions().GetEnumerator())
+					using (var it = GenerateInstrumentationInstructions(methodName).GetEnumerator())
 					{
 						it.MoveNext();
 						instrumented[ins] = it.Current;
@@ -111,7 +132,7 @@ namespace SharpFuzz
 		// var id = IdGenerator.Next();
 		// SharpFuzz.Common.Trace.SharedMem[id ^ SharpFuzz.Common.Trace.PrevLocation]++;
 		// SharpFuzz.Common.Trace.PrevLocation = id >> 1;
-		private IEnumerable<Instruction> GenerateInstrumentationInstructions()
+		private IEnumerable<Instruction> GenerateInstrumentationInstructions(string methodName)
 		{
 			int id = IdGenerator.Next();
 
@@ -128,6 +149,14 @@ namespace SharpFuzz
 			yield return Instruction.Create(OpCodes.Stind_I1);
 			yield return Instruction.Create(OpCodes.Ldc_I4, id >> 1);
 			yield return Instruction.Create(OpCodes.Stsfld, prevLocation);
+
+			if (enableOnBranchCallback)
+			{
+				yield return Instruction.Create(OpCodes.Ldsfld, onBranch);
+				yield return Instruction.Create(OpCodes.Ldc_I4, id);
+				yield return Instruction.Create(OpCodes.Ldstr, methodName);
+				yield return Instruction.Create(OpCodes.Callvirt, invoke);
+			}
 		}
 
 		// Change all branch destinations to point to the first instruction

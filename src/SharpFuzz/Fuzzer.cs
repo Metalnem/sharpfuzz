@@ -28,8 +28,15 @@ namespace SharpFuzz
 		/// A function that accepts the full name of the class and returns
 		/// true if the class should be instrumented, false otherwise.
 		/// </param>
+		/// <param name="enableOnBranchCallback">
+		/// True if <see cref="SharpFuzz.Common.Trace.OnBranch"/> callback
+		/// should be called each time a branch is hit, false otherwise.
+		/// </param>
 		/// <returns>An ordered collection of instrumented types.</returns>
-		public static IEnumerable<string> Instrument(string source, Func<string, bool> matcher)
+		public static IEnumerable<string> Instrument(
+			string source,
+			Func<string, bool> matcher,
+			bool enableOnBranchCallback)
 		{
 			ThrowIfNull(source, nameof(source));
 			ThrowIfNull(matcher, nameof(matcher));
@@ -62,14 +69,14 @@ namespace SharpFuzz
 					{
 						var traceType = GenerateTraceType(src);
 						src.Types.Add(traceType);
-						types = Instrument(src, dst, matcher, traceType);
+						types = Instrument(src, dst, matcher, enableOnBranchCallback, traceType);
 					}
 					else
 					{
 						using (var commonMod = ModuleDefMD.Load(common.Location))
 						{
 							var traceType = commonMod.Types.Single(t => t.FullName == typeof(Common.Trace).FullName);
-							types = Instrument(src, dst, matcher, traceType);
+							types = Instrument(src, dst, matcher, enableOnBranchCallback, traceType);
 						}
 					}
 				}
@@ -85,13 +92,20 @@ namespace SharpFuzz
 			return types;
 		}
 
-		private static SortedSet<string> Instrument(ModuleDefMD src, Stream dst, Func<string, bool> matcher, TypeDef traceType)
+		private static SortedSet<string> Instrument(
+			ModuleDefMD src,
+			Stream dst,
+			Func<string, bool> matcher,
+			bool enableOnBranchCallback,
+			TypeDef traceType)
 		{
 			var sharedMemDef = traceType.Fields.Single(f => f.Name == nameof(Common.Trace.SharedMem));
 			var prevLocationDef = traceType.Fields.Single(f => f.Name == nameof(Common.Trace.PrevLocation));
+			var onBranchDef = traceType.Fields.Single(f => f.Name == nameof(Common.Trace.OnBranch));
 
 			var sharedMemRef = src.Import(sharedMemDef);
 			var prevLocationRef = src.Import(prevLocationDef);
+			var onBranchRef = src.Import(onBranchDef);
 
 			var types = new SortedSet<string>();
 
@@ -105,7 +119,7 @@ namespace SharpFuzz
 					{
 						if (method.HasBody)
 						{
-							Method.Instrument(sharedMemRef, prevLocationRef, method);
+							Method.Instrument(sharedMemRef, prevLocationRef, onBranchRef, enableOnBranchCallback, method);
 
 							if (!instrumented)
 							{
