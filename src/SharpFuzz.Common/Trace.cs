@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 
 namespace SharpFuzz.Common
 {
@@ -20,10 +20,11 @@ namespace SharpFuzz.Common
 		public static int PrevLocation;
 
 		/// <summary>
-		/// Full execution trace. Contains identifiers of all branches
-		/// hit during the run, in the order of their execution. This
-		/// list is not populated by default.
+		/// Callback that will be called with the unique branch identifier
+		/// and the current function name each time some branch is hit. It's
+		/// disabled by default due to performance reasons, and will only be
+		/// called if the user chose to use it when instrumenting the assembly.
 		/// </summary>
-		public static readonly List<int> Path = new List<int>();
+		public static Action<int, string> OnBranch;
 	}
 }
