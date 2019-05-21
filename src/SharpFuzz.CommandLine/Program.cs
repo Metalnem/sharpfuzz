@@ -48,9 +48,10 @@ Examples:
 
 			try
 			{
-				var types = Fuzzer.Instrument(path, Matcher);
+				var enableOnBranchCallback = Environment.GetEnvironmentVariable("SHARPFUZZ_ENABLE_ON_BRANCH_CALLBACK") is object;
+				var types = Fuzzer.Instrument(path, Matcher, enableOnBranchCallback);
 
-				if (!(Environment.GetEnvironmentVariable("SHARPFUZZ_DEBUG") is null))
+				if (Environment.GetEnvironmentVariable("SHARPFUZZ_PRINT_INSTRUMENTED_TYPES") is object)
 				{
 					foreach (var type in types)
 					{
