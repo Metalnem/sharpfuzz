@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -38,9 +39,29 @@ Examples:
 			}
 
 			var isCoreLib = Path.GetFileNameWithoutExtension(path) == "System.Private.CoreLib";
-			var prefixes = args.Skip(1).ToList();
+			var include = new List<string>();
+			var exclude = new List<string>();
 
-			if (isCoreLib && prefixes.Count == 0)
+			foreach (var arg in args.Skip(1))
+			{
+				// This feature is necessary for me, but it's not documented on purpose,
+				// because I don't want to complicate things further for the users.
+				if (arg.StartsWith("-"))
+				{
+					var trimmed = arg.Substring(1).Trim();
+
+					if (trimmed.Length > 0)
+					{
+						exclude.Add(trimmed);
+					}
+				}
+				else
+				{
+					include.Add(arg);
+				}
+			}
+
+			if (isCoreLib && include.Count == 0)
 			{
 				Console.Error.WriteLine("At least one prefix is required when instrumenting System.Private.CoreLib.");
 				return 1;
@@ -72,7 +93,22 @@ Examples:
 
 			bool Matcher(string type)
 			{
-				return prefixes.Count == 0 || prefixes.Any(prefix => type.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
+				if (exclude.Any(prefix => type.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)))
+				{
+					return false;
+				}
+
+				if (include.Count == 0)
+				{
+					return true;
+				}
+
+				if (include.Any(prefix => type.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)))
+				{
+					return true;
+				}
+
+				return false;
 			}
 
 			return 0;
