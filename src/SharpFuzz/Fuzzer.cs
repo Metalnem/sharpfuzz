@@ -236,8 +236,8 @@ namespace SharpFuzz
 				using (var r = new BinaryReader(new AnonymousPipeClientStream(PipeDirection.In, "198")))
 				using (var w = new BinaryWriter(new AnonymousPipeClientStream(PipeDirection.Out, "199")))
 				{
-					byte* sharedMem = (byte*)shmaddr.DangerousGetHandle();
-					InitializeSharedMemory(sharedMem);
+					var sharedMem = (byte*)shmaddr.DangerousGetHandle();
+					var trace = new TraceWrapper(sharedMem);
 
 					w.Write(0);
 					var pid = Process.GetCurrentProcess().Id;
@@ -256,6 +256,8 @@ namespace SharpFuzz
 
 						r.ReadInt32();
 						w.Write(pid);
+
+						trace.ResetPrevLocation();
 						w.Write(Execute(action, memory));
 					}
 
@@ -263,6 +265,8 @@ namespace SharpFuzz
 					{
 						r.ReadInt32();
 						w.Write(pid);
+
+						trace.ResetPrevLocation();
 						w.Write(Execute(action, stream));
 					}
 				}
@@ -300,7 +304,7 @@ namespace SharpFuzz
 		{
 			fixed (byte* sharedMem = new byte[MapSize])
 			{
-				InitializeSharedMemory(sharedMem);
+				new TraceWrapper(sharedMem);
 				action(stream);
 			}
 		}
@@ -328,22 +332,8 @@ namespace SharpFuzz
 			using (var stream = new UnclosableStreamWrapper(stdin))
 			using (var shmaddr = Native.shmat(shmid, IntPtr.Zero, 0))
 			{
-				InitializeSharedMemory((byte*)shmaddr.DangerousGetHandle());
+				new TraceWrapper((byte*)shmaddr.DangerousGetHandle());
 				action(stream);
-			}
-		}
-
-		private static unsafe void InitializeSharedMemory(byte* sharedMem)
-		{
-			Common.Trace.SharedMem = sharedMem;
-
-			var types = typeof(object).Assembly.GetTypes();
-			var traceType = types.FirstOrDefault(t => t.FullName == typeof(Common.Trace).FullName);
-
-			if (traceType != null)
-			{
-				var sharedMemField = traceType.GetField(nameof(Common.Trace.SharedMem));
-				sharedMemField.SetValue(null, System.Reflection.Pointer.Box(sharedMem, typeof(byte*)));
 			}
 		}
 

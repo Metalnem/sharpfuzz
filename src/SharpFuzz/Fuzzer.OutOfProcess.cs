@@ -201,6 +201,7 @@ namespace SharpFuzz
 							memory.Seek(0, SeekOrigin.Begin);
 
 							ctl.ReadInt32();
+							Common.Trace.PrevLocation = 0;
 							st.Write(Execute(action, memory));
 						}
 					}
@@ -208,6 +209,7 @@ namespace SharpFuzz
 					while (true)
 					{
 						ctl.ReadInt32();
+						Common.Trace.PrevLocation = 0;
 						st.Write(Execute(action, stream));
 					}
 				}

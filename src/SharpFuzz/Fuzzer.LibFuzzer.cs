@@ -44,8 +44,9 @@ namespace SharpFuzz
 				using (var r = new BinaryReader(new AnonymousPipeClientStream(PipeDirection.In, "198")))
 				using (var w = new BinaryWriter(new AnonymousPipeClientStream(PipeDirection.Out, "199")))
 				{
-					byte* sharedMem = (byte*)shmaddr.DangerousGetHandle();
-					InitializeSharedMemory(sharedMem);
+					var sharedMem = (byte*)shmaddr.DangerousGetHandle();
+					var trace = new TraceWrapper(sharedMem);
+
 					w.Write(0);
 
 					try
@@ -56,6 +57,8 @@ namespace SharpFuzz
 						// after the first error, so we should do the same.
 						while (status != Fault.Crash)
 						{
+							trace.ResetPrevLocation();
+
 							var size = r.ReadInt32();
 							var data = new ReadOnlySpan<byte>(sharedMem + MapSize, size);
 
@@ -94,7 +97,7 @@ namespace SharpFuzz
 
 				fixed (byte* sharedMem = new byte[MapSize])
 				{
-					InitializeSharedMemory(sharedMem);
+					new TraceWrapper(sharedMem);
 					action(File.ReadAllBytes(args[1]));
 				}
 			}
