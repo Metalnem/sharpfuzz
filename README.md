@@ -38,7 +38,6 @@ request for the README file, or file an issue.
 
 - [CVE-2019-0980 | .Net Framework and .Net Core Denial of Service Vulnerability](https://portal.msrc.microsoft.com/en-us/security-guidance/advisory/CVE-2019-0980)
 - [CVE-2019-0981 | .Net Framework and .Net Core Denial of Service Vulnerability](https://portal.msrc.microsoft.com/en-us/security-guidance/advisory/CVE-2019-0981)
-
 - [AngleSharp: HtmlParser.Parse throws InvalidOperationException](https://github.com/AngleSharp/AngleSharp/issues/735) **fixed**
 - [CoreFX: BigInteger.TryParse out-of-bounds access](https://github.com/dotnet/corefx/issues/35176) **fixed**
 - [CoreFX: BinaryFormatter.Deserialize throws many unexpected exceptions](https://github.com/dotnet/corefx/issues/35491)
