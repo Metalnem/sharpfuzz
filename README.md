@@ -22,6 +22,7 @@ integration with afl-fuzz works, read my blog post
 
 ## Table of contents
 
+- [CVEs](#cves)
 - [Trophies](#trophies)
 - [Requirements](#requirements)
 - [Installation](#installation)
@@ -29,15 +30,17 @@ integration with afl-fuzz works, read my blog post
 - [Advanced topics](#advanced-topics)
 - [Acknowledgements](#acknowledgements)
 
+## CVEs
+
+- [CVE-2019-0980: .NET Framework and .NET Core Denial of Service Vulnerability](https://portal.msrc.microsoft.com/en-us/security-guidance/advisory/CVE-2019-0980)
+- [CVE-2019-0981: .NET Framework and .NET Core Denial of Service Vulnerability](https://portal.msrc.microsoft.com/en-us/security-guidance/advisory/CVE-2019-0981)
+
 ## Trophies
 
 If you find some interesting bugs with SharpFuzz, and
 are comfortable with sharing them, I would love to add
 them to this list. Please send me an email, make a pull
 request for the README file, or file an issue.
-
-- [CVE-2019-0980: .NET Framework and .NET Core Denial of Service Vulnerability](https://portal.msrc.microsoft.com/en-us/security-guidance/advisory/CVE-2019-0980)
-- [CVE-2019-0981: .NET Framework and .NET Core Denial of Service Vulnerability](https://portal.msrc.microsoft.com/en-us/security-guidance/advisory/CVE-2019-0981)
   
 - [AngleSharp: HtmlParser.Parse throws InvalidOperationException](https://github.com/AngleSharp/AngleSharp/issues/735) **fixed**
 - [CoreFX: BigInteger.TryParse out-of-bounds access](https://github.com/dotnet/corefx/issues/35176) **fixed**
