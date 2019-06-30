@@ -22,7 +22,7 @@ integration with afl-fuzz works, read my blog post
 
 ## Table of contents
 
-- [CVEs](#cves)
+- [CVE](#cve)
 - [Trophies](#trophies)
 - [Requirements](#requirements)
 - [Installation](#installation)
@@ -30,7 +30,7 @@ integration with afl-fuzz works, read my blog post
 - [Advanced topics](#advanced-topics)
 - [Acknowledgements](#acknowledgements)
 
-## CVEs
+## CVE
 
 - [CVE-2019-0980: .NET Framework and .NET Core Denial of Service Vulnerability](https://portal.msrc.microsoft.com/en-us/security-guidance/advisory/CVE-2019-0980)
 - [CVE-2019-0981: .NET Framework and .NET Core Denial of Service Vulnerability](https://portal.msrc.microsoft.com/en-us/security-guidance/advisory/CVE-2019-0981)
