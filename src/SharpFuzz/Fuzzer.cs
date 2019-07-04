@@ -159,8 +159,15 @@ namespace SharpFuzz
 				FieldAttributes.Public | FieldAttributes.Static
 			);
 
+			var onBranchField = new FieldDefUser(
+				nameof(Common.Trace.OnBranch),
+				new FieldSig(mod.ImportAsTypeSig(typeof(Action<int, string>))),
+				FieldAttributes.Public | FieldAttributes.Static
+			);
+
 			traceType.Fields.Add(sharedMemField);
 			traceType.Fields.Add(prevLocationField);
+			traceType.Fields.Add(onBranchField);
 
 			var cctorSig = MethodSig.CreateStatic(mod.CorLibTypes.Void);
 			var cctorImplFlags = MethodImplAttributes.IL | MethodImplAttributes.Managed;
