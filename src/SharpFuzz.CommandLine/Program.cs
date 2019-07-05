@@ -48,16 +48,11 @@ Examples:
 				// because I don't want to complicate things further for the users.
 				if (arg.StartsWith("-"))
 				{
-					var trimmed = arg.Substring(1).Trim();
-
-					if (trimmed.Length > 0)
-					{
-						exclude.Add(trimmed);
-					}
+					exclude.AddRange(arg.Substring(1).Trim().Split(',', StringSplitOptions.RemoveEmptyEntries));
 				}
 				else
 				{
-					include.Add(arg);
+					include.AddRange(arg.Split(',', StringSplitOptions.RemoveEmptyEntries));
 				}
 			}
 
