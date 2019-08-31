@@ -59,6 +59,7 @@ request for the README file, or file an issue.
 - [ExcelDataReader: ExcelReaderFactory.CreateBinaryReader throws OutOfMemoryException](https://github.com/ExcelDataReader/ExcelDataReader/issues/382) **fixed**
 - [ExCSS: StylesheetParser.Parse throws ArgumentOutOfRangeException](https://github.com/TylerBrinks/ExCSS/issues/101)
 - [Fluid: FluidTemplate.TryParse and FluidTemplateExtensions.Render throw some unexpected exceptions](https://github.com/sebastienros/fluid/issues/148)
+- [Fluid: FluidTemplateExtensions.Render hangs permanently](https://github.com/sebastienros/fluid/issues/149)
 - [Google.Protobuf: MessageParser.ParseFrom throws unexpected exceptions (C#)](https://github.com/protocolbuffers/protobuf/issues/5513) **fixed**
 - [GraphQL-Parser: Parser.Parse takes around 18s to parse the 58K file](https://github.com/graphql-dotnet/parser/issues/22) **fixed**
 - [GraphQL-Parser: Parser.Parse throws ArgumentOutOfRangeException](https://github.com/graphql-dotnet/parser/issues/21) **fixed**
