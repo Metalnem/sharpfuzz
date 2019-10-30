@@ -22,102 +22,14 @@ integration with afl-fuzz works, read my blog post
 
 ## Table of contents
 
-- [CVE](#cve)
-- [Trophies](#trophies)
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Common issues](#common-issues)
 - [Advanced topics](#advanced-topics)
+- [CVE](#cve)
+- [Trophies](#trophies)
 - [Acknowledgements](#acknowledgements)
-
-## CVE
-
-- [CVE-2019-0980: .NET Framework and .NET Core Denial of Service Vulnerability](https://portal.msrc.microsoft.com/en-us/security-guidance/advisory/CVE-2019-0980)
-- [CVE-2019-0981: .NET Framework and .NET Core Denial of Service Vulnerability](https://portal.msrc.microsoft.com/en-us/security-guidance/advisory/CVE-2019-0981)
-
-## Trophies
-
-If you find some interesting bugs with SharpFuzz, and
-are comfortable with sharing them, I would love to add
-them to this list. Please send me an email, make a pull
-request for the README file, or file an issue.
-  
-- [AngleSharp: HtmlParser.Parse throws InvalidOperationException](https://github.com/AngleSharp/AngleSharp/issues/735) **fixed**
-- [CoreFX: BigInteger.TryParse out-of-bounds access](https://github.com/dotnet/corefx/issues/35176) **fixed**
-- [CoreFX: BinaryFormatter.Deserialize throws many unexpected exceptions](https://github.com/dotnet/corefx/issues/35491) **fixed**
-- [CoreFX: DataContractJsonSerializer.ReadObject throws ArgumentOutOfRangeException](https://github.com/dotnet/corefx/issues/35205)
-- [CoreFX: DataContractJsonSerializer.ReadObject throws IndexOutOfRangeException](https://github.com/dotnet/corefx/issues/35204)
-- [CoreFX: DataContractSerializer.ReadObject throws ArgumentNullException](https://github.com/dotnet/corefx/issues/35203)
-- [CoreFX: Double.Parse throws AccessViolationException on .NET Core 3.0](https://github.com/dotnet/corefx/issues/35780) **fixed**
-- [CoreFX: G17 format specifier doesn't always round-trip double values](https://github.com/dotnet/corefx/issues/35369)
-- [CoreFX: Uri.TryCreate throws IndexOutOfRangeException](https://github.com/dotnet/corefx/issues/35072)
-- [CoreFX: XmlReader.Create throws IndexOutOfRangeException](https://github.com/dotnet/corefx/issues/35073) **fixed**
-- [DotLiquid: Template.Parse throws ArgumentNullException instead of SyntaxException](https://github.com/dotliquid/dotliquid/issues/333)
-- [Esprima .NET: JavaScriptParser.ParseProgram throws ArgumentOutOfRangeException](https://github.com/sebastienros/esprima-dotnet/issues/70)
-- [Esprima .NET: StackOverflowException when parsing a lot of starting parentheses](https://github.com/sebastienros/esprima-dotnet/issues/104) **fixed**
-- [ExcelDataReader: ExcelReaderFactory.CreateBinaryReader can throw unexpected exceptions](https://github.com/ExcelDataReader/ExcelDataReader/issues/383) **fixed**
-- [ExcelDataReader: ExcelReaderFactory.CreateBinaryReader throws OutOfMemoryException](https://github.com/ExcelDataReader/ExcelDataReader/issues/382) **fixed**
-- [ExCSS: StylesheetParser.Parse throws ArgumentOutOfRangeException](https://github.com/TylerBrinks/ExCSS/issues/101)
-- [Fluid: FluidTemplate.TryParse and FluidTemplateExtensions.Render throw some unexpected exceptions](https://github.com/sebastienros/fluid/issues/148) **fixed**
-- [Fluid: FluidTemplateExtensions.Render hangs permanently](https://github.com/sebastienros/fluid/issues/149) **fixed**
-- [Google.Protobuf: MessageParser.ParseFrom throws unexpected exceptions (C#)](https://github.com/protocolbuffers/protobuf/issues/5513) **fixed**
-- [GraphQL-Parser: Parser.Parse takes around 18s to parse the 58K file](https://github.com/graphql-dotnet/parser/issues/22) **fixed**
-- [GraphQL-Parser: Parser.Parse throws ArgumentOutOfRangeException](https://github.com/graphql-dotnet/parser/issues/21) **fixed**
-- [Handlebars.Net: Handlebars.Compile hangs permanently](https://github.com/rexm/Handlebars.Net/issues/283) **fixed**
-- [Handlebars.Net: Template engine throws some unexpected exceptions](https://github.com/rexm/Handlebars.Net/issues/282) **fixed**
-- [Jil: JSON.DeserializeDynamic throws ArgumentException](https://github.com/kevin-montrose/Jil/issues/316) **fixed**
-- [Jint: Engine.Execute can throw many unexpected exceptions](https://github.com/sebastienros/jint/issues/571) **fixed**
-- [Jint: Engine.Execute takes more than two minutes to complete (even with the 2s timeout)](https://github.com/sebastienros/jint/issues/586) **fixed**
-- [Jint: Engine.Execute throws OutOfMemoryException after 45s (even with the 2s timeout)](https://github.com/sebastienros/jint/issues/587) **fixed**
-- [Json.NET: JsonConvert.DeserializeObject can throw several unexpected exceptions](https://github.com/JamesNK/Newtonsoft.Json/issues/1947)
-- [Jurassic: ScriptEngine.Execute terminates the process with StackOverflowException](https://github.com/paulbartrum/jurassic/issues/141)
-- [Jurassic: ScriptEngine.Execute throws some unexpected exceptions](https://github.com/paulbartrum/jurassic/issues/142) **fixed**
-- [Jurassic: ScriptEngine.ExecuteFile hangs permanently instead of throwing JavaScriptException](https://github.com/paulbartrum/jurassic/issues/138) **fixed**
-- [Jurassic: ScriptEngine.ExecuteFile throws FormatException](https://github.com/paulbartrum/jurassic/issues/137) **fixed**
-- [LumenWorks CSV Reader: CsvReader.ReadNextRecord throws IndexOutOfRangeException](https://github.com/phatcher/CsvReader/issues/67)
-- [Markdig: Markdown.ToHtml hangs permanently](https://github.com/lunet-io/markdig/issues/278) **fixed**
-- [Markdig: Markdown.ToHtml takes more than two minutes to complete when processing the 32K file](https://github.com/lunet-io/markdig/issues/306) **fixed**
-- [Markdig: Markdown.ToHtml throws ArgumentOutOfRangeException](https://github.com/lunet-io/markdig/issues/275) **fixed**
-- [Markdig: Markdown.ToHtml throws IndexOutOfRangeException](https://github.com/lunet-io/markdig/issues/276) **fixed**
-- [Markdig: Markdown.ToHtml throws IndexOutOfRangeException](https://github.com/lunet-io/markdig/issues/303)
-- [Markdig: Markdown.ToHtml throws NullReferenceException](https://github.com/lunet-io/markdig/issues/277) **fixed**
-- [MarkdownSharp: Markdown.Transform hangs permanently](https://github.com/StackExchange/MarkdownSharp/issues/8)
-- [MessagePack for CLI: Unpacking.UnpackObject throws several unexpected exceptions](https://github.com/msgpack/msgpack-cli/issues/311)
-- [Mono.Cecil: ModuleDefinition.ReadModule can throw many (possibly) unexpected exceptions](https://github.com/jbevain/cecil/issues/556)
-- [Mono.Cecil: ModuleDefinition.ReadModule hangs permanently](https://github.com/jbevain/cecil/issues/555) **fixed**
-- [NCrontab: CrontabSchedule.Parse throws OverflowException instead of CrontabException](https://github.com/atifaziz/NCrontab/issues/43)
-- [NUglify: Uglify.Js hangs permanently](https://github.com/xoofx/NUglify/issues/63)
-- [Open XML SDK: Add some security/fuzz testing](https://github.com/OfficeDev/Open-XML-SDK/issues/441)
-- [OpenMCDF: OutOfMemoryException when parsing Excel document / endless while-loop](https://github.com/ironfede/openmcdf/issues/30) **fixed**
-- [OpenMCDF: System.ArgumentOutOfRangeException take 2](https://github.com/ironfede/openmcdf/issues/39) **fixed**
-- [OpenMCDF: System.ArgumentOutOfRangeException when trying to open certain invalid files](https://github.com/ironfede/openmcdf/issues/38) **fixed**
-- [OpenMCDF: System.OutOfMemoryException when reading corrupt Word document](https://github.com/ironfede/openmcdf/issues/40) **fixed**
-- [PdfPig: StackOverflowException reading corrupt PDF document](https://github.com/UglyToad/PdfPig/issues/33) **fixed**
-- [protobuf-net: Serializer.Deserialize can throw many unexpected exceptions](https://github.com/mgravell/protobuf-net/issues/481)
-- [protobuf-net: Serializer.Deserialize hangs permanently](https://github.com/mgravell/protobuf-net/issues/479)
-- [Scriban: Template.ParseLiquid throws ArgumentOutOfRangeException](https://github.com/lunet-io/scriban/issues/121) **fixed**
-- [Scriban: Template.ParseLiquid throws NullReferenceException](https://github.com/lunet-io/scriban/issues/120) **fixed**
-- [Scriban: Template.Render throws InvalidCastException](https://github.com/lunet-io/scriban/issues/122) **fixed**
-- [SharpCompress: Enumerating ZipArchive.Entries collection throws NullReferenceException](https://github.com/adamhathcock/sharpcompress/issues/431)
-- [SharpZipLib: ZipInputStream.GetNextEntry hangs permanently](https://github.com/icsharpcode/SharpZipLib/issues/300) **fixed**
-- [SixLabors.Fonts: FontDescription.LoadDescription throws ArgumentException](https://github.com/SixLabors/Fonts/issues/96) **fixed**
-- [SixLabors.Fonts: FontDescription.LoadDescription throws NullReferenceException](https://github.com/SixLabors/Fonts/issues/97) **fixed**
-- [SixLabors.ImageSharp: Image.Load terminates the process with AccessViolationException](https://github.com/SixLabors/ImageSharp/issues/798) **fixed**
-- [SixLabors.ImageSharp: Image.Load throws AccessViolationException](https://github.com/SixLabors/ImageSharp/issues/827) **fixed**
-- [SixLabors.ImageSharp: Image.Load throws ArgumentException](https://github.com/SixLabors/ImageSharp/issues/826) **fixed**
-- [SixLabors.ImageSharp: Image.Load throws ArgumentOutOfRangeException](https://github.com/SixLabors/ImageSharp/issues/825) **fixed**
-- [SixLabors.ImageSharp: Image.Load throws DivideByZeroException](https://github.com/SixLabors/ImageSharp/issues/821) **fixed**
-- [SixLabors.ImageSharp: Image.Load throws DivideByZeroException](https://github.com/SixLabors/ImageSharp/issues/822) **fixed**
-- [SixLabors.ImageSharp: Image.Load throws ExecutionEngineException](https://github.com/SixLabors/ImageSharp/issues/839) **fixed**
-- [SixLabors.ImageSharp: Image.Load throws IndexOutOfRangeException](https://github.com/SixLabors/ImageSharp/issues/824) **fixed**
-- [SixLabors.ImageSharp: Image.Load throws NullReferenceException](https://github.com/SixLabors/ImageSharp/issues/797) **fixed**
-- [SixLabors.ImageSharp: Image.Load throws NullReferenceException](https://github.com/SixLabors/ImageSharp/issues/823) **fixed**
-- [Utf8Json: JsonSerializer.Deserialize can throw many unexpected exceptions](https://github.com/neuecc/Utf8Json/issues/142)
-- [Web Markup Minifier: HtmlMinifier.Minify hangs permanently](https://github.com/Taritsyn/WebMarkupMin/issues/73) **fixed**
-- [Web Markup Minifier: HtmlMinifier.Minify throws InvalidOperationException](https://github.com/Taritsyn/WebMarkupMin/issues/77) **fixed**
-- [YamlDotNet: YamlStream.Load takes more than 60s to parse the 37K file](https://github.com/aaubry/YamlDotNet/issues/379)
-- [YamlDotNet: YamlStream.Load terminates the process with StackOverflowException](https://github.com/aaubry/YamlDotNet/issues/375)
-- [YamlDotNet: YamlStream.Load throws ArgumentException](https://github.com/aaubry/YamlDotNet/issues/374)
 
 ## Requirements
 
@@ -380,12 +292,112 @@ them, and saves only the inputs that produce unique stack traces.
 [SharpFuzz]: https://www.nuget.org/packages/SharpFuzz
 [dictionary]: https://lcamtuf.blogspot.com/2015/01/afl-fuzz-making-up-grammar-with.html
 
+## Common Issues
+
+Adding a reasonable timeout parameter (e.g. ```-t 5000```) to the ```afl-fuzz``` command is recommended, 
+as the automatic detection mechanism is unreliable when using ```sharpfuzz```. 
+Otherwise you might see frequent and seemingly random error messages such as 
+```
+[-] PROGRAM ABORT : Unable to communicate with fork server (OOM?)
+         Location : run_target(), afl-fuzz.c:2417
+```
+See: https://github.com/Metalnem/sharpfuzz/issues/11
+
 ## Advanced topics
 
 - [Fuzzing .NET Core](https://github.com/Metalnem/sharpfuzz/blob/master/docs/fuzzing-dotnet-core.md)
 - [Out-of-process fuzzing](https://github.com/Metalnem/sharpfuzz/blob/master/docs/miscellaneous.md#out-of-process-fuzzing)
 - [Test case minimization](https://github.com/Metalnem/sharpfuzz/blob/master/docs/miscellaneous.md#test-case-minimization)
 - [Using libFuzzer with SharpFuzz](https://github.com/Metalnem/sharpfuzz/blob/master/docs/libFuzzer.md)
+
+## CVE
+
+- [CVE-2019-0980: .NET Framework and .NET Core Denial of Service Vulnerability](https://portal.msrc.microsoft.com/en-us/security-guidance/advisory/CVE-2019-0980)
+- [CVE-2019-0981: .NET Framework and .NET Core Denial of Service Vulnerability](https://portal.msrc.microsoft.com/en-us/security-guidance/advisory/CVE-2019-0981)
+
+## Trophies
+
+If you find some interesting bugs with SharpFuzz, and
+are comfortable with sharing them, I would love to add
+them to this list. Please send me an email, make a pull
+request for the README file, or file an issue.
+  
+- [AngleSharp: HtmlParser.Parse throws InvalidOperationException](https://github.com/AngleSharp/AngleSharp/issues/735) **fixed**
+- [CoreFX: BigInteger.TryParse out-of-bounds access](https://github.com/dotnet/corefx/issues/35176) **fixed**
+- [CoreFX: BinaryFormatter.Deserialize throws many unexpected exceptions](https://github.com/dotnet/corefx/issues/35491) **fixed**
+- [CoreFX: DataContractJsonSerializer.ReadObject throws ArgumentOutOfRangeException](https://github.com/dotnet/corefx/issues/35205)
+- [CoreFX: DataContractJsonSerializer.ReadObject throws IndexOutOfRangeException](https://github.com/dotnet/corefx/issues/35204)
+- [CoreFX: DataContractSerializer.ReadObject throws ArgumentNullException](https://github.com/dotnet/corefx/issues/35203)
+- [CoreFX: Double.Parse throws AccessViolationException on .NET Core 3.0](https://github.com/dotnet/corefx/issues/35780) **fixed**
+- [CoreFX: G17 format specifier doesn't always round-trip double values](https://github.com/dotnet/corefx/issues/35369)
+- [CoreFX: Uri.TryCreate throws IndexOutOfRangeException](https://github.com/dotnet/corefx/issues/35072)
+- [CoreFX: XmlReader.Create throws IndexOutOfRangeException](https://github.com/dotnet/corefx/issues/35073) **fixed**
+- [DotLiquid: Template.Parse throws ArgumentNullException instead of SyntaxException](https://github.com/dotliquid/dotliquid/issues/333)
+- [Esprima .NET: JavaScriptParser.ParseProgram throws ArgumentOutOfRangeException](https://github.com/sebastienros/esprima-dotnet/issues/70)
+- [Esprima .NET: StackOverflowException when parsing a lot of starting parentheses](https://github.com/sebastienros/esprima-dotnet/issues/104) **fixed**
+- [ExcelDataReader: ExcelReaderFactory.CreateBinaryReader can throw unexpected exceptions](https://github.com/ExcelDataReader/ExcelDataReader/issues/383) **fixed**
+- [ExcelDataReader: ExcelReaderFactory.CreateBinaryReader throws OutOfMemoryException](https://github.com/ExcelDataReader/ExcelDataReader/issues/382) **fixed**
+- [ExCSS: StylesheetParser.Parse throws ArgumentOutOfRangeException](https://github.com/TylerBrinks/ExCSS/issues/101)
+- [Fluid: FluidTemplate.TryParse and FluidTemplateExtensions.Render throw some unexpected exceptions](https://github.com/sebastienros/fluid/issues/148) **fixed**
+- [Fluid: FluidTemplateExtensions.Render hangs permanently](https://github.com/sebastienros/fluid/issues/149) **fixed**
+- [Google.Protobuf: MessageParser.ParseFrom throws unexpected exceptions (C#)](https://github.com/protocolbuffers/protobuf/issues/5513) **fixed**
+- [GraphQL-Parser: Parser.Parse takes around 18s to parse the 58K file](https://github.com/graphql-dotnet/parser/issues/22) **fixed**
+- [GraphQL-Parser: Parser.Parse throws ArgumentOutOfRangeException](https://github.com/graphql-dotnet/parser/issues/21) **fixed**
+- [Handlebars.Net: Handlebars.Compile hangs permanently](https://github.com/rexm/Handlebars.Net/issues/283) **fixed**
+- [Handlebars.Net: Template engine throws some unexpected exceptions](https://github.com/rexm/Handlebars.Net/issues/282) **fixed**
+- [Jil: JSON.DeserializeDynamic throws ArgumentException](https://github.com/kevin-montrose/Jil/issues/316) **fixed**
+- [Jint: Engine.Execute can throw many unexpected exceptions](https://github.com/sebastienros/jint/issues/571) **fixed**
+- [Jint: Engine.Execute takes more than two minutes to complete (even with the 2s timeout)](https://github.com/sebastienros/jint/issues/586) **fixed**
+- [Jint: Engine.Execute throws OutOfMemoryException after 45s (even with the 2s timeout)](https://github.com/sebastienros/jint/issues/587) **fixed**
+- [Json.NET: JsonConvert.DeserializeObject can throw several unexpected exceptions](https://github.com/JamesNK/Newtonsoft.Json/issues/1947)
+- [Jurassic: ScriptEngine.Execute terminates the process with StackOverflowException](https://github.com/paulbartrum/jurassic/issues/141)
+- [Jurassic: ScriptEngine.Execute throws some unexpected exceptions](https://github.com/paulbartrum/jurassic/issues/142) **fixed**
+- [Jurassic: ScriptEngine.ExecuteFile hangs permanently instead of throwing JavaScriptException](https://github.com/paulbartrum/jurassic/issues/138) **fixed**
+- [Jurassic: ScriptEngine.ExecuteFile throws FormatException](https://github.com/paulbartrum/jurassic/issues/137) **fixed**
+- [LumenWorks CSV Reader: CsvReader.ReadNextRecord throws IndexOutOfRangeException](https://github.com/phatcher/CsvReader/issues/67)
+- [Markdig: Markdown.ToHtml hangs permanently](https://github.com/lunet-io/markdig/issues/278) **fixed**
+- [Markdig: Markdown.ToHtml takes more than two minutes to complete when processing the 32K file](https://github.com/lunet-io/markdig/issues/306) **fixed**
+- [Markdig: Markdown.ToHtml throws ArgumentOutOfRangeException](https://github.com/lunet-io/markdig/issues/275) **fixed**
+- [Markdig: Markdown.ToHtml throws IndexOutOfRangeException](https://github.com/lunet-io/markdig/issues/276) **fixed**
+- [Markdig: Markdown.ToHtml throws IndexOutOfRangeException](https://github.com/lunet-io/markdig/issues/303)
+- [Markdig: Markdown.ToHtml throws NullReferenceException](https://github.com/lunet-io/markdig/issues/277) **fixed**
+- [MarkdownSharp: Markdown.Transform hangs permanently](https://github.com/StackExchange/MarkdownSharp/issues/8)
+- [MessagePack for CLI: Unpacking.UnpackObject throws several unexpected exceptions](https://github.com/msgpack/msgpack-cli/issues/311)
+- [Mono.Cecil: ModuleDefinition.ReadModule can throw many (possibly) unexpected exceptions](https://github.com/jbevain/cecil/issues/556)
+- [Mono.Cecil: ModuleDefinition.ReadModule hangs permanently](https://github.com/jbevain/cecil/issues/555) **fixed**
+- [NCrontab: CrontabSchedule.Parse throws OverflowException instead of CrontabException](https://github.com/atifaziz/NCrontab/issues/43)
+- [NUglify: Uglify.Js hangs permanently](https://github.com/xoofx/NUglify/issues/63)
+- [Open XML SDK: Add some security/fuzz testing](https://github.com/OfficeDev/Open-XML-SDK/issues/441)
+- [OpenMCDF: OutOfMemoryException when parsing Excel document / endless while-loop](https://github.com/ironfede/openmcdf/issues/30) **fixed**
+- [OpenMCDF: System.ArgumentOutOfRangeException take 2](https://github.com/ironfede/openmcdf/issues/39) **fixed**
+- [OpenMCDF: System.ArgumentOutOfRangeException when trying to open certain invalid files](https://github.com/ironfede/openmcdf/issues/38) **fixed**
+- [OpenMCDF: System.OutOfMemoryException when reading corrupt Word document](https://github.com/ironfede/openmcdf/issues/40) **fixed**
+- [PdfPig: StackOverflowException reading corrupt PDF document](https://github.com/UglyToad/PdfPig/issues/33) **fixed**
+- [protobuf-net: Serializer.Deserialize can throw many unexpected exceptions](https://github.com/mgravell/protobuf-net/issues/481)
+- [protobuf-net: Serializer.Deserialize hangs permanently](https://github.com/mgravell/protobuf-net/issues/479)
+- [Scriban: Template.ParseLiquid throws ArgumentOutOfRangeException](https://github.com/lunet-io/scriban/issues/121) **fixed**
+- [Scriban: Template.ParseLiquid throws NullReferenceException](https://github.com/lunet-io/scriban/issues/120) **fixed**
+- [Scriban: Template.Render throws InvalidCastException](https://github.com/lunet-io/scriban/issues/122) **fixed**
+- [SharpCompress: Enumerating ZipArchive.Entries collection throws NullReferenceException](https://github.com/adamhathcock/sharpcompress/issues/431)
+- [SharpZipLib: ZipInputStream.GetNextEntry hangs permanently](https://github.com/icsharpcode/SharpZipLib/issues/300) **fixed**
+- [SixLabors.Fonts: FontDescription.LoadDescription throws ArgumentException](https://github.com/SixLabors/Fonts/issues/96) **fixed**
+- [SixLabors.Fonts: FontDescription.LoadDescription throws NullReferenceException](https://github.com/SixLabors/Fonts/issues/97) **fixed**
+- [SixLabors.ImageSharp: Image.Load terminates the process with AccessViolationException](https://github.com/SixLabors/ImageSharp/issues/798) **fixed**
+- [SixLabors.ImageSharp: Image.Load throws AccessViolationException](https://github.com/SixLabors/ImageSharp/issues/827) **fixed**
+- [SixLabors.ImageSharp: Image.Load throws ArgumentException](https://github.com/SixLabors/ImageSharp/issues/826) **fixed**
+- [SixLabors.ImageSharp: Image.Load throws ArgumentOutOfRangeException](https://github.com/SixLabors/ImageSharp/issues/825) **fixed**
+- [SixLabors.ImageSharp: Image.Load throws DivideByZeroException](https://github.com/SixLabors/ImageSharp/issues/821) **fixed**
+- [SixLabors.ImageSharp: Image.Load throws DivideByZeroException](https://github.com/SixLabors/ImageSharp/issues/822) **fixed**
+- [SixLabors.ImageSharp: Image.Load throws ExecutionEngineException](https://github.com/SixLabors/ImageSharp/issues/839) **fixed**
+- [SixLabors.ImageSharp: Image.Load throws IndexOutOfRangeException](https://github.com/SixLabors/ImageSharp/issues/824) **fixed**
+- [SixLabors.ImageSharp: Image.Load throws NullReferenceException](https://github.com/SixLabors/ImageSharp/issues/797) **fixed**
+- [SixLabors.ImageSharp: Image.Load throws NullReferenceException](https://github.com/SixLabors/ImageSharp/issues/823) **fixed**
+- [Utf8Json: JsonSerializer.Deserialize can throw many unexpected exceptions](https://github.com/neuecc/Utf8Json/issues/142)
+- [Web Markup Minifier: HtmlMinifier.Minify hangs permanently](https://github.com/Taritsyn/WebMarkupMin/issues/73) **fixed**
+- [Web Markup Minifier: HtmlMinifier.Minify throws InvalidOperationException](https://github.com/Taritsyn/WebMarkupMin/issues/77) **fixed**
+- [YamlDotNet: YamlStream.Load takes more than 60s to parse the 37K file](https://github.com/aaubry/YamlDotNet/issues/379)
+- [YamlDotNet: YamlStream.Load terminates the process with StackOverflowException](https://github.com/aaubry/YamlDotNet/issues/375)
+- [YamlDotNet: YamlStream.Load throws ArgumentException](https://github.com/aaubry/YamlDotNet/issues/374)
 
 ## Acknowledgements
 
