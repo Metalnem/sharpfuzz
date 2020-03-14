@@ -314,7 +314,7 @@ with ```dotnet build```, and start the fuzzing with
 the following command:
 
 ```shell
-afl-fuzz -i testcases_dir -o findings_dir \
+afl-fuzz -i testcases_dir -o findings_dir -t timeout \
   dotnet path_to_assembly
 ```
 
@@ -324,9 +324,15 @@ directory called ```Testcases```, the full command might
 look like this:
 
 ```shell
-afl-fuzz -i Testcases -o Findings \
+afl-fuzz -i Testcases -o Findings -t 5000 \
   dotnet bin/Debug/netcoreapp2.1/Fuzzing.dll
 ```
+
+It's highly recommended that you always specify the timeout
+(5000ms from the previous example is a good choice), otherwise
+you will often get false crash reports because AFL uses automatic
+timeout calculation, which is too sensitive and unsuitable for
+managed languages.
 
 For formats such as HTML, JavaScript, JSON, or SQL,
 the fuzzing process can be greatly improved with
@@ -336,7 +342,7 @@ installation in ```/usr/local/share/afl/dictionaries/```.
 With this in mind, we can improve our fuzzing of Jil like this:
 
 ```shell
-afl-fuzz -i Testcases -o Findings \
+afl-fuzz -i Testcases -o Findings -t 5000 \
   -x /usr/local/share/afl/dictionaries/json.dict \
   dotnet bin/Debug/netcoreapp2.1/Fuzzing.dll
 ```
@@ -357,7 +363,7 @@ You can fix it by increasing the memory limit for your
 program to some large value:
 
 ```shell
-afl-fuzz -i testcases_dir -o findings_dir -m 10000 \
+afl-fuzz -i testcases_dir -o findings_dir -t 5000 -m 10000 \
   dotnet path_to_assembly
 ```
 
