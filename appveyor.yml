@@ -1,5 +1,5 @@
 version: 1.0.{build}
-image: Visual Studio 2019 Preview
+image: Ubuntu
 before_build:
 - cmd: nuget restore
 build:
