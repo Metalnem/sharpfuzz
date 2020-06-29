@@ -23,6 +23,7 @@ integration with afl-fuzz works, read my blog post
 ## Table of contents
 
 - [CVE](#cve)
+- [Blog posts](#blog-posts)
 - [Trophies](#trophies)
 - [Requirements](#requirements)
 - [Installation](#installation)
@@ -34,6 +35,11 @@ integration with afl-fuzz works, read my blog post
 
 - [CVE-2019-0980: .NET Framework and .NET Core Denial of Service Vulnerability](https://portal.msrc.microsoft.com/en-us/security-guidance/advisory/CVE-2019-0980)
 - [CVE-2019-0981: .NET Framework and .NET Core Denial of Service Vulnerability](https://portal.msrc.microsoft.com/en-us/security-guidance/advisory/CVE-2019-0981)
+
+## Blog posts
+
+- [SharpFuzz: Bringing the power of afl-fuzz to .NET platform](https://mijailovic.net/2019/01/03/sharpfuzz/)
+- [Let’s do DHCP: fuzzing](http://writeasync.net/?p=5714)
 
 ## Trophies
 
