@@ -104,7 +104,7 @@ request for the README file, or file an issue.
 - [OpenMCDF: System.OutOfMemoryException when reading corrupt Word document](https://github.com/ironfede/openmcdf/issues/40) **fixed**
 - [PdfPig: StackOverflowException reading corrupt PDF document](https://github.com/UglyToad/PdfPig/issues/33) **fixed**
 - [protobuf-net: Serializer.Deserialize can throw many unexpected exceptions](https://github.com/mgravell/protobuf-net/issues/481)
-- [protobuf-net: Serializer.Deserialize hangs permanently](https://github.com/mgravell/protobuf-net/issues/479)
+- [protobuf-net: Serializer.Deserialize hangs permanently](https://github.com/mgravell/protobuf-net/issues/479) **fixed**
 - [Scriban: Template.ParseLiquid throws ArgumentOutOfRangeException](https://github.com/lunet-io/scriban/issues/121) **fixed**
 - [Scriban: Template.ParseLiquid throws NullReferenceException](https://github.com/lunet-io/scriban/issues/120) **fixed**
 - [Scriban: Template.Render throws InvalidCastException](https://github.com/lunet-io/scriban/issues/122) **fixed**
