@@ -9,8 +9,8 @@
     <ToolCommandName>sharpfuzz</ToolCommandName>
     <PackageId>SharpFuzz.CommandLine</PackageId>
     <Title>SharpFuzz.CommandLine</Title>
-    <PackageVersion>1.7.0</PackageVersion>
-    <AssemblyVersion>1.7.0.0</AssemblyVersion>
+    <PackageVersion>2.0.0</PackageVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <Description>Command line tool for SharpFuzz instrumentation</Description>
   </PropertyGroup>
 
