@@ -405,7 +405,7 @@ them, and saves only the inputs that produce unique stack traces.
 
 ## Acknowledgements
 
-- **Joe Ranweiler** - [libFuzzer support on Windows](https://github.com/Metalnem/sharpfuzz/pull/24)
+- **Joe Ranweiler** and the MORSE team - [libFuzzer support on Windows](https://github.com/Metalnem/sharpfuzz/pull/24)
 - **Michal Zalewski** - [american fuzzy lop](http://lcamtuf.coredump.cx/afl/)
 - **Dmitry Vyukov** - [go-fuzz: randomized testing for Go](https://github.com/dvyukov/go-fuzz)
 - **Rody Kersten** - [Kelinci: AFL-based fuzzing for Java](https://github.com/isstac/kelinci)
