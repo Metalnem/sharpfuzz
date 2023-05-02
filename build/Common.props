@@ -11,7 +11,7 @@
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <Copyright>Copyright © 2018-2019, Nemanja Mijailovic</Copyright>
+    <Copyright>Copyright © 2018-2023, Nemanja Mijailovic</Copyright>
     <PackageTags>fuzzing testing fuzz-testing fuzzer afl afl-fuzz libfuzzer</PackageTags>
   </PropertyGroup>
 </Project>
