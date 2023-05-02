@@ -214,8 +214,7 @@ namespace SharpFuzz
 					}
 				}
 			}
-
-			private static void WaitForParent(int pid)
+			private static async Task WaitForParent(int pid)
 			{
 				try
 				{
@@ -226,10 +225,12 @@ namespace SharpFuzz
 						// On macOS, the parent process can sometimes be dead, but WaitForExit
 						// doesn't detect that. In such situations, Process.GetProcessById will
 						// return Process instance with the empty ProcessName property.
-						if (String.IsNullOrEmpty(parent.ProcessName) || parent.WaitForExit(100))
+			            if (String.IsNullOrEmpty(parent.ProcessName) || parent.HasExited)
 						{
 							Environment.Exit(1);
 						}
+
+						await Task.Delay(100);
 					}
 				}
 				catch
