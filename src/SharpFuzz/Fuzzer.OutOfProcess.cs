@@ -214,6 +214,7 @@ namespace SharpFuzz
                     }
                 }
             }
+
             private static async Task WaitForParent(int pid)
             {
                 try
@@ -222,9 +223,9 @@ namespace SharpFuzz
                     {
                         var parent = Process.GetProcessById(pid);
 
-                        // On macOS, the parent process can sometimes be dead, but WaitForExit
-                        // doesn't detect that. In such situations, Process.GetProcessById will
-                        // return Process instance with the empty ProcessName property.
+                        // On macOS, Process.GetProcessById will sometimes return Process instance
+                        // with an empty ProcessName property. I don't have enough time now to check
+                        // if HasExited is true in this scenario, so I'm keeping both checks.
                         if (String.IsNullOrEmpty(parent.ProcessName) || parent.HasExited)
                         {
                             Environment.Exit(1);
@@ -235,7 +236,6 @@ namespace SharpFuzz
                 }
                 catch
                 {
-                    // Parent process was killed before we even managed to start the child.
                     Environment.Exit(1);
                 }
             }
