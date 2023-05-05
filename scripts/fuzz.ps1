@@ -1,34 +1,26 @@
 param (
     [Parameter(Mandatory = $true)]
-    [string]$projectPath,
-    [string]$testcasesDir = "testcases",
-    [string]$findingsDir = "findings"
+    [string]$project,
+    [Parameter(Mandatory = $true)]
+    [string]$i,
+    [string]$x = $null,
+    [int]$t = 10000,
+    [int]$m = 10000
 )
 
 Set-StrictMode -Version Latest
 
-if (!(Test-Path $testcasesDir)) {
-    Write-Error "Testcases directory $testcasesDir does not exist"
-    exit 1
-}
-
-$testcases = Get-ChildItem $testcasesDir
-
-if (!$testcases) {
-    Write-Error "Testcases directory $testcasesDir is empty"
-    exit 1
-}
-
 $outputDir = "bin"
+$findingsDir = "findings"
 
 if (Test-Path $outputDir) { Remove-Item -Recurse -Force $outputDir }
 if (Test-Path $findingsDir) { Remove-Item -Recurse -Force $findingsDir }
 
-dotnet publish $projectPath -c release -o $outputDir
+dotnet publish $project -c release -o $outputDir
 
-$projectName = (Get-Item $projectPath).BaseName
+$projectName = (Get-Item $project).BaseName
 $projectDll = "$projectName.dll"
-$projectPath = Join-Path $outputDir $projectDll
+$project = Join-Path $outputDir $projectDll
 
 $exclusions = @(
     "dnlib.dll",
@@ -51,4 +43,9 @@ foreach ($fuzzingTarget in $fuzzingTargets) {
     }
 }
 
-afl-fuzz -i $testcasesDir -o $findingsDir -t 10000 -m 10000 dotnet $projectPath
+if ($x) {
+    afl-fuzz -i $i -o $findingsDir -t $t -m $m -x $x dotnet $project
+}
+else {
+    afl-fuzz -i $i -o $findingsDir -t $t -m $m dotnet $project
+}
