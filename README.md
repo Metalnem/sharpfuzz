@@ -181,7 +181,7 @@ instrumentation check is to set the **AFL_SKIP_BIN_CHECK**
 environment variable.
 
 [SharpFuzz.CommandLine]: https://www.nuget.org/packages/SharpFuzz.CommandLine/
-[script]: https://github.com/Metalnem/sharpfuzz/raw/master/build/Install.sh
+[script]: https://github.com/Metalnem/sharpfuzz/raw/master/scripts/install.sh
 
 ## Usage
 
