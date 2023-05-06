@@ -6,8 +6,8 @@
 
 [nuget-shield]: https://img.shields.io/nuget/v/SharpFuzz.svg
 [nuget-link]: https://www.nuget.org/packages/SharpFuzz
-[build-shield]: https://ci.appveyor.com/api/projects/status/tpufk0k8h4falflf?svg=true
-[build-link]: https://ci.appveyor.com/project/Metalnem/sharpfuzz
+[build-shield]: https://github.com/metalnem/sharpfuzz/actions/workflows/dotnet.yml/badge.svg
+[build-link]: https://github.com/Metalnem/sharpfuzz/actions/workflows/dotnet.yml
 [license-shield]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat
 [license-link]: https://github.com/metalnem/sharpfuzz/blob/master/LICENSE
 
