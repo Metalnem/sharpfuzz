@@ -1,25 +1,14 @@
-#
-# AFL dictionary for JSON
-# -----------------------
-#
-# Just the very basics.
-#
-# Inspired by a dictionary by Jakub Wilk <jwilk@jwilk.net>
-#
-
 "0"
-",0"
-":0"
-"0:"
-"-1.2e+3"
+"7"
+","
+":"
+"2.1e24"
 
 "true"
 "false"
 "null"
 
 "\"\""
-",\"\""
-":\"\""
 "\"\":"
 
 "{}"
@@ -50,3 +39,35 @@
 "\"\":0"
 "//"
 "/**/"
+
+
+# Things like geojson, json-ld, ...
+"$ref"
+"type"
+"coordinates"
+"@context"
+"@id"
+"@type"
+
+# Strings with truncated special values
+"{\"foo\":fa"
+"{\"foo\":t"
+"{\"foo\":nul"
+
+"{"
+"}"
+"\"qty\": 1, \"qty\": -1"
+"\"qty\": 1, \"qty\\ud800\": -1"
+"\"qty\": 1, \"qt\\y\": -1"
+"/*"
+"*/"
+"\""
+"1.7976931348623157e+308"
+"5e-324"
+"9007199254740991"
+"-9007199254740991"
+
+"}="
+
+",,"
+"{\"\":"
