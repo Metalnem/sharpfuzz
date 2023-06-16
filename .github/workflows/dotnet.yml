@@ -22,6 +22,8 @@ jobs:
       run: dotnet build --no-restore
     - name: Install AFL
       run: ./scripts/install.sh
+    - name: Disable core dumps
+      run: ulimit -c 0
     - name: Run AFL tests
       shell: pwsh
       run: mkdir corpus && ./scripts/fuzz.ps1 tests/Library.Fuzz/Library.Fuzz.csproj -i corpus
