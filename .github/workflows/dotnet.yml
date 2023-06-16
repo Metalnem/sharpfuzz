@@ -26,4 +26,7 @@ jobs:
       run: sudo sh -c "echo core >/proc/sys/kernel/core_pattern"
     - name: Run AFL tests
       shell: pwsh
-      run: mkdir corpus && ./scripts/fuzz.ps1 tests/Library.Fuzz/Library.Fuzz.csproj -i corpus
+      run: |
+        mkdir corpus
+        touch corpus/test
+        ./scripts/fuzz.ps1 tests/Library.Fuzz/Library.Fuzz.csproj -i corpus
