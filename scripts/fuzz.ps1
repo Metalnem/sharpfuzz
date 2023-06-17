@@ -4,7 +4,8 @@ param (
     [Parameter(Mandatory = $true)]
     [string]$i,
     [string]$x = $null,
-    [int]$t = 10000
+    [int]$t = 10000,
+    [string]$command = "sharpfuzz"
 )
 
 Set-StrictMode -Version Latest
@@ -34,7 +35,7 @@ $fuzzingTargets = Get-ChildItem $outputDir -Filter *.dll `
 
 foreach ($fuzzingTarget in $fuzzingTargets) {
     Write-Output "Instrumenting $fuzzingTarget"
-    sharpfuzz $fuzzingTarget
+    & $command $fuzzingTarget
     
     if ($LastExitCode -ne 0) {
         Write-Error "An error occurred while instrumenting $fuzzingTarget"
