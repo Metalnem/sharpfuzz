@@ -26,13 +26,11 @@ jobs:
       run: sudo sh -c "echo core >/proc/sys/kernel/core_pattern"
     - name: Initialize corpus
       shell: pwsh
-      run: |
-        New-Item -Path "corpus/test" -ItemType File -Force -Value "X"
-        Get-ChildItem
+      run: New-Item -Path "corpus/test" -ItemType File -Force -Value "X"
     - name: Run AFL tests
       shell: pwsh
       run: |
         ./scripts/fuzz.ps1 tests/Library.Fuzz/Library.Fuzz.csproj -i corpus
         Get-ChildItem -Depth 2 -Name
-        
+
 
