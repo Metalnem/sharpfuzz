@@ -27,7 +27,7 @@ jobs:
     - name: Initialize corpus
       shell: pwsh
       run: |
-        New-Item -Path "corpus/test" -ItemType File -Force
+        New-Item -Path "corpus/test" -ItemType File -Force -Value "X"
         Get-ChildItem
     - name: Run AFL tests
       shell: pwsh
