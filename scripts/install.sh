@@ -8,13 +8,6 @@ tar -xvf afl-latest.tgz
 rm afl-latest.tgz
 cd afl-2.52b/
 
-# Patch afl-fuzz so that it doesn't check whether the binary
-# being fuzzed is instrumented (we have to do this because
-# we are going to run our programs with the dotnet run command,
-# and the dotnet binary would fail this check)
-wget https://github.com/Metalnem/sharpfuzz/raw/master/patches/RemoveInstrumentationCheck.diff
-patch < RemoveInstrumentationCheck.diff
-
 # Install afl-fuzz
 sudo make install
 cd ..

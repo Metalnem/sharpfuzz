@@ -164,13 +164,6 @@ tar -xvf afl-latest.tgz
 rm afl-latest.tgz
 cd afl-2.52b/
 
-# Patch afl-fuzz so that it doesn't check whether the binary
-# being fuzzed is instrumented (we have to do this because
-# we are going to run our programs with the dotnet run command,
-# and the dotnet binary would fail this check)
-wget https://github.com/Metalnem/sharpfuzz/raw/master/patches/RemoveInstrumentationCheck.diff
-patch < RemoveInstrumentationCheck.diff
-
 # Install afl-fuzz
 sudo make install
 cd ..
@@ -179,10 +172,6 @@ rm -rf afl-2.52b/
 # Install SharpFuzz.CommandLine global .NET tool
 dotnet tool install --global SharpFuzz.CommandLine
 ```
-
-The alternative to patching afl-fuzz in order to skip the
-instrumentation check is to set the **AFL_SKIP_BIN_CHECK**
-environment variable.
 
 [SharpFuzz.CommandLine]: https://www.nuget.org/packages/SharpFuzz.CommandLine/
 [script]: https://github.com/Metalnem/sharpfuzz/raw/master/scripts/install.sh
