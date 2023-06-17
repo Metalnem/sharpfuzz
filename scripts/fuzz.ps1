@@ -4,8 +4,7 @@ param (
     [Parameter(Mandatory = $true)]
     [string]$i,
     [string]$x = $null,
-    [int]$t = 10000,
-    [int]$m = 10000
+    [int]$t = 10000
 )
 
 Set-StrictMode -Version Latest
@@ -44,8 +43,8 @@ foreach ($fuzzingTarget in $fuzzingTargets) {
 }
 
 if ($x) {
-    afl-fuzz -i $i -o $findingsDir -t $t -m $m -x $x dotnet $project
+    afl-fuzz -i $i -o $findingsDir -t $t -m none -x $x dotnet $project
 }
 else {
-    afl-fuzz -i $i -o $findingsDir -t $t -m $m dotnet $project
+    afl-fuzz -i $i -o $findingsDir -t $t -m none dotnet $project
 }

@@ -16,7 +16,7 @@ wget https://github.com/Metalnem/sharpfuzz/raw/master/patches/RemoveInstrumentat
 patch < RemoveInstrumentationCheck.diff
 
 # Install afl-fuzz
-make install
+sudo make install
 cd ..
 rm -rf afl-2.52b/
 
