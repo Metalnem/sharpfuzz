@@ -42,6 +42,8 @@ foreach ($fuzzingTarget in $fuzzingTargets) {
     }
 }
 
+$env:AFL_SKIP_BIN_CHECK = 1
+
 if ($x) {
     afl-fuzz -i $i -o $findingsDir -t $t -m none -x $x dotnet $project
 }
