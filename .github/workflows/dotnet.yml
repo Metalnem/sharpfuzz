@@ -31,4 +31,7 @@ jobs:
         Get-ChildItem
     - name: Run AFL tests
       shell: pwsh
-      run: ./scripts/fuzz.ps1 tests/Library.Fuzz/Library.Fuzz.csproj -i corpus
+      run: |
+        ./scripts/fuzz.ps1 tests/Library.Fuzz/Library.Fuzz.csproj -i corpus
+        Get-ChildItem -Depth 2
+
