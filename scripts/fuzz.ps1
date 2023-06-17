@@ -4,8 +4,7 @@ param (
     [Parameter(Mandatory = $true)]
     [string]$i,
     [string]$x = $null,
-    [int]$t = 10000,
-    [int]$m = 20000
+    [int]$t = 10000
 )
 
 Set-StrictMode -Version Latest

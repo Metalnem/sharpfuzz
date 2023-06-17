@@ -17,7 +17,7 @@ public static class Parser
         if (s.Length > 10 && s[10] == '\'')
         if (s.Length > 11 && s[11] == 's')
         {
-            throw new Exception("Like a pound of bacon");
+            Environment.FailFast("Like a pound of bacon");
         }
     }
 }
