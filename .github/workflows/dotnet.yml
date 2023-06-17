@@ -33,5 +33,6 @@ jobs:
       shell: pwsh
       run: |
         ./scripts/fuzz.ps1 tests/Library.Fuzz/Library.Fuzz.csproj -i corpus
-        Get-ChildItem -Depth 2
+        Get-ChildItem -Depth 2 -Name
+        
 
