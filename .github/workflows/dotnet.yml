@@ -27,9 +27,10 @@ jobs:
     - name: Initialize corpus
       shell: pwsh
       run: New-Item -Path "corpus/test" -ItemType File -Force -Value "X"
+    - name: Run
+      run: dotnet run --project tests/Library.Fuzz/Library.Fuzz.csproj < corpus/test 
     - name: Run AFL tests
       shell: pwsh
       run: |
-        dotnet run --project tests/Library.Fuzz/Library.Fuzz.csproj < corpus/test 
         ./scripts/fuzz.ps1 tests/Library.Fuzz/Library.Fuzz.csproj -i corpus
         Get-ChildItem -Depth 2 -Name
