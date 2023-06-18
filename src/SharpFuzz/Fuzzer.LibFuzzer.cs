@@ -70,8 +70,10 @@ namespace SharpFuzz
 								ipc.SetStatus(status);
 							}
 						}
-						catch
+						catch (Exception ex)
 						{
+							Console.Error.WriteLine(ex);
+
 							// Error communicating with the parent process, most likely
 							// because it was terminated after the timeout expired, or
 							// it was killed by the user. In any case, the exception
