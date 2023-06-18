@@ -13,12 +13,14 @@ public static class Parser
         if (s.Length > 6 && s[6] == 'i')
         if (s.Length > 7 && s[7] == 'e')
         {
-            StackOverflowException(0);
+            if (failFast)
+            {
+                Environment.FailFast("Everything is on fire");
+            }
+            else
+            {
+                throw new Exception("Things are fine");
+            }
         }
-    }
-
-    private static int StackOverflowException(int count)
-    {
-        return StackOverflowException(count + 1);
     }
 }
