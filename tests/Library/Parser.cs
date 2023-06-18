@@ -15,7 +15,7 @@ public static class Parser
         {
             unsafe
             {
-                int* pointer = null;
+                int* pointer = stackalloc int[0];
                 *pointer = 42;
             }
         }
