@@ -13,11 +13,12 @@ public static class Parser
         if (s.Length > 6 && s[6] == 'i')
         if (s.Length > 7 && s[7] == 'e')
         {
-            unsafe
-            {
-                int* a = stackalloc int[1];
-                a[1000] = 1;
-            }
+            StackOverflowException(0);
         }
+    }
+
+    private static int StackOverflowException(int count)
+    {
+        return StackOverflowException(count + 1);
     }
 }
