@@ -10,7 +10,7 @@ dotnet publish src/SharpFuzz.CommandLine/SharpFuzz.CommandLine.csproj `
     --framework net8.0
 
 & scripts/fuzz-libfuzzer.ps1 `
-    -libFuzzer $libFuzzer `
+    -libFuzzer "./$libFuzzer" `
     -project tests/Library.LibFuzzer/Library.LibFuzzer.csproj `
     -corpus "corpus" `
     -command out/SharpFuzz.CommandLine
