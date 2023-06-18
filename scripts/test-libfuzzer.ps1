@@ -1,4 +1,4 @@
-$libFuzzer = libfuzzer-dotnet-windows.exe
+$libFuzzer = "libfuzzer-dotnet-windows.exe"
 $uri = "https://github.com/metalnem/libfuzzer-dotnet/releases/latest/download/$libFuzzer"
 
 Invoke-WebRequest -Uri $uri -OutFile $file
