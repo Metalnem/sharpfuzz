@@ -1,4 +1,4 @@
-$libFuzzer = "libfuzzer-dotnet-windows.exe"
+$libFuzzer = "libfuzzer-dotnet-ubuntu"
 $uri = "https://github.com/metalnem/libfuzzer-dotnet/releases/latest/download/$libFuzzer"
 $corpus = "corpus"
 
