@@ -2,6 +2,8 @@ $libFuzzer = "libfuzzer-dotnet-ubuntu"
 $uri = "https://github.com/metalnem/libfuzzer-dotnet/releases/latest/download/$libFuzzer"
 $corpus = "corpus"
 
+chmod u+x $libFuzzer
+
 Invoke-WebRequest -Uri $uri -OutFile $libFuzzer
 New-Item -Path $corpus -ItemType Directory
 
