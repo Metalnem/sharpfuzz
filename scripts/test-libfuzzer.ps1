@@ -5,6 +5,14 @@ $corpus = "corpus"
 Invoke-WebRequest -Uri $uri -OutFile $libFuzzer
 New-Item -Path $corpus -ItemType Directory
 
+Invoke-WebRequest `
+    -Uri  "https://github.com/metalnem/libfuzzer-dotnet/releases/latest/download/libfuzzer-dotnet-windows.exp" `
+    -OutFile libfuzzer-dotnet-windows.exp
+
+Invoke-WebRequest `
+    -Uri  "https://github.com/metalnem/libfuzzer-dotnet/releases/latest/download/libfuzzer-dotnet-windows.lib" `
+    -OutFile libfuzzer-dotnet-windows.lib
+
 dotnet publish src/SharpFuzz.CommandLine/SharpFuzz.CommandLine.csproj `
     --output out `
     --configuration release `
