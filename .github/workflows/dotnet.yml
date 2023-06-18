@@ -28,7 +28,7 @@ jobs:
       run: ./scripts/test.ps1
 
   libFuzzer:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v3
@@ -36,5 +36,4 @@ jobs:
       with:
         dotnet-version: ${{ env.dotnet-version }}
     - name: Run libFuzzer tests
-      shell: pwsh
       run: ./scripts/test-libfuzzer.ps1
