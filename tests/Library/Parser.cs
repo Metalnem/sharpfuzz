@@ -2,7 +2,7 @@
 
 public static class Parser
 {
-    public static void Parse(string s)
+    public static void Parse(string s, bool failFast = true)
     {
         if (s.Length > 0 && s[0] == 'W')
         if (s.Length > 1 && s[1] == 'h')
@@ -13,7 +13,12 @@ public static class Parser
         if (s.Length > 6 && s[6] == 'i')
         if (s.Length > 7 && s[7] == 'e')
         {
-            Environment.FailFast("Everything is on fire");
+            if(failFast) {
+                Environment.FailFast("Everything is on fire");
+            }
+            else {
+                throw new Exception("Dead!");
+            }
         }
     }
 }
