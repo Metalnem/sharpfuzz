@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using SharpFuzz;
 
-namespace Library.Fuzz;
+namespace Library.LibFuzzer;
 
 public class Program
 {
