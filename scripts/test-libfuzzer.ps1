@@ -17,6 +17,13 @@ dotnet publish src/SharpFuzz.CommandLine/SharpFuzz.CommandLine.csproj `
     -command out/SharpFuzz.CommandLine
 
 $crasher = "Whoopsie"
+$output = Get-ChildItem -Path "crash-*"
+$content = Get-Content -Path $output.FullName -Raw
+
+if (-not $content.Contains($crasher)) {
+    Write-Error "Crasher is missing from the libFuzzer output"
+    exit 1
+}
 
 Write-Host $crasher
 exit 0
