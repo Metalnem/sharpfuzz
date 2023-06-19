@@ -44,4 +44,4 @@ foreach ($fuzzingTarget in $fuzzingTargets) {
     }
 }
 
-& $libFuzzer --target_path=dotnet --target_arg=$project $corpus -timeout $timeout
+& $libFuzzer --target_path=dotnet --target_arg=$project $corpus -timeout=$timeout
