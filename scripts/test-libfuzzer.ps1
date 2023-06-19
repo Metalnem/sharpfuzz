@@ -17,7 +17,7 @@ dotnet publish src/SharpFuzz.CommandLine/SharpFuzz.CommandLine.csproj `
     -command out/SharpFuzz.CommandLine
 
 $crasher = "Whoopsie"
-$output = Get-ChildItem -Path "crash-*"
+$output = Get-ChildItem -Path "timeout-*"
 $content = Get-Content -Path $output.FullName -Raw
 
 if (-not $content.Contains($crasher)) {

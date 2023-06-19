@@ -10,7 +10,7 @@ public class Program
         Fuzzer.LibFuzzer.Run(span =>
         {
             var s = Encoding.UTF8.GetString(span);
-            Parser.Parse(s, false);
+            Parser.Parse(s);
         });
     }
 }
