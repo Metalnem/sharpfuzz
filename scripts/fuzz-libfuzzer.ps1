@@ -1,24 +1,19 @@
 param (
     [Parameter(Mandatory = $true)]
+    [string]$libFuzzer,
+    [Parameter(Mandatory = $true)]
     [string]$project,
     [Parameter(Mandatory = $true)]
-    [string]$i,
-    [string]$x = $null,
-    [int]$t = 10000,
+    [string]$corpus,
     [string]$command = "sharpfuzz"
 )
 
 Set-StrictMode -Version Latest
 
 $outputDir = "bin"
-$findingsDir = "findings"
 
-if (Test-Path $outputDir) { 
-    Remove-Item -Recurse -Force $outputDir 
-}
-
-if (Test-Path $findingsDir) {
-    Remove-Item -Recurse -Force $findingsDir 
+if (Test-Path $outputDir) {
+    Remove-Item -Recurse -Force $outputDir
 }
 
 dotnet publish $project -c release -o $outputDir
@@ -48,11 +43,4 @@ foreach ($fuzzingTarget in $fuzzingTargets) {
     }
 }
 
-$env:AFL_SKIP_BIN_CHECK = 1
-
-if ($x) {
-    afl-fuzz -i $i -o $findingsDir -t $t -m none -x $x dotnet $project
-}
-else {
-    afl-fuzz -i $i -o $findingsDir -t $t -m none dotnet $project
-}
+& $libFuzzer --target_path=dotnet --target_arg=$project $corpus

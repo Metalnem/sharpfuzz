@@ -5,7 +5,8 @@ dotnet publish src/SharpFuzz.CommandLine/SharpFuzz.CommandLine.csproj `
     --configuration release `
     --framework net8.0
 
-& scripts/fuzz.ps1 tests/Library.Fuzz/Library.Fuzz.csproj `
+& scripts/fuzz.ps1 `
+    -project tests/Library.Fuzz/Library.Fuzz.csproj `
     -i corpus `
     -command out/SharpFuzz.CommandLine
 
