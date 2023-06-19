@@ -5,6 +5,7 @@ param (
     [string]$project,
     [Parameter(Mandatory = $true)]
     [string]$corpus,
+    [int]$timeout = 10,
     [string]$command = "sharpfuzz"
 )
 
@@ -43,4 +44,4 @@ foreach ($fuzzingTarget in $fuzzingTargets) {
     }
 }
 
-& $libFuzzer --target_path=dotnet --target_arg=$project $corpus
+& $libFuzzer --target_path=dotnet --target_arg=$project $corpus -timeout $timeout
