@@ -131,9 +131,10 @@ request for the README file, or file an issue.
 
 ## Requirements
 
-AFL works on Linux and macOS. If you are using
-Windows, you can use any Linux distribution
-that works under the [Windows Subsystem for Linux].
+AFL works on Linux and macOS. If you are using Windows, you can use any Linux distribution
+that works under the [Windows Subsystem for Linux]. For native Windows support, you can use
+[libFuzzer](https://github.com/Metalnem/sharpfuzz/blob/master/docs/libFuzzer.md)
+instead of AFL.
 
 You will need GNU make and a working compiler
 (gcc or clang) in order to compile afl-fuzz.
