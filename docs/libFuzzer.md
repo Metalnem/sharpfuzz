@@ -1,55 +1,30 @@
 ## Using libFuzzer with SharpFuzz
 
-SharpFuzz can now also be used with [libFuzzer] (currently
-only on Linux, but Windows and macOS support is coming in
-the near future). Unlike afl-fuzz, libFuzzer is under active
-development. It also supports many advanced techniques that
-are not possible with afl-fuzz, e.g. [structure-aware fuzzing].
-Once all libFuzzer features are supported in SharpFuzz, it will
-become the recommended fuzzing engine.
+You can use [libFuzzer] as a SharpFuzz fuzzing engine on Linux and Windows.
 
-**1.** Instrumentation process remains the same as with afl-fuzz:
+**1.** Download the latest [libfuzzer-dotnet] release for your platform.
+Alternatively, you can compile [libfuzzer-dotnet.cc] (Linux) or
+[libfuzzer-dotnet-windows.cc] (Windows) from scratch using the
+following command:
 
 ```shell
-sharpfuzz path_to_assembly
+clang -fsanitize=fuzzer libfuzzer-dotnet.cc -o libfuzzer-dotnet
 ```
 
-**2.** In your fuzzing project, replace the **Fuzzer.Run**
-call with the call to **Fuzzer.LibFuzzer.Run**.
+**2.** In your **Main** function, call **Fuzzer.LibFuzzer.Run**
+(instead of **Fuzzer.Run** or **Fuzzer.OutOfProcess.Run**).
 
-**3.** Publish the project in order to generate the
-self-contained executable:
+**3.** Start fuzzing by running the [fuzz-libfuzzer.ps1] script like this:
 
 ```shell
-dotnet publish -r linux-x64
+scripts/fuzz-libfuzzer.ps1 `
+    -libFuzzer "libfuzzer-dotnet-windows.exe" `
+    -project YourFuzzingProject.csproj `
+    -corpus Testcases
 ```
-
-**4.** Download the [libfuzzer-dotnet binary]. It was
-confirmed to work on the following Linux distributions:
-
-- Ubuntu 14.04 (Trusty)
-- Ubuntu 16.04 (Xenial)
-- Ubuntu 18.04 (Bionic)
-- Ubuntu 18.10 (Cosmic)
-- Ubuntu 19.04 (Disco)
-- Debian 8 (Jessie)
-- Debian 9 (Stretch)
-- openSUSE Leap 42.3
-- openSUSE Leap 15.0
-- openSUSE Leap 15.1
-- Fedora 29
-
-**5.** Start the fuzzing with the following command:
-
-```shell
-./libfuzzer-dotnet --target_path=path_to_assembly testcases_dir
-```
-
-This is just the most basic way of using libFuzzer.
-If you want to learn more about it, you should read
-the [libFuzzer Tutorial].
 
 [libFuzzer]: http://llvm.org/docs/LibFuzzer.html
-[structure-aware fuzzing]: https://github.com/google/fuzzer-test-suite/blob/master/tutorial/structure-aware-fuzzing.md
-[libfuzzer-dotnet binary]: https://github.com/Metalnem/libfuzzer-dotnet/releases/latest/download/libfuzzer-dotnet.tar.gz
-[libFuzzer Tutorial]: https://github.com/google/fuzzer-test-suite/blob/master/tutorial/libFuzzerTutorial.md
+[libfuzzer-dotnet]: https://github.com/Metalnem/libfuzzer-dotnet/releases
+[libfuzzer-dotnet.cc]: https://github.com/Metalnem/libfuzzer-dotnet/blob/master/libfuzzer-dotnet.cc
+[libfuzzer-dotnet-windows.cc]: https://github.com/Metalnem/libfuzzer-dotnet/blob/master/libfuzzer-dotnet-windows.cc
+[fuzz-libfuzzer.ps1]: https://raw.githubusercontent.com/Metalnem/sharpfuzz/master/scripts/fuzz-libfuzzer.ps1
