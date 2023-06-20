@@ -236,7 +236,7 @@ namespace Jil.Fuzz
 
 We want to fuzz the deserialization capabilities of Jil,
 which is why we are calling the **JSON.DeserializeDynamic**
-method. The input data will be be provided to us via the
+method. The input data will be provided to us via the
 **stream** parameter (if the code you are testing takes
 its input as a string, you can use an additional overload
 of **Fuzzer.OutOfProcess.Run** that accepts **Action&lt;string&gt;**).
