@@ -16,7 +16,7 @@ dotnet publish src/SharpFuzz.CommandLine/SharpFuzz.CommandLine.csproj `
     -libFuzzer "./$libFuzzer" `
     -project tests/Library.LibFuzzer/Library.LibFuzzer.csproj `
     -corpus $corpus `
-    -dict "dict"
+    -dict "dict" `
     -command out/SharpFuzz.CommandLine
 
 $crasher = "Whoopsie"
