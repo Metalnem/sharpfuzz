@@ -50,7 +50,8 @@ foreach ($fuzzingTarget in $fuzzingTargets) {
 }
 
 if ($dict) {
-    & $libFuzzer -timeout=10 -dict=$dict --target_path=dotnet --target_arg=$project $corpus
+    cat "$dict"
+    & $libFuzzer -timeout=10 -dict="$dict" --target_path=dotnet --target_arg=$project $corpus
 }
 else {
     & $libFuzzer -timeout=10 --target_path=dotnet --target_arg=$project $corpus
