@@ -3,6 +3,7 @@ $uri = "https://github.com/metalnem/libfuzzer-dotnet/releases/latest/download/$l
 $corpus = "corpus"
 
 New-Item -Path "dict" -ItemType File -Force -Value "Whoopsie"
+Get-ChildItem
 
 Invoke-WebRequest -Uri $uri -OutFile $libFuzzer
 New-Item -Path $corpus -ItemType Directory
