@@ -2,7 +2,7 @@ $libFuzzer = "libfuzzer-dotnet-windows.exe"
 $uri = "https://github.com/metalnem/libfuzzer-dotnet/releases/latest/download/$libFuzzer"
 $corpus = "corpus"
 
-New-Item -Path "dict" -ItemType File -Force -Value "\"Whoopsie\""
+New-Item -Path "dict" -ItemType File -Force -Value "`"Whoopsie`""
 Get-ChildItem
 
 Invoke-WebRequest -Uri $uri -OutFile $libFuzzer
