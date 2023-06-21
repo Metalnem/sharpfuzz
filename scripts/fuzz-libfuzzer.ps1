@@ -33,6 +33,11 @@ $fuzzingTargets = Get-ChildItem $outputDir -Filter *.dll `
 | Where-Object { $_.Name -notin $exclusions } `
 | Where-Object { $_.Name -notlike "System.*.dll" }
 
+if (($fuzzingTargets | Measure-Object).Count -eq 0) {
+    Write-Error "No fuzzing targets found"
+    exit 1
+}
+
 foreach ($fuzzingTarget in $fuzzingTargets) {
     Write-Output "Instrumenting $fuzzingTarget"
     & $command $fuzzingTarget

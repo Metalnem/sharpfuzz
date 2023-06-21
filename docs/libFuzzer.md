@@ -16,7 +16,7 @@ clang -fsanitize=fuzzer libfuzzer-dotnet.cc -o libfuzzer-dotnet
 
 **3.** Start fuzzing by running the [fuzz-libfuzzer.ps1] script like this:
 
-```shell
+```powershell
 scripts/fuzz-libfuzzer.ps1 `
     -libFuzzer "libfuzzer-dotnet-windows.exe" `
     -project YourFuzzingProject.csproj `
