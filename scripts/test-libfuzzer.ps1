@@ -2,9 +2,6 @@ $libFuzzer = "libfuzzer-dotnet-windows.exe"
 $uri = "https://github.com/metalnem/libfuzzer-dotnet/releases/latest/download/$libFuzzer"
 $corpus = "corpus"
 
-New-Item -Path "dict" -ItemType File -Force -Value "`"Whoopsie`""
-Get-ChildItem
-
 Invoke-WebRequest -Uri $uri -OutFile $libFuzzer
 New-Item -Path $corpus -ItemType Directory
 
@@ -17,7 +14,6 @@ dotnet publish src/SharpFuzz.CommandLine/SharpFuzz.CommandLine.csproj `
     -libFuzzer "./$libFuzzer" `
     -project tests/Library.LibFuzzer/Library.LibFuzzer.csproj `
     -corpus $corpus `
-    -dict "./dict" `
     -command out/SharpFuzz.CommandLine
 
 $crasher = "Whoopsie"

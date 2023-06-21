@@ -6,6 +6,7 @@ param (
     [Parameter(Mandatory = $true)]
     [string]$corpus,
     [string]$dict = $null,
+    [int]$timeout = 10,
     [string]$command = "sharpfuzz"
 )
 
@@ -50,9 +51,8 @@ foreach ($fuzzingTarget in $fuzzingTargets) {
 }
 
 if ($dict) {
-    cat "$dict"
-    & $libFuzzer -timeout=10 -dict="$dict" --target_path=dotnet --target_arg=$project $corpus
+    & $libFuzzer -timeout="$timeout" -dict="$dict" --target_path=dotnet --target_arg=$project $corpus
 }
 else {
-    & $libFuzzer -timeout=10 --target_path=dotnet --target_arg=$project $corpus
+    & $libFuzzer -timeout="$timeout" --target_path=dotnet --target_arg=$project $corpus
 }
