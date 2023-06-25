@@ -11,22 +11,6 @@ env:
   dotnet-version: 8.0.100-preview.3.23178.7
 
 jobs:
-  AFL:
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: ${{ env.dotnet-version }}
-    - name: Install AFL
-      run: ./scripts/install.sh
-    - name: Disable core dumps
-      run: sudo sh -c "echo core >/proc/sys/kernel/core_pattern"
-    - name: Run AFL tests
-      shell: pwsh
-      run: ./scripts/test.ps1
-
   libFuzzer:
     runs-on: windows-latest
 

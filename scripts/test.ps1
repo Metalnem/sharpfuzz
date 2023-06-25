@@ -6,7 +6,7 @@ dotnet publish src/SharpFuzz.CommandLine/SharpFuzz.CommandLine.csproj `
     --framework net8.0
 
 & scripts/fuzz.ps1 `
-    -project tests/Library.Fuzz/Library.Fuzz.csproj `
+    -project tests/SystemTextJson/SystemTextJson.csproj `
     -i corpus `
     -command out/SharpFuzz.CommandLine
 

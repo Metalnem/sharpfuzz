@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using dnlib.DotNet;
 using dnlib.DotNet.Emit;
+using dnlib.DotNet.MD;
 
 namespace SharpFuzz
 {
@@ -49,7 +50,8 @@ namespace SharpFuzz
 				{
 					if (!src.IsILOnly)
 					{
-						throw new InstrumentationException("Cannot instrument mixed-mode assemblies.");
+						src.Cor20HeaderFlags &= ~ComImageFlags.ILLibrary;
+						src.IsILOnly = true;
 					}
 
 					if (src.TypeExistsNormal(typeof(Common.Trace).FullName))

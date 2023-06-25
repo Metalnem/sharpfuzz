@@ -12,7 +12,7 @@ dotnet publish src/SharpFuzz.CommandLine/SharpFuzz.CommandLine.csproj `
 
 & scripts/fuzz-libfuzzer.ps1 `
     -libFuzzer "./$libFuzzer" `
-    -project tests/Library.LibFuzzer/Library.LibFuzzer.csproj `
+    -project tests/SystemTextJson/SystemTextJson.csproj `
     -corpus $corpus `
     -command out/SharpFuzz.CommandLine
 
