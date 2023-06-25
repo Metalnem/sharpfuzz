@@ -31,4 +31,4 @@ if ($LastExitCode -ne 0) {
     exit 1
 }
 
-& $libFuzzer -timeout="$timeout" --target_path=$project $corpus
+& $libFuzzer -timeout="$timeout" -dict="dictionaries/json.dict" --target_path=$project $corpus
