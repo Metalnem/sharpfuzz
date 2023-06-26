@@ -130,6 +130,8 @@ namespace SharpFuzz
 				throw new FuzzerIpcEnvironmentException();
 			}
 
+			Console.Error.WriteLine($"Shared memory ID: {shmId}");
+
 			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
 			{
 				impl = new WindowsFuzzerIpc(shmId, statusPipeId, controlPipeId);
