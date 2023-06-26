@@ -51,7 +51,7 @@ namespace SharpFuzz
 					if (!src.IsILOnly)
 					{
 						src.Cor20HeaderFlags &= ~ComImageFlags.ILLibrary;
-						src.IsILOnly = true;
+						//src.IsILOnly = true;
 					}
 
 					if (src.TypeExistsNormal(typeof(Common.Trace).FullName))
