@@ -43,7 +43,7 @@ namespace SharpFuzz
             /// <param name="action">
             /// Some action that calls the instrumented library. The span argument
             /// passed to the action contains the input data. Exceptions are not
-			/// reported as crashes to libFuzzer (only timeouts and process crashes are).
+            /// reported as crashes to libFuzzer (only timeouts and process crashes are).
             /// </param>
             public static void RunAndIgnoreExceptions(ReadOnlySpanAction action) => Run(action, true);
 
