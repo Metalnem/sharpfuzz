@@ -42,7 +42,7 @@ if (($fuzzingTargets | Measure-Object).Count -eq 0) {
 
 foreach ($fuzzingTarget in $fuzzingTargets) {
     Write-Output "Instrumenting $fuzzingTarget"
-    & $command $fuzzingTarget
+    & $command $fuzzingTarget.FullName
     
     if ($LastExitCode -ne 0) {
         Write-Error "An error occurred while instrumenting $fuzzingTarget"
