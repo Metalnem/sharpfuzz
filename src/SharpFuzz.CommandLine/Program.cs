@@ -81,9 +81,9 @@ Examples:
                 Console.Error.WriteLine(ex.Message);
                 return 1;
             }
-            catch
+            catch (Exception ex)
             {
-                Console.Error.WriteLine("Failed to instrument the specified file, most likely because it's not a valid .NET assembly.");
+                Console.Error.WriteLine("Failed to instrument the specified file, most likely because it's not a valid .NET assembly: "+ex);
                 return 1;
             }
 
