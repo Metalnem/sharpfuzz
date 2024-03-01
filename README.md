@@ -51,6 +51,9 @@ them to this list. Please send me an email, make a pull
 request for the README file, or file an issue.
   
 - [AngleSharp: HtmlParser.Parse throws InvalidOperationException](https://github.com/AngleSharp/AngleSharp/issues/735) **fixed**
+- [AngleSharp: HtmlParser.ParseDocument throws IndexOutOfRangeException](https://github.com/AngleSharp/AngleSharp/issues/1174) **fixed**
+- [AngleSharp: HtmlParser.ParseDocument throws InvalidOperationException](https://github.com/AngleSharp/AngleSharp/issues/1176) **fixed**
+- [AngleSharp: HtmlParser.ParseDocument hangs permanently](https://github.com/AngleSharp/AngleSharp/issues/1179) **fixed**
 - [CoreFX: BigInteger.TryParse out-of-bounds access](https://github.com/dotnet/corefx/issues/35176) **fixed**
 - [CoreFX: BinaryFormatter.Deserialize throws many unexpected exceptions](https://github.com/dotnet/corefx/issues/35491) **fixed**
 - [CoreFX: DataContractJsonSerializer.ReadObject throws ArgumentOutOfRangeException](https://github.com/dotnet/corefx/issues/35205)
