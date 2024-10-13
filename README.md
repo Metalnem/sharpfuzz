@@ -42,6 +42,7 @@ integration with afl-fuzz works, read my blog post
 - [Five years of fuzzing .NET with SharpFuzz](https://mijailovic.net/2023/07/23/sharpfuzz-anniversary/)
 - [Let’s do DHCP: fuzzing](http://writeasync.net/?p=5714)
 - [Fuzzing C# on Windows with SharpFuzz and libfuzzer-dotnet](https://github.com/ranweiler/libfuzzer-dotnet-windows-example/blob/main/README.md)
+- [Automate Bug Finding: Fuzzing C# Code on Windows](https://blog.objektkultur.de/Automate-Bug-Finding-Fuzzing-C-Sharp-Code-on-Windows/)
 
 ## Trophies
 
