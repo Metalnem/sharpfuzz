@@ -118,6 +118,7 @@ request for the README file, or file an issue.
 - [SharpZipLib: ZipInputStream.GetNextEntry hangs permanently](https://github.com/icsharpcode/SharpZipLib/issues/300) **fixed**
 - [SixLabors.Fonts: FontDescription.LoadDescription throws ArgumentException](https://github.com/SixLabors/Fonts/issues/96) **fixed**
 - [SixLabors.Fonts: FontDescription.LoadDescription throws NullReferenceException](https://github.com/SixLabors/Fonts/issues/97) **fixed**
+- [SixLabors.ImageSharp: Handle EOF in Jpeg bit reader when data is bad to prevent DOS attack](https://github.com/SixLabors/ImageSharp/pull/2516) **fixed**
 - [SixLabors.ImageSharp: Image.Load terminates the process with AccessViolationException](https://github.com/SixLabors/ImageSharp/issues/798) **fixed**
 - [SixLabors.ImageSharp: Image.Load throws AccessViolationException](https://github.com/SixLabors/ImageSharp/issues/827) **fixed**
 - [SixLabors.ImageSharp: Image.Load throws ArgumentException](https://github.com/SixLabors/ImageSharp/issues/826) **fixed**
