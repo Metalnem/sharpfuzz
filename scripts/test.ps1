@@ -10,7 +10,7 @@ dotnet publish src/SharpFuzz.CommandLine/SharpFuzz.CommandLine.csproj `
     -i corpus `
     -command out/SharpFuzz.CommandLine
 
-$output = Get-Content -Path "./findings/.cur_input" -Raw
+$output = Get-Content -Path "./findings/default/.cur_input" -Raw
 $crasher = "Whoopsie"
 
 if (-not $output.Contains($crasher)) {

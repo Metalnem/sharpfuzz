@@ -11,14 +11,14 @@
 [license-shield]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat
 [license-link]: https://github.com/metalnem/sharpfuzz/blob/master/LICENSE
 
-SharpFuzz is a tool that brings the power of [afl-fuzz]
+SharpFuzz is a tool that brings the power of [AFL++]
 to .NET platform. If you want to learn more about fuzzing,
 my motivation for writing SharpFuzz, the types of bugs
 it can find, or the technical details about how the
 integration with afl-fuzz works, read my blog post
 [SharpFuzz: Bringing the power of afl-fuzz to .NET platform](https://mijailovic.net/2019/01/03/sharpfuzz/).
 
-[afl-fuzz]: http://lcamtuf.coredump.cx/afl/
+[AFL++]: https://github.com/AFLplusplus/AFLplusplus
 
 ## Table of contents
 
@@ -138,14 +138,14 @@ request for the README file, or file an issue.
 
 ## Requirements
 
-AFL works on Linux and macOS. If you are using Windows, you can use any Linux distribution
+AFL++ works on Linux and macOS. If you are using Windows, you can use any Linux distribution
 that works under the [Windows Subsystem for Linux]. For native Windows support, you can use
 [libFuzzer](https://github.com/Metalnem/sharpfuzz/blob/master/docs/libFuzzer.md)
 instead of AFL.
 
 You will need GNU make and a working compiler
-(gcc or clang) in order to compile afl-fuzz.
-You will also need to have the [.NET Core 2.1]
+(gcc or clang) in order to compile afl-fuzz ([Installing AFL++](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/INSTALL.md)).
+You will also need to have [.NET Core 2.1]
 or greater installed on your machine in order
 to instrument .NET assemblies with SharpFuzz.
 
@@ -159,23 +159,23 @@ recommended to install [PowerShell].
 ## Installation
 
 You can install afl-fuzz and [SharpFuzz.CommandLine]
-global .NET tool by running the following [script]:
+global .NET tool by running the following PowerShell [script]:
 
 ```shell
 #/bin/sh
 set -eux
 
 # Download and extract the latest afl-fuzz source package
-wget http://lcamtuf.coredump.cx/afl/releases/afl-latest.tgz
-tar -xvf afl-latest.tgz
+wget https://github.com/AFLplusplus/AFLplusplus/archive/refs/tags/v4.30c.tar.gz
+tar -xvzf v4.30c.tar.gz
 
-rm afl-latest.tgz
-cd afl-2.52b/
+rm v4.30c.tar.gz
+cd AFLplusplus-4.30c/
 
 # Install afl-fuzz
 sudo make install
 cd ..
-rm -rf afl-2.52b/
+rm -rf AFLplusplus-4.30c/
 
 # Install SharpFuzz.CommandLine global .NET tool
 dotnet tool install --global SharpFuzz.CommandLine
@@ -188,15 +188,15 @@ dotnet tool install --global SharpFuzz.CommandLine
 
 This tutorial assumes that you are somewhat familiar
 with afl-fuzz. If you don't know anything about it, you
-should first read the [AFL quick start guide] and the
+should first read the [afl-fuzz approach] and the
 [afl-fuzz README]. If you have enough time, I would
-also recommend reading [Understanding the status screen]
-and [Technical whitepaper for afl-fuzz].
+also recommend reading [Fuzzing in depth]
+and [Technical whitepaper for AFL++].
 
-[AFL quick start guide]: http://lcamtuf.coredump.cx/afl/QuickStartGuide.txt
-[afl-fuzz README]: http://lcamtuf.coredump.cx/afl/README.txt
-[Understanding the status screen]: http://lcamtuf.coredump.cx/afl/status_screen.txt
-[Technical whitepaper for afl-fuzz]: http://lcamtuf.coredump.cx/afl/technical_details.txt
+[afl-fuzz approach]: https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/afl-fuzz_approach.md
+[afl-fuzz README]: https://github.com/AFLplusplus/AFLplusplus/blob/stable/README.md
+[Fuzzing in depth]: https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/fuzzing_in_depth.md
+[Technical whitepaper for AFL++]: https://aflplus.plus/papers/aflpp-woot2020.pdf
 
 As an example, we are going to fuzz [Jil],
 which is a fast JSON serializer and deserializer
@@ -291,7 +291,7 @@ some useful results within minutes, but sometimes
 it can take more than a day, so be patient.
 
 The input files responsible for unhandled exceptions will
-appear in the ```findings/crashes``` directory. The total
+appear in the ```findings/default/crashes``` directory. The total
 number of unique crashes will be displayed in red on the
 afl-fuzz status screen.
 
