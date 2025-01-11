@@ -8,7 +8,7 @@ New-Item -Path $corpus -ItemType Directory
 dotnet publish src/SharpFuzz.CommandLine/SharpFuzz.CommandLine.csproj `
     --output out `
     --configuration release `
-    --framework net8.0
+    --framework net9.0
 
 & scripts/fuzz-libfuzzer.ps1 `
     -libFuzzer "./$libFuzzer" `

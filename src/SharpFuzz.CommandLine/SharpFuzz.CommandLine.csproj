@@ -1,16 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\..\build\Common.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
     <OutputType>Exe</OutputType>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>sharpfuzz</ToolCommandName>
     <PackageId>SharpFuzz.CommandLine</PackageId>
     <Title>SharpFuzz.CommandLine</Title>
-    <PackageVersion>2.1.1</PackageVersion>
-    <AssemblyVersion>2.1.1.0</AssemblyVersion>
+    <PackageVersion>2.2.0</PackageVersion>
+    <AssemblyVersion>2.2.0.0</AssemblyVersion>
     <Description>Command line tool for SharpFuzz instrumentation</Description>
   </PropertyGroup>
 

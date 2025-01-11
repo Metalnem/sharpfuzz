@@ -92,6 +92,9 @@ request for the README file, or file an issue.
 - [Markdig: Markdown.ToHtml throws ArgumentOutOfRangeException](https://github.com/lunet-io/markdig/issues/275) **fixed**
 - [Markdig: Markdown.ToHtml throws IndexOutOfRangeException](https://github.com/lunet-io/markdig/issues/276) **fixed**
 - [Markdig: Markdown.ToHtml throws IndexOutOfRangeException](https://github.com/lunet-io/markdig/issues/303) **fixed**
+- [Markdig: Markdown.ToHtml throws IndexOutOfRangeException for lastBlock in GetCurrentDefinitionList](https://github.com/xoofx/markdig/issues/839) **fixed**
+- [Markdig: Markdown.ToHtml throws IndexOutOfRangeException in StringSlice.NextChar()](https://github.com/xoofx/markdig/issues/840) **fixed**
+- [Markdig: Markdown.ToHtml throws InvalidOperationException "A block is already being replaced"](https://github.com/xoofx/markdig/issues/841) **fixed**
 - [Markdig: Markdown.ToHtml throws NullReferenceException](https://github.com/lunet-io/markdig/issues/277) **fixed**
 - [Markdig: StackOverflowException is throw when converting special markdown to HTML](https://github.com/xoofx/markdig/issues/497) **fixed**
 - [MarkdownSharp: Markdown.Transform hangs permanently](https://github.com/StackExchange/MarkdownSharp/issues/8)
@@ -102,6 +105,7 @@ request for the README file, or file an issue.
 - [NCrontab: CrontabSchedule.Parse throws OverflowException instead of CrontabException](https://github.com/atifaziz/NCrontab/issues/43)
 - [nHapi: Bad inputs cause unexpected exceptions and permanent hang](https://github.com/nHapiNET/nHapi/issues/196) **fixed**
 - [nHapi: Bad inputs cause StackOverflow/Access Violation](https://github.com/nHapiNET/nHapi/issues/198) **fixed**
+- [NoStringEvaluating: Evaluator.Calc throws several unexpected exceptions](https://github.com/KovtunV/NoStringEvaluating/issues/14) **fixed**
 - [NUglify: Uglify.Js hangs permanently](https://github.com/xoofx/NUglify/issues/63) **fixed**
 - [Open XML SDK: Add some security/fuzz testing](https://github.com/OfficeDev/Open-XML-SDK/issues/441)
 - [OpenMCDF: OutOfMemoryException when parsing Excel document / endless while-loop](https://github.com/ironfede/openmcdf/issues/30) **fixed**
@@ -140,20 +144,21 @@ request for the README file, or file an issue.
 
 AFL++ works on Linux and macOS. If you are using Windows, you can use any Linux distribution
 that works under the [Windows Subsystem for Linux]. For native Windows support, you can use
-[libFuzzer](https://github.com/Metalnem/sharpfuzz/blob/master/docs/libFuzzer.md)
-instead of AFL.
+[libFuzzer] instead of AFL.
 
 You will need GNU make and a working compiler
-(gcc or clang) in order to compile afl-fuzz ([Installing AFL++](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/INSTALL.md)).
-You will also need to have [.NET Core 2.1]
+(gcc or clang) in order to compile afl-fuzz ([Installing AFL++]).
+You will also need to have [.NET 8.0]
 or greater installed on your machine in order
 to instrument .NET assemblies with SharpFuzz.
 
 To simplify your fuzzing experience, it's also
 recommended to install [PowerShell].
 
+[libFuzzer]: https://github.com/Metalnem/sharpfuzz/blob/master/docs/libFuzzer.md
+[Installing AFL++]: https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/INSTALL.md
 [Windows Subsystem for Linux]: https://docs.microsoft.com/en-us/windows/wsl/install-win10
-[.NET Core 2.1]: https://dotnet.microsoft.com/download
+[.NET 8.0]: https://dotnet.microsoft.com/download
 [PowerShell]: https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell
 
 ## Installation
