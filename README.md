@@ -149,7 +149,7 @@ instead of AFL.
 
 You will need GNU make and a working compiler
 (gcc or clang) in order to compile afl-fuzz.
-You will also need to have the [.NET Core 2.1]
+You will also need to have the [.NET 8.0]
 or greater installed on your machine in order
 to instrument .NET assemblies with SharpFuzz.
 
@@ -157,7 +157,7 @@ To simplify your fuzzing experience, it's also
 recommended to install [PowerShell].
 
 [Windows Subsystem for Linux]: https://docs.microsoft.com/en-us/windows/wsl/install-win10
-[.NET Core 2.1]: https://dotnet.microsoft.com/download
+[.NET 8.0]: https://dotnet.microsoft.com/download
 [PowerShell]: https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell
 
 ## Installation
