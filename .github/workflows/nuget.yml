@@ -1,0 +1,29 @@
+name: Build and Publish NuGet Packages
+
+on: workflow_dispatch
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    env:
+      NUGET_SOURCE: https://api.nuget.org/v3/index.json
+      NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+
+    strategy:
+      matrix:
+        project: [SharpFuzz, SharpFuzz.CommandLine]
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.0
+
+    - name: Build NuGet package for ${{ matrix.project }}
+      working-directory: src/${{ matrix.project }}
+      run: dotnet pack --configuration Release --output out/${{ matrix.project }}
+
+    - name: Publish NuGet package for ${{ matrix.project }}
+      working-directory: src/${{ matrix.project }}
+      run: dotnet nuget push out/${{ matrix.project }}/*.nupkg --source $NUGET_SOURCE --api-key $NUGET_API_KEY
