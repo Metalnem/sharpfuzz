@@ -92,6 +92,9 @@ request for the README file, or file an issue.
 - [Markdig: Markdown.ToHtml throws ArgumentOutOfRangeException](https://github.com/lunet-io/markdig/issues/275) **fixed**
 - [Markdig: Markdown.ToHtml throws IndexOutOfRangeException](https://github.com/lunet-io/markdig/issues/276) **fixed**
 - [Markdig: Markdown.ToHtml throws IndexOutOfRangeException](https://github.com/lunet-io/markdig/issues/303) **fixed**
+- [Markdig: Markdown.ToHtml throws IndexOutOfRangeException for lastBlock in GetCurrentDefinitionList](https://github.com/xoofx/markdig/issues/839) **fixed**
+- [Markdig: Markdown.ToHtml throws IndexOutOfRangeException in StringSlice.NextChar()](https://github.com/xoofx/markdig/issues/840) **fixed**
+- [Markdig: Markdown.ToHtml throws InvalidOperationException "A block is already being replaced"](https://github.com/xoofx/markdig/issues/841) **fixed**
 - [Markdig: Markdown.ToHtml throws NullReferenceException](https://github.com/lunet-io/markdig/issues/277) **fixed**
 - [Markdig: StackOverflowException is throw when converting special markdown to HTML](https://github.com/xoofx/markdig/issues/497) **fixed**
 - [MarkdownSharp: Markdown.Transform hangs permanently](https://github.com/StackExchange/MarkdownSharp/issues/8)
@@ -102,6 +105,7 @@ request for the README file, or file an issue.
 - [NCrontab: CrontabSchedule.Parse throws OverflowException instead of CrontabException](https://github.com/atifaziz/NCrontab/issues/43)
 - [nHapi: Bad inputs cause unexpected exceptions and permanent hang](https://github.com/nHapiNET/nHapi/issues/196) **fixed**
 - [nHapi: Bad inputs cause StackOverflow/Access Violation](https://github.com/nHapiNET/nHapi/issues/198) **fixed**
+- [NoStringEvaluating: Evaluator.Calc throws several unexpected exceptions](https://github.com/KovtunV/NoStringEvaluating/issues/14) **fixed**
 - [NUglify: Uglify.Js hangs permanently](https://github.com/xoofx/NUglify/issues/63) **fixed**
 - [Open XML SDK: Add some security/fuzz testing](https://github.com/OfficeDev/Open-XML-SDK/issues/441)
 - [OpenMCDF: OutOfMemoryException when parsing Excel document / endless while-loop](https://github.com/ironfede/openmcdf/issues/30) **fixed**
