@@ -6,13 +6,13 @@ on:
     branches: ["master"]
   pull_request:
     branches: ["master"]
- 
-env:
-  dotnet-version: 9.0
 
 jobs:
   AFL:
     runs-on: ubuntu-latest
+
+    env:
+      dotnet-version: "9.0"
 
     steps:
     - uses: actions/checkout@v4
@@ -25,15 +25,19 @@ jobs:
       run: sudo sh -c "echo core >/proc/sys/kernel/core_pattern"
     - name: Run AFL tests
       shell: pwsh
-      run: ./scripts/test.ps1
+      run: ./scripts/test.ps1 ${{ env.dotnet-version }}
 
   libFuzzer:
     runs-on: windows-latest
+
+    strategy:
+      matrix:
+        dotnet-version: ["8.0", "9.0"]
 
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: ${{ env.dotnet-version }}
+        dotnet-version: ${{ matrix.dotnet-version }}
     - name: Run libFuzzer tests
-      run: ./scripts/test-libfuzzer.ps1
+      run: ./scripts/test-libfuzzer.ps1 ${{ matrix.dotnet-version }}
