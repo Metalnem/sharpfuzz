@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      dotnet-version: 9.0
+      dotnet-version: "9.0"
 
     steps:
     - uses: actions/checkout@v4
