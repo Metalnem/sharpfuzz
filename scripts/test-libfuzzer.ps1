@@ -1,3 +1,8 @@
+param(
+    [Parameter(Mandatory=$true)]
+    [string]$dotnetVersion
+)
+
 $libFuzzer = "libfuzzer-dotnet-windows.exe"
 $uri = "https://github.com/metalnem/libfuzzer-dotnet/releases/latest/download/$libFuzzer"
 $corpus = "corpus"
@@ -8,7 +13,7 @@ New-Item -Path $corpus -ItemType Directory
 dotnet publish src/SharpFuzz.CommandLine/SharpFuzz.CommandLine.csproj `
     --output out `
     --configuration release `
-    --framework net9.0
+    --framework "net$dotnetVersion"
 
 & scripts/fuzz-libfuzzer.ps1 `
     -libFuzzer "./$libFuzzer" `

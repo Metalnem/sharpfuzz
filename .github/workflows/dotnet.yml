@@ -25,7 +25,7 @@ jobs:
       run: sudo sh -c "echo core >/proc/sys/kernel/core_pattern"
     - name: Run AFL tests
       shell: pwsh
-      run: ./scripts/test.ps1
+      run: ./scripts/test.ps1 ${{ env.dotnet-version }}
 
   libFuzzer:
     runs-on: windows-latest
@@ -40,4 +40,4 @@ jobs:
       with:
         dotnet-version: ${{ matrix.dotnet-version }}
     - name: Run libFuzzer tests
-      run: ./scripts/test-libfuzzer.ps1
+      run: ./scripts/test-libfuzzer.ps1 ${{ matrix.dotnet-version }}
