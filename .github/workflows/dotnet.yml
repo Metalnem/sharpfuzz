@@ -11,15 +11,14 @@ jobs:
   AFL:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        dotnet-version: [8.0, 9.0]
+    env:
+      dotnet-version: 9.0
 
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: ${{ matrix.dotnet-version }}
+        dotnet-version: ${{ env.dotnet-version }}
     - name: Install AFL
       run: ./scripts/install.sh
     - name: Disable core dumps
@@ -33,7 +32,7 @@ jobs:
 
     strategy:
       matrix:
-        dotnet-version: [8.0, 9.0]
+        dotnet-version: ["8.0", "9.0"]
 
     steps:
     - uses: actions/checkout@v4
