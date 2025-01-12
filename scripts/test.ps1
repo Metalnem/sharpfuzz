@@ -1,9 +1,14 @@
+param(
+    [Parameter(Mandatory=$true)]
+    [string]$dotnetVersion
+)
+
 New-Item -Path "corpus/test" -ItemType File -Force -Value "W"
 
 dotnet publish src/SharpFuzz.CommandLine/SharpFuzz.CommandLine.csproj `
     --output out `
     --configuration release `
-    --framework net9.0
+    --framework "net$dotnetVersion"
 
 & scripts/fuzz.ps1 `
     -project tests/Library.Fuzz/Library.Fuzz.csproj `
