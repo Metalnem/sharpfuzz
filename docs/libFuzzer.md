@@ -23,6 +23,16 @@ scripts/fuzz-libfuzzer.ps1 `
     -corpus Testcases
 ```
 
+**4.** Libfuzzer also supports minimizing found crashing inputs:
+
+```powershell
+./libfuzzer-dotnet-windows.exe `
+    --target_path="./bin/YourFuzzer.exe" `
+    crashing_testcase `
+    -minimize_crash=1 `
+    -timeout=10
+```
+
 [libFuzzer]: http://llvm.org/docs/LibFuzzer.html
 [libfuzzer-dotnet]: https://github.com/Metalnem/libfuzzer-dotnet/releases
 [libfuzzer-dotnet.cc]: https://github.com/Metalnem/libfuzzer-dotnet/blob/master/libfuzzer-dotnet.cc
