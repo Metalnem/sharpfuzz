@@ -6,19 +6,20 @@ on:
     branches: ["master"]
   pull_request:
     branches: ["master"]
- 
-env:
-  dotnet-version: 9.0
 
 jobs:
   AFL:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        dotnet-version: [8.0, 9.0]
+
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: ${{ env.dotnet-version }}
+        dotnet-version: ${{ matrix.dotnet-version }}
     - name: Install AFL
       run: ./scripts/install.sh
     - name: Disable core dumps
@@ -30,10 +31,14 @@ jobs:
   libFuzzer:
     runs-on: windows-latest
 
+    strategy:
+      matrix:
+        dotnet-version: [8.0, 9.0]
+
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: ${{ env.dotnet-version }}
+        dotnet-version: ${{ matrix.dotnet-version }}
     - name: Run libFuzzer tests
       run: ./scripts/test-libfuzzer.ps1
