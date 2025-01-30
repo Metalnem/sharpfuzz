@@ -9,6 +9,7 @@ using System.Text;
 using dnlib.DotNet;
 using dnlib.DotNet.Emit;
 using dnlib.DotNet.MD;
+using dnlib.DotNet.Writer;
 
 namespace SharpFuzz
 {
@@ -66,7 +67,6 @@ namespace SharpFuzz
                     {
                         throw new InstrumentationException("The specified assembly is already instrumented.");
                     }
-
                     var common = typeof(Common.Trace).Assembly;
                     var commonName = common.GetName().Name;
 
@@ -141,7 +141,20 @@ namespace SharpFuzz
                 }
             }
 
-            src.Write(dst);
+            try
+            {
+                src.Write(dst);
+            }
+            catch (ModuleWriterException)
+            {
+                /*
+                 * Likely if we got here it's because of obfuscation so we attempt to bypass it by keeping the old stack.
+                 * If that doesn't solve it the error is likely to happen again which will bubble up to the user
+                 */
+                var writerOptions = new ModuleWriterOptions(src);
+                writerOptions.MetadataOptions.Flags |= MetadataFlags.KeepOldMaxStack;
+                src.Write(dst,writerOptions);
+            } 
             return types;
         }
 
