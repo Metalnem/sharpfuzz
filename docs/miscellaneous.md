@@ -16,7 +16,7 @@ terminate and display the following error message:
 
 If you encounter this message during fuzzing, you can recover
 the input data that has caused the premature exit from the file
-```findings_dir/.cur_input```.
+```findings_dir/default/.cur_input```.
 
 There is also an out-of-process version of fuzzer which is
 using two different .NET processes: the master process for
@@ -55,7 +55,3 @@ You can run it using the following command:
 afl-tmin -i test_case -o minimized_result \
   dotnet path_to_assembly
 ```
-
-The only change you have to make in your fuzzing
-project is to replace the **Fuzzer.Run** call with
-the call to **Fuzzer.RunOnce**.
